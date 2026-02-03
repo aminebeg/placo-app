@@ -1,0 +1,120 @@
+@import "tailwindcss";
+
+@theme {
+    --color-portal-bg: #0f0f10;
+    --color-portal-sidebar: #141415;
+    --color-portal-border: #2c2c2e;
+    --color-portal-text: #ededed;
+    --color-portal-muted: #a1a1aa;
+    --color-portal-accent: #c5a059;
+
+    --font-sans: 'Inter', 'sans-serif';
+    --font-display: 'Unbounded', 'sans-serif';
+}
+
+@layer base {
+    body {
+        background-color: var(--color-portal-bg);
+        color: var(--color-portal-text);
+        font-family: var(--font-sans);
+    }
+}
+
+@layer components {
+    [x-cloak] {
+        display: none !important;
+    }
+
+    .portal-btn {
+        @apply px-4 py-2 rounded-lg font-bold transition-all duration-300 flex items-center gap-2 active:scale-95;
+    }
+
+    .portal-btn-primary {
+        @apply bg-portal-accent text-black hover:bg-portal-accent/90 hover:shadow-[0_0_20px_rgba(197,160,89,0.3)];
+    }
+
+    .portal-card {
+        @apply bg-[#141415] border border-portal-border rounded-xl p-6 transition-all duration-300;
+    }
+
+    .portal-card-interactive {
+        @apply hover:border-portal-accent/40 hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)];
+    }
+
+    .glass-panel {
+        @apply bg-white/5 backdrop-blur-xl border border-white/10;
+    }
+
+    .portal-input {
+        @apply bg-white/5 border border-portal-border rounded-lg px-4 py-2 text-white w-full focus:border-portal-accent/50 focus:ring-1 focus:ring-portal-accent/50 focus:outline-none transition-all;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--color-portal-border);
+        border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--color-portal-muted);
+    }
+
+    /* Toast Notifications */
+    .toast {
+        @apply flex items-center gap-3 min-w-[320px] max-w-md px-4 py-3 rounded-xl shadow-2xl backdrop-blur-xl border transform translate-x-[400px] transition-all duration-300 ease-out;
+    }
+
+    .toast-show {
+        @apply translate-x-0;
+    }
+
+    .toast-success {
+        @apply bg-green-500/10 border-green-500/30 text-green-400;
+    }
+
+    .toast-error {
+        @apply bg-red-500/10 border-red-500/30 text-red-400;
+    }
+
+    .toast-warning {
+        @apply bg-yellow-500/10 border-yellow-500/30 text-yellow-400;
+    }
+
+    .toast-info {
+        @apply bg-blue-500/10 border-blue-500/30 text-blue-400;
+    }
+
+    .toast-icon {
+        @apply flex-shrink-0;
+    }
+
+    .toast-message {
+        @apply flex-1 text-sm font-medium text-white;
+    }
+
+    .toast-close {
+        @apply flex-shrink-0 p-1 rounded-lg hover:bg-white/10 transition-colors text-portal-muted hover:text-white;
+    }
+}
+
+@layer utilities {
+    .text-glow {
+        text-shadow: 0 0 10px rgba(197, 160, 89, 0.4);
+    }
+    
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+    .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+}

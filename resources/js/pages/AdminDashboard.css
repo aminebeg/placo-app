@@ -1,0 +1,158 @@
+/* Admin Portal Operational Extensions */
+.u-avatar.admin {
+    background: var(--portal-accent);
+    color: #000;
+}
+
+/* Tab Navigation System */
+.premium-tabs {
+    display: flex;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 6px;
+    border-radius: 12px;
+    border: 1px solid var(--portal-border);
+    margin-bottom: 32px;
+    width: fit-content;
+}
+
+.admin-tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--portal-muted);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.admin-tab-btn:hover {
+    color: var(--portal-text);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.admin-tab-btn.active {
+    color: var(--portal-accent);
+    background: rgba(197, 160, 89, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Command Center Analytics */
+.admin-overview .kpi-grid {
+    margin-bottom: 40px;
+}
+
+.status-control-cell select {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--portal-border);
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.status-control-cell select:focus {
+    border-color: var(--portal-accent);
+    background: rgba(197, 160, 89, 0.05);
+}
+
+.select-input.admin {
+    color: var(--portal-accent);
+    border-color: var(--portal-accent);
+}
+
+.select-input.customer {
+    color: #3b82f6;
+    border-color: #3b82f6;
+}
+
+/* User Identity Display */
+.user-identity-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.u-avatar.sm {
+    width: 32px;
+    height: 32px;
+    font-size: 0.75rem;
+    border-radius: 8px;
+}
+
+/* Form Engineering */
+.form-grid-three {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+.form-actions-admin {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid var(--portal-border);
+}
+
+/* System Integrity Cards */
+.alert-card h3 {
+    font-size: 0.9rem;
+    margin-bottom: 16px;
+}
+
+.integrity-status {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--portal-muted);
+}
+
+/* Utility Extensions */
+.full-width {
+    width: 100%;
+}
+
+.text-gold {
+    color: var(--portal-accent);
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.icon-action-btn.delete:hover {
+    color: #f87171;
+    background: rgba(239, 68, 68, 0.1);
+    border-color: #f87171;
+}
+
+@media (max-width: 1200px) {
+    .form-grid-three {
+        grid-template-columns: 1fr;
+    }
+}

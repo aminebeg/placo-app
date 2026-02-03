@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60">
+  <defs>
+    <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#2196F3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1976D2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="60" height="60" rx="12" fill="url(#logo-grad)" />
+  <path d="M20 30h20M30 20v20" stroke="white" stroke-width="6" stroke-linecap="round" />
+  <text x="75" y="40" font-family="Arial, sans-serif" font-weight="bold" font-size="32" fill="#333">PLACO</text>
+  <text x="75" y="55" font-family="Arial, sans-serif" font-size="12" fill="#666" letter-spacing="2">PLATRE</text>
+</svg>

@@ -1,0 +1,134 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+class ProductController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
+    {
+        $query = \App\Models\Product::with('category');
+
+        if ($request->ajax()) {
+            if ($request->filled('category') && $request->category !== 'all') {
+                $query->whereHas('category', function($q) use ($request) {
+                    $q->where('slug', $request->category);
+                });
+            }
+
+            if ($request->filled('search')) {
+                $search = $request->search;
+                $query->where(function($q) use ($search) {
+                    $q->where('name_en', 'like', "%{$search}%")
+                      ->orWhere('name_fr', 'like', "%{$search}%")
+                      ->orWhere('name_ar', 'like', "%{$search}%");
+                });
+            }
+
+            $products = $query->paginate(6);
+            
+            // Ensure the computed attributes are included in the JSON
+            $products->getCollection()->transform(function ($product) {
+                $product->append(['name', 'description']);
+                return $product;
+            });
+
+            return response()->json($products);
+        }
+
+        $products = $query->paginate(6);
+        $categories = \App\Models\Category::all();
+        
+        return view('products.index', compact('products', 'categories'));
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name_en' => 'required|string|max:255',
+            'name_fr' => 'required|string|max:255',
+            'name_ar' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'category_id' => 'required|exists:categories,id',
+            'description_en' => 'nullable|string',
+            'description_fr' => 'nullable|string',
+            'description_ar' => 'nullable|string',
+            'in_stock' => 'boolean',
+            'technical_sheet_url' => 'nullable|string',
+            'weight_kg' => 'nullable|numeric',
+            'pieces_per_bundle' => 'nullable|integer'
+        ]);
+
+        \App\Models\Product::create($validated);
+
+        return redirect()->route('admin.dashboard')->with('success', 'Product created successfully');
+    }
+
+    public function create()
+    {
+        return view('products.create');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        $product = \App\Models\Product::with('category')->findOrFail($id);
+        return view('products.show', compact('product'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        $product = \App\Models\Product::findOrFail($id);
+        $categories = \App\Models\Category::all();
+        return view('products.edit', compact('product', 'categories'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        $valided = $request->validate([
+            'name_en' => 'required|string|max:255',
+            'name_fr' => 'required|string|max:255',
+            'name_ar' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'category_id' => 'required|exists:categories,id',
+            'description_en' => 'nullable|string',
+            'description_fr' => 'nullable|string',
+            'description_ar' => 'nullable|string',
+            'in_stock' => 'boolean',
+            'technical_sheet_url' => 'nullable|string',
+            'weight_kg' => 'nullable|numeric',
+            'pieces_per_bundle' => 'nullable|integer'
+        ]);
+
+        $product = \App\Models\Product::findOrFail($id);
+        $product->update($valided);
+
+        return redirect()->route('admin.dashboard')->with('success', 'Product updated successfully');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        $product = \App\Models\Product::findOrFail($id);
+        $product->delete();
+
+        return back()->with('success', 'Product deleted successfully');
+    }
+}

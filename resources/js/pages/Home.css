@@ -1,0 +1,204 @@
+.home {
+    background: var(--color-onyx);
+    color: var(--color-ash);
+}
+
+/* === HERO SECTION === */
+.hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background: radial-gradient(circle at 50% 50%, #1c1c1e 0%, #0a0a0b 100%);
+    padding: 100px 0;
+    overflow: hidden;
+}
+
+.hero-background {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-image: linear-gradient(to bottom, rgba(10, 10, 11, 0.7), rgba(10, 10, 11, 0.9)), url('/assets/images/hero.png');
+    background-size: cover;
+    background-position: center;
+    transform: scale(1.1);
+    animation: slowZoom 20s infinite alternate linear;
+}
+
+@keyframes slowZoom {
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.1);
+    }
+}
+
+.hero-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(var(--color-gold-dim) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: linear-gradient(to bottom, black, transparent);
+    opacity: 0.3;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.hero-title {
+    font-size: clamp(3rem, 10vw, 7rem);
+    line-height: 0.95;
+    margin-bottom: 32px;
+    text-transform: uppercase;
+    color: var(--color-ivory);
+}
+
+.hero-title span {
+    display: block;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--color-gold);
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--color-taupe);
+    margin-bottom: 60px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.4;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+}
+
+/* === FEATURES SECTION === */
+.features {
+    padding: 160px 0;
+}
+
+.section-tag {
+    color: var(--color-gold);
+    text-transform: uppercase;
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 0.4em;
+    display: block;
+    text-align: center;
+    margin-bottom: 24px;
+}
+
+.section-title {
+    font-size: 3.5rem;
+    text-align: center;
+    margin-bottom: 80px;
+    text-transform: uppercase;
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+}
+
+.feature-card {
+    padding: 60px 40px;
+    text-align: center;
+}
+
+.feature-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--color-gold-dim);
+    color: var(--color-gold);
+    border: 1px solid var(--color-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin: 0 auto 32px;
+    transition: all 0.5s ease;
+}
+
+.feature-card:hover .feature-icon {
+    transform: rotateY(180deg) scale(1.1);
+    background: var(--color-gold);
+    color: var(--color-onyx);
+}
+
+.feature-title {
+    font-size: 1.25rem;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.feature-description {
+    color: var(--color-taupe);
+    font-size: 0.95rem;
+}
+
+/* === CTA SECTION === */
+.cta-section {
+    padding: 100px 0 200px;
+}
+
+.cta-card {
+    background: linear-gradient(135deg, #1c1c1e 0%, #0a0a0b 100%);
+    border: 1px solid var(--glass-border-dark);
+    border-radius: var(--radius-super);
+    padding: 140px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-title {
+    font-size: clamp(2rem, 8vw, 4.5rem);
+    margin-bottom: 40px;
+    line-height: 0.9;
+}
+
+.cta-description {
+    font-size: 1.1rem;
+    color: var(--color-taupe);
+    max-width: 600px;
+    margin: 0 auto 60px;
+    line-height: 1.6;
+}
+
+.cta-card {
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cta-card:hover {
+    border-color: var(--color-gold);
+    box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 1024px) {
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 4rem;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+    }
+}
