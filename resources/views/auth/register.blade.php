@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ __('Register') }} - Placo Portal</title>
+    <title>{{ __('Register') }} - MyFix Portal</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,9 +13,9 @@
 <body class="font-sans antialiased bg-portal-bg text-portal-text min-h-screen flex items-center justify-center p-4">
     <div class="w-full max-w-2xl">
         <div class="text-center mb-10">
-            <div class="flex items-center justify-center gap-3 font-display font-bold text-2xl tracking-tight mb-2">
-                <x-lucide-building-2 class="text-portal-accent w-8 h-8" />
-                <span>PLACO PORTAL <small class="bg-portal-accent text-black px-1.5 py-0.5 rounded textxs align-middle ml-1">B2B</small></span>
+            <div class="flex items-center justify-center gap-4 font-display font-bold text-2xl tracking-tight mb-2 uppercase">
+                <img src="/images/logo-myfix.png" alt="MyFix Logo" class="h-12 w-auto">
+                <span>MYFIX <small class="bg-portal-accent text-white px-1.5 py-0.5 rounded text-[0.6rem] align-middle ms-1 font-bold">PRO</small></span>
             </div>
             <p class="text-portal-muted">{{ __('Create your professional account') }}</p>
         </div>

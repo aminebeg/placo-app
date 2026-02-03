@@ -33,10 +33,10 @@
             <div class="grid grid-cols-4 gap-6">
                 <div class="bg-portal-sidebar border border-portal-border rounded-xl p-6 relative overflow-hidden group hover:border-portal-accent/50 transition-colors">
                     <div class="absolute top-0 end-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <x-lucide-trending-up class="w-16 h-16 text-green-500" />
+                        <x-lucide-trending-up class="w-16 h-16 text-portal-accent" />
                     </div>
                     <div class="flex items-center gap-4 mb-4">
-                        <div class="p-3 rounded-lg bg-green-500/10 text-green-500">
+                        <div class="p-3 rounded-lg bg-portal-accent/10 text-portal-accent">
                             <x-lucide-trending-up class="w-6 h-6" />
                         </div>
                     </div>

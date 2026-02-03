@@ -6,7 +6,7 @@
     --color-portal-border: #2c2c2e;
     --color-portal-text: #ededed;
     --color-portal-muted: #a1a1aa;
-    --color-portal-accent: #c5a059;
+    --color-portal-accent: #15803d;
 
     --font-sans: 'Inter', 'sans-serif';
     --font-display: 'Unbounded', 'sans-serif';
@@ -30,7 +30,11 @@
     }
 
     .portal-btn-primary {
-        @apply bg-portal-accent text-black hover:bg-portal-accent/90 hover:shadow-[0_0_20px_rgba(197,160,89,0.3)];
+        @apply bg-portal-accent text-black hover:bg-portal-accent/90;
+    }
+
+    .portal-btn-primary:hover {
+        box-shadow: 0 0 20px rgba(21, 128, 61, 0.3);
     }
 
     .portal-card {
@@ -38,7 +42,11 @@
     }
 
     .portal-card-interactive {
-        @apply hover:border-portal-accent/40 hover:-translate-y-1 hover:shadow-[0_10px_30px_-10px_rgba(0,0,0,0.5)];
+        @apply hover:border-portal-accent/40 hover:-translate-y-1;
+    }
+
+    .portal-card-interactive:hover {
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
     }
 
     .glass-panel {
@@ -107,12 +115,13 @@
 
 @layer utilities {
     .text-glow {
-        text-shadow: 0 0 10px rgba(197, 160, 89, 0.4);
+        text-shadow: 0 0 10px rgba(21, 128, 61, 0.4);
     }
-    
+
     .no-scrollbar::-webkit-scrollbar {
         display: none;
     }
+
     .no-scrollbar {
         -ms-overflow-style: none;
         scrollbar-width: none;

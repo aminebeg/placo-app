@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Global Accesoires - High-Grade Building Components</title>
+    <title>MyFix - High-Grade Building Components</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,7 +22,8 @@
     <nav class="absolute top-0 w-full z-50 border-b border-white/5 backdrop-blur-sm">
         <div class="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
             <div class="flex items-center gap-3 font-display font-bold text-2xl tracking-tight">
-                <span>GLOBAL <span class="text-portal-accent">ACCESOIRES</span></span>
+                <img src="/images/logo-myfix.png" alt="MyFix Logo" class="h-10 w-auto">
+                <span>MYFIX <span class="text-portal-accent">PRO</span></span>
             </div>
             
             <div class="flex items-center gap-6">
@@ -69,6 +70,9 @@
                         <span class="relative inline-flex rounded-full h-2 w-2 bg-portal-accent"></span>
                     </span>
                     {{ __('Professional B2B Portal') }}
+                </div>
+                <div class="block">
+                    <span class="bg-portal-accent/10 text-portal-accent px-4 py-2 rounded-full text-xs font-bold tracking-widest uppercase border border-portal-accent/20">SARL MYFIX</span>
                 </div>
                 
                 <h1 class="text-7xl font-display font-extrabold tracking-tight leading-tight">
@@ -137,7 +141,8 @@
     <footer class="border-t border-white/5 py-12 bg-[#0a0a0b]">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
             <div class="flex items-center gap-2 font-display font-bold text-lg uppercase tracking-tight">
-                <span>GLOBAL <span class="text-portal-accent">ACCESOIRES</span></span>
+                <img src="/images/logo-myfix.png" alt="MyFix Logo" class="h-6 w-auto">
+                <span>MYFIX <span class="text-portal-accent">PRO</span></span>
             </div>
             <p class="text-portal-muted text-sm">{{ __('Authorized Dealers Only') }}</p>
         </div>

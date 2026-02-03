@@ -46,7 +46,7 @@
                     <tbody class="divide-y divide-portal-border">
                         @foreach($orders as $order)
                             <tr class="hover:bg-white/2 transition-colors group cursor-pointer" onclick="window.location='{{ route('orders.show', $order->id) }}'">
-                                <td class="px-8 py-5 font-mono text-portal-accent font-medium">#PO-{{ $order->order_number }}</td>
+                                <td class="px-8 py-5 font-mono text-portal-accent font-medium">{{ __('Order #PO-') }}{{ $order->order_number }}</td>
                                 <td class="px-8 py-5 text-sm font-medium text-portal-muted">{{ $order->created_at->format('M j, Y') }}<br><span class="text-xs opacity-60">{{ $order->created_at->format('H:i') }}</span></td>
                                 <td class="px-8 py-5 text-center font-bold">{{ $order->items_count }}</td>
                                 <td class="px-8 py-5 text-center">
