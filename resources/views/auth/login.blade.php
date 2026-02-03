@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login - Placo Portal</title>
+    <title>Login - Global Accesoires</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,8 +14,7 @@
     <div class="w-full max-w-md">
         <div class="text-center mb-10">
             <div class="flex items-center justify-center gap-3 font-display font-bold text-2xl tracking-tight mb-2">
-                <x-lucide-building-2 class="text-portal-accent w-8 h-8" />
-                <span>PLACO PORTAL <small class="bg-portal-accent text-black px-1.5 py-0.5 rounded textxs align-middle ml-1">B2B</small></span>
+                <span>GLOBAL <span class="text-portal-accent">ACCESOIRES</span> <small class="bg-portal-accent text-black px-1.5 py-0.5 rounded textxs align-middle ml-1">B2B</small></span>
             </div>
             <p class="text-portal-muted">{{ __('Secure Access for Authorized Personnel') }}</p>
         </div>

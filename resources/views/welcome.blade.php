@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Placo Algerie - Premium Building Materials</title>
+    <title>Global Accesoires - High-Grade Building Components</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,8 +22,7 @@
     <nav class="absolute top-0 w-full z-50 border-b border-white/5 backdrop-blur-sm">
         <div class="max-w-7xl mx-auto px-6 h-24 flex items-center justify-between">
             <div class="flex items-center gap-3 font-display font-bold text-2xl tracking-tight">
-                <x-lucide-building-2 class="text-portal-accent w-8 h-8" />
-                <span>PLACO<span class="text-portal-accent">PORTAL</span></span>
+                <span>GLOBAL <span class="text-portal-accent">ACCESOIRES</span></span>
             </div>
             
             <div class="flex items-center gap-6">
@@ -137,9 +136,8 @@
     <!-- Footer -->
     <footer class="border-t border-white/5 py-12 bg-[#0a0a0b]">
         <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="flex items-center gap-2 font-display font-bold text-lg">
-                <div class="w-8 h-8 bg-portal-accent text-black rounded-lg flex items-center justify-center">P</div>
-                <span>Placo Algerie</span>
+            <div class="flex items-center gap-2 font-display font-bold text-lg uppercase tracking-tight">
+                <span>GLOBAL <span class="text-portal-accent">ACCESOIRES</span></span>
             </div>
             <p class="text-portal-muted text-sm">{{ __('Authorized Dealers Only') }}</p>
         </div>

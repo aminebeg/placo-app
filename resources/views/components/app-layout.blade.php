@@ -38,8 +38,7 @@
                class="fixed lg:sticky top-0 left-0 w-[280px] bg-portal-sidebar border-e border-portal-border flex flex-col h-screen z-50 transition-transform duration-300 ease-in-out">
             <div class="p-8 flex items-center justify-between font-display font-bold text-lg tracking-tight">
                 <div class="flex items-center gap-3">
-                    <x-lucide-building-2 class="text-portal-accent w-6 h-6" />
-                    <span>PLACO PORTAL <small class="bg-portal-accent text-black px-1.5 py-0.5 rounded text-[0.6rem] align-middle ms-1">B2B</small></span>
+                    <span>GLOBAL <span class="text-portal-accent">ACCESOIRES</span> <small class="bg-portal-accent text-black px-1.5 py-0.5 rounded text-[0.6rem] align-middle ms-1">B2B</small></span>
                 </div>
                 <button @click="sidebarOpen = false" class="lg:hidden p-2 text-portal-muted hover:text-white">
                     <x-lucide-x class="w-6 h-6" />
