@@ -58,7 +58,7 @@ class ProductController extends Controller
             'description_fr' => 'nullable|string',
             'description_ar' => 'nullable|string',
             'in_stock' => 'boolean',
-            'technical_sheet_url' => 'nullable|string',
+
             'weight_kg' => 'nullable|numeric',
             'pieces_per_bundle' => 'nullable|integer'
         ]);
@@ -80,6 +80,15 @@ class ProductController extends Controller
     {
         $product = \App\Models\Product::with('category')->findOrFail($id);
         return view('products.show', compact('product'));
+    }
+
+    /**
+     * Display the technical sheet for the specified resource.
+     */
+    public function technicalSheet(string $id)
+    {
+        $product = \App\Models\Product::with('category')->findOrFail($id);
+        return view('products.technical-sheet', compact('product'));
     }
 
     /**
@@ -110,7 +119,7 @@ class ProductController extends Controller
             'description_fr' => 'nullable|string',
             'description_ar' => 'nullable|string',
             'in_stock' => 'boolean',
-            'technical_sheet_url' => 'nullable|string',
+
             'weight_kg' => 'nullable|numeric',
             'pieces_per_bundle' => 'nullable|integer'
         ]);

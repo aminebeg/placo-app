@@ -74,27 +74,9 @@
                     </div>
                 </div>
                 
-                <div class="space-y-2">
-                    <label class="block text-xs font-bold text-portal-muted uppercase tracking-wider">Inventory Status</label>
-                    <div class="flex items-center gap-6 bg-white/5 border border-portal-border rounded-xl p-4 w-fit">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="in_stock" value="1" {{ $product->in_stock ? 'checked' : '' }} class="text-portal-accent focus:ring-portal-accent bg-transparent border-portal-border">
-                            <span class="text-sm font-medium">In Stock</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="radio" name="in_stock" value="0" {{ !$product->in_stock ? 'checked' : '' }} class="text-portal-accent focus:ring-portal-accent bg-transparent border-portal-border">
-                            <span class="text-sm font-medium text-portal-muted">Lead Time Required</span>
-                        </label>
-                    </div>
-                </div>
 
-                <div class="space-y-2">
-                    <label class="block text-xs font-bold text-portal-muted uppercase tracking-wider">Technical Sheet URL (PDF)</label>
-                    <div class="relative">
-                        <x-lucide-link class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-portal-muted" />
-                        <input type="url" name="technical_sheet_url" value="{{ old('technical_sheet_url', $product->technical_sheet_url) }}" placeholder="https://factory.com/specs/product.pdf" class="w-full bg-white/5 border border-portal-border rounded-xl pl-12 pr-4 py-2.5 text-white focus:border-portal-accent focus:ring-0 text-sm">
-                    </div>
-                </div>
+
+
 
                 <div class="grid grid-cols-2 gap-6">
                     <div class="space-y-2">

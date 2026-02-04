@@ -1,19 +1,20 @@
-<x-app-layout>
-    <x-slot name="header">
-        <span class="inline-block bg-portal-accent text-black px-2.5 py-1 rounded-md text-[0.7rem] font-extrabold uppercase tracking-wider mb-2">{{ __('Procurement List') }}</span>
-        <h1 class="text-4xl font-extrabold tracking-tight mb-2">{{ __('Requisition & Checkout') }}</h1>
-        <p class="text-portal-muted text-lg">{{ __('Review items before transmitting Purchase Order.') }}</p>
-    </x-slot>
+<x-public-layout>
+    <div class="max-w-7xl mx-auto px-6 py-12">
+        <div class="mb-12 border-b border-white/5 pb-12">
+            <span class="inline-block bg-portal-accent/10 text-portal-accent border border-portal-accent/20 px-3 py-1 rounded-full text-[0.65rem] font-bold uppercase tracking-widest mb-4">{{ __('Espace Client') }}</span>
+            <h1 class="text-4xl md:text-5xl font-display font-black tracking-tighter mb-4">{{ __('Validation de la Commande') }}</h1>
+            <p class="text-slate-400 text-lg max-w-2xl">{{ __('Vérifiez votre commande avant transmission pour traitement.') }}</p>
+        </div>
 
     @if(empty($cart))
-        <div class="bg-portal-sidebar border border-portal-border rounded-xl p-12 text-center flex flex-col items-center">
-            <div class="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mb-6">
-                <x-lucide-clipboard-list class="w-10 h-10 text-portal-muted opacity-50" />
+        <div class="bg-[#141415] border border-white/5 rounded-3xl p-16 text-center flex flex-col items-center shadow-2xl">
+            <div class="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mb-8 border border-white/5">
+                <x-lucide-shopping-cart class="w-10 h-10 text-slate-500" />
             </div>
-            <h3 class="font-display font-bold text-2xl mb-2">{{ __('Your List is Empty') }}</h3>
-            <p class="text-portal-muted mb-8 max-w-md mx-auto">{{ __("You haven't selected any materials for procurement yet. Access the technical catalog to begin building your order.") }}</p>
-            <a href="{{ route('products.index') }}" class="bg-portal-accent text-black px-8 py-4 rounded-xl font-bold hover:bg-white transition-colors">
-                {{ __('Open Technical Catalog') }}
+            <h3 class="font-display font-bold text-3xl mb-4 text-white">{{ __('Votre panier est vide') }}</h3>
+            <p class="text-slate-400 mb-8 max-w-md mx-auto text-lg">{{ __("Vous n'avez pas encore sélectionné de matériaux. Accédez au catalogue pour commencer votre commande.") }}</p>
+            <a href="{{ route('products.index') }}" class="portal-btn portal-btn-primary px-8 py-4 text-sm">
+                {{ __('Ouvrir le Catalogue') }}
             </a>
         </div>
     @else
@@ -67,7 +68,7 @@
             },
             
             async removeItem(id) {
-                if (!confirm('{{ __('Remove this item from your requisition list?') }}')) return;
+                if (!confirm('{{ __('Retirer cet article de votre liste ?') }}')) return;
                 
                 try {
                     const response = await fetch(`/cart/remove/${id}`, {
@@ -93,185 +94,234 @@
             }
         }">
             <!-- Cart Items -->
-            <div class="xl:col-span-2">
-                <div class="bg-portal-sidebar border border-portal-border rounded-xl overflow-hidden">
-                    <div class="p-6 border-b border-portal-border">
-                        <h3 class="font-display font-bold text-lg">{{ __('Line Items') }}</h3>
+            <div class="xl:col-span-2 space-y-6">
+                <div class="bg-[#141415] border border-white/5 rounded-3xl overflow-hidden shadow-xl">
+                    <div class="p-6 border-b border-white/5 bg-white/[0.02]">
+                        <h3 class="font-bold text-lg text-white">{{ __('Articles') }}</h3>
                     </div>
-                    <table class="w-full text-start">
-                        <thead class="bg-white/2 text-xs font-bold text-portal-muted uppercase tracking-wider">
-                            <tr>
-                                <th class="px-6 py-4 text-start">{{ __('Item Specifications') }}</th>
-                                <th class="px-6 py-4 text-center">{{ __('Quantity') }}</th>
-                                <th class="px-6 py-4 text-end">{{ __('Est. Unit Cost') }}</th>
-                                <th class="px-6 py-4 text-end">{{ __('Subtotal') }}</th>
-                                <th class="px-6 py-4 text-end">{{ __('Actions') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-portal-border">
-                            <template x-for="(item, id) in cart" :key="id">
-                                <tr class="hover:bg-white/2 transition-colors">
-                                    <td class="px-6 py-6">
-                                        <div class="flex items-center gap-4">
-                                            <div class="w-16 h-16 bg-white/5 rounded-lg border border-portal-border flex items-center justify-center p-2">
-                                                <template x-if="item.image">
-                                                    <img :src="item.image" class="max-w-full max-h-full object-contain">
-                                                </template>
-                                                <template x-if="!item.image">
-                                                    <x-lucide-package class="w-6 h-6 text-portal-muted opacity-50" />
-                                                </template>
-                                            </div>
-                                            <div>
-                                                <div class="font-bold text-white" x-text="item.name"></div>
-                                                <div class="flex items-center gap-2 mt-1">
-                                                    <span class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider" x-text="'{{ __('REF') }}: ' + String(id).padStart(6, '0')"></span>
-                                                    <template x-if="item.weight">
-                                                        <span class="text-[0.65rem] font-bold text-portal-accent uppercase bg-portal-accent/10 px-1.5 py-0.5 rounded border border-portal-accent/20" x-text="Number(item.weight).toFixed(2) + ' {{ __('kg/unit') }}'"></span>
+                    
+                    <!-- Desktop Table View -->
+                    <div class="hidden md:block">
+                        <table class="w-full text-start">
+                            <thead class="bg-white/[0.02] text-[0.65rem] font-bold text-slate-500 uppercase tracking-wider border-b border-white/5">
+                                <tr>
+                                    <th class="px-6 py-4 text-start font-bold">{{ __('Produit') }}</th>
+                                    <th class="px-6 py-4 text-center font-bold">{{ __('Quantité') }}</th>
+                                    <th class="px-6 py-4 text-end font-bold">{{ __('Prix Unitaire') }}</th>
+                                    <th class="px-6 py-4 text-end font-bold">{{ __('Total') }}</th>
+                                    <th class="px-6 py-4 text-end font-bold">{{ __('Actions') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                <template x-for="(item, id) in cart" :key="id">
+                                    <tr class="hover:bg-white/[0.02] transition-colors group">
+                                        <td class="px-6 py-6">
+                                            <div class="flex items-center gap-6">
+                                                <div class="w-16 h-16 bg-[#0a0a0b] rounded-xl border border-white/10 flex items-center justify-center p-2 group-hover:border-portal-accent/30 transition-colors">
+                                                    <template x-if="item.image">
+                                                        <img :src="item.image" class="max-w-full max-h-full object-contain mix-blend-normal">
+                                                    </template>
+                                                    <template x-if="!item.image">
+                                                        <x-lucide-package class="w-6 h-6 text-slate-600" />
                                                     </template>
                                                 </div>
+                                                <div>
+                                                    <div class="font-bold text-white text-base mb-1" x-text="item.name"></div>
+                                                    <div class="flex items-center gap-2">
+                                                        <span class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-wider bg-white/5 px-2 py-0.5 rounded" x-text="'REF: ' + String(id).padStart(6, '0')"></span>
+                                                        <template x-if="item.weight">
+                                                            <span class="text-[0.6rem] font-bold text-portal-accent uppercase tracking-wider" x-text="Number(item.weight).toFixed(2) + ' {{ __('kg') }}'"></span>
+                                                        </template>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-6">
-                                        <div class="flex items-center justify-center gap-2">
+                                        </td>
+                                        <td class="px-6 py-6">
+                                            <div class="flex items-center justify-center gap-2 bg-[#0a0a0b] rounded-lg border border-white/10 p-1 w-fit mx-auto">
+                                                <button 
+                                                    type="button"
+                                                    @click="updateQuantity(id, item.quantity - 1)"
+                                                    :disabled="item.quantity <= 1"
+                                                    class="w-7 h-7 rounded bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white disabled:opacity-30 transition-colors"
+                                                >
+                                                    <x-lucide-minus class="w-3 h-3" />
+                                                </button>
+                                                
+                                                <input 
+                                                    type="number" 
+                                                    x-model.number="item.quantity"
+                                                    @change="updateQuantity(id, item.quantity)"
+                                                    min="1"
+                                                    class="w-12 text-center bg-transparent border-none font-mono font-bold text-white text-sm focus:ring-0 p-0"
+                                                >
+                                                
+                                                <button 
+                                                    type="button"
+                                                    @click="updateQuantity(id, item.quantity + 1)"
+                                                    class="w-7 h-7 rounded bg-white/5 hover:bg-white/10 flex items-center justify-center text-slate-400 hover:text-white transition-colors"
+                                                >
+                                                    <x-lucide-plus class="w-3 h-3" />
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-6 text-end">
+                                            <div class="font-mono text-slate-400 font-bold tracking-tight" x-text="Number(item.price).toFixed(2) + ' {{ __('DA') }}'"></div>
+                                        </td>
+                                        <td class="px-6 py-6 text-end">
+                                            <div class="font-mono text-white font-bold tracking-tight text-lg" x-text="(Number(item.price) * item.quantity).toFixed(2) + ' {{ __('DA') }}'"></div>
+                                        </td>
+                                        <td class="px-6 py-6 text-end">
                                             <button 
-                                                type="button"
-                                                @click="updateQuantity(id, item.quantity - 1)"
-                                                :disabled="item.quantity <= 1"
-                                                class="w-8 h-8 rounded-lg bg-white/5 border border-portal-border hover:bg-white/10 hover:border-portal-accent transition-colors flex items-center justify-center text-portal-muted hover:text-white disabled:opacity-30 disabled:cursor-not-allowed"
+                                                @click="removeItem(id)"
+                                                class="w-8 h-8 rounded-full hover:bg-red-500/20 text-slate-500 hover:text-red-500 transition-colors inline-flex items-center justify-center"
+                                                title="{{ __('Retirer') }}"
                                             >
-                                                <x-lucide-minus class="w-4 h-4" />
+                                                <x-lucide-trash-2 class="w-4 h-4" />
                                             </button>
-                                            
-                                            <input 
-                                                type="number" 
-                                                x-model.number="item.quantity"
-                                                @change="updateQuantity(id, item.quantity)"
-                                                min="1"
-                                                max="9999"
-                                                class="w-16 text-center bg-white/5 border border-portal-border rounded-lg font-mono font-bold text-white focus:ring-portal-accent focus:border-portal-accent"
-                                            >
-                                            
-                                            <button 
-                                                type="button"
-                                                @click="updateQuantity(id, item.quantity + 1)"
-                                                class="w-8 h-8 rounded-lg bg-white/5 border border-portal-border hover:bg-white/10 hover:border-portal-accent transition-colors flex items-center justify-center text-portal-muted hover:text-white"
-                                            >
-                                                <x-lucide-plus class="w-4 h-4" />
-                                            </button>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-6 text-end font-mono text-portal-muted font-bold" x-text="Number(item.price).toFixed(2) + ' {{ __('DA') }}'"></td>
-<td class="px-6 py-6 text-end font-mono text-portal-accent font-bold" x-text="(Number(item.price) * item.quantity).toFixed(2) + ' {{ __('DA') }}'"></td>
-                                    <td class="px-6 py-6 text-end">
-                                        <button 
-                                            @click="removeItem(id)"
-                                            class="p-2 hover:bg-red-500/10 rounded-lg text-portal-muted hover:text-red-500 transition-colors"
-                                        >
-                                            <x-lucide-trash-2 class="w-5 h-5" />
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Mobile View -->
+                    <div class="md:hidden divide-y divide-white/5">
+                        <template x-for="(item, id) in cart" :key="id">
+                            <div class="p-6 flex flex-col gap-4">
+                                <div class="flex items-start gap-4">
+                                    <div class="w-16 h-16 bg-[#0a0a0b] rounded-xl border border-white/10 flex items-center justify-center p-2 flex-shrink-0">
+                                        <template x-if="item.image">
+                                            <img :src="item.image" class="max-w-full max-h-full object-contain">
+                                        </template>
+                                        <template x-if="!item.image">
+                                            <x-lucide-package class="w-6 h-6 text-slate-600" />
+                                        </template>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="font-bold text-white text-sm mb-1 truncate" x-text="item.name"></div>
+                                        <div class="text-xs text-slate-500 mb-2" x-text="'Ref: ' + id"></div>
+                                        <div class="font-mono text-portal-accent font-bold" x-text="(Number(item.price) * item.quantity).toFixed(2) + ' {{ __('DA') }}'"></div>
+                                    </div>
+                                    <button @click="removeItem(id)" class="text-slate-600 hover:text-red-500 p-2">
+                                        <x-lucide-trash-2 class="w-5 h-5" />
+                                    </button>
+                                </div>
+                                <div class="flex items-center justify-between bg-white/5 p-2 rounded-xl">
+                                    <span class="text-xs font-bold text-slate-400 pl-2">{{ __('Quantité') }}</span>
+                                    <div class="flex items-center gap-3">
+                                        <button @click="updateQuantity(id, item.quantity - 1)" :disabled="item.quantity <= 1" class="w-8 h-8 rounded-lg bg-black/20 flex items-center justify-center text-white border border-white/10">
+                                            <x-lucide-minus class="w-4 h-4" />
                                         </button>
-                                    </td>
-                                </tr>
-                            </template>
-                        </tbody>
-                    </table>
+                                        <span class="font-mono font-bold text-white w-8 text-center" x-text="item.quantity"></span>
+                                        <button @click="updateQuantity(id, item.quantity + 1)" class="w-8 h-8 rounded-lg bg-black/20 flex items-center justify-center text-white border border-white/10">
+                                            <x-lucide-plus class="w-4 h-4" />
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
                 </div>
             </div>
-            <!-- Summary Panel (Checkout Form) -->
+
+            <!-- Sidebar Summary -->
             <form action="{{ route('cart.checkout') }}" method="POST" class="xl:col-span-1 space-y-6">
                 @csrf
-                <div class="bg-portal-sidebar border border-portal-border rounded-xl p-6">
-                        <h3 class="font-display font-bold text-lg mb-6">{{ __('Procurement Details') }}</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-1">{{ __('Project Reference (Optional)') }}</label>
-                                <input type="text" name="project_reference" placeholder="{{ __('e.g. Building A, Floor 5') }}" class="w-full bg-white/5 border border-portal-border rounded-lg text-sm text-white focus:ring-portal-accent focus:border-portal-accent">
-                            </div>
-                            <div>
-                                <label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-1">{{ __('Delivery Address') }}</label>
-                                <textarea name="delivery_address" rows="3" placeholder="{{ __('Full site address...') }}" class="w-full bg-white/5 border border-portal-border rounded-lg text-sm text-white focus:ring-portal-accent focus:border-portal-accent"></textarea>
-                            </div>
-                            <div>
-                                <label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-1">{{ __('Requested Delivery Date') }}</label>
-                                <input type="date" name="requested_delivery_date" class="w-full bg-white/5 border border-portal-border rounded-lg text-sm text-white focus:ring-portal-accent focus:border-portal-accent">
-                            </div>
-                            <div>
-                                <label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-1">{{ __('Logistics Configuration') }}</label>
-                                <select name="logistics_type" class="w-full bg-white/5 border border-portal-border rounded-lg text-sm text-white focus:ring-portal-accent focus:border-portal-accent">
-                                    <option value="standard" class="bg-portal-sidebar">{{ __('Standard Bundle') }}</option>
-                                    <option value="bundle" class="bg-portal-sidebar">{{ __('Mini Bundle (Lighter)') }}</option>
-                                    <option value="pallet" class="bg-portal-sidebar">{{ __('Full Pallet (Shrink Wrapped)') }}</option>
-                                    <option value="bulk" class="bg-portal-sidebar">{{ __('Bulk Loading') }}</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-1">{{ __('Procurement Notes') }}</label>
-                                <textarea name="notes" rows="2" placeholder="{{ __('Urgency, gate instructions...') }}" class="w-full bg-white/5 border border-portal-border rounded-lg text-sm text-white focus:ring-portal-accent focus:border-portal-accent"></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="bg-portal-sidebar border border-portal-border rounded-xl p-6">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="font-display font-bold text-lg">{{ __('Logistics Summary') }}</h3>
-                            <x-lucide-truck class="w-5 h-5 text-portal-muted" />
-                        </div>
-
-                        <div class="space-y-4 mb-8 bg-white/5 rounded-xl p-4 border border-portal-border">
-                            <div class="flex justify-between items-center text-sm">
-                                <span class="text-portal-muted">{{ __('Total Net Weight') }}</span>
-                                <span class="font-mono text-white font-bold" x-text="totalWeight.toFixed(2) + ' {{ __('kg') }}'"></span>
-                            </div>
-                            <div class="flex justify-between items-center text-sm">
-                                <span class="text-portal-muted">{{ __('Truckload Utility') }}</span>
-                                <span class="font-mono font-bold" :class="utility > 100 ? 'text-red-500' : 'text-portal-accent'" x-text="utility.toFixed(1) + '%'"></span>
-                            </div>
-                            
-                            <!-- Capacity Progress Bar -->
-                            <div class="w-full bg-white/5 rounded-full h-1.5 overflow-hidden border border-white/5">
-                                <div class="h-full transition-all duration-500" :class="utility > 100 ? 'bg-red-500' : 'bg-portal-accent'" :style="`width: ${Math.min(utility, 100)}%`"></div>
-                            </div>
-                            
-                            <template x-if="utility > 100">
-                                <div class="text-[0.65rem] text-red-400 font-bold uppercase tracking-wider">
-                                    <x-lucide-alert-triangle class="w-3 h-3 inline mr-1" /> {{ __('Over weight capacity (24t limit)') }}
-                                </div>
-                            </template>
-                            <template x-if="utility < 10">
-                                <div class="text-[0.65rem] text-portal-muted font-bold uppercase tracking-wider">
-                                    {{ __('Load optimization suggested') }}
-                                </div>
-                            </template>
-                        </div>
-
-                        <h3 class="font-display font-bold text-lg mb-6">{{ __('Financial Summary') }}</h3>
+                <div class="bg-[#141415] border border-white/5 rounded-3xl p-6 lg:p-8 shadow-xl sticky top-28">
+                        <h3 class="font-bold text-lg text-white mb-6 flex items-center gap-2">
+                            <x-lucide-clipboard-check class="w-5 h-5 text-portal-accent" />
+                            {{ __('Détails de la commande') }}
+                        </h3>
                         
-                        <div class="space-y-4 text-sm border-b border-portal-border pb-6 mb-6">
-                            <div class="flex justify-between items-center text-portal-muted">
-                                <span>{{ __('Net Value') }}</span>
-                                <span class="font-mono text-white" x-text="totalPrice.toFixed(2) + ' {{ __('DA') }}'"></span>
+                        <div class="space-y-4 mb-8">
+                            <div>
+                                <label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-2 pl-1">{{ __('Référence Projet (Optionnel)') }}</label>
+                                <input type="text" name="project_reference" placeholder="{{ __('ex: Bâtiment A, Étage 5') }}" class="w-full bg-[#0a0a0b] border border-white/10 rounded-xl text-sm text-white focus:ring-1 focus:ring-portal-accent focus:border-portal-accent placeholder-slate-600 py-3 px-4 transition-shadow">
                             </div>
-                            <div class="flex justify-between items-center text-portal-muted">
-                                <span>{{ __('Logistics Fees') }}</span>
-                                <span class="font-mono text-white italic text-xs">{{ __('Calculated at dispatch') }}</span>
+                            <div>
+                                <label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-2 pl-1">{{ __('Adresse de Livraison') }}</label>
+                                <textarea name="delivery_address" rows="3" placeholder="{{ __('Adresse complète du chantier...') }}" class="w-full bg-[#0a0a0b] border border-white/10 rounded-xl text-sm text-white focus:ring-1 focus:ring-portal-accent focus:border-portal-accent placeholder-slate-600 py-3 px-4 transition-shadow"></textarea>
                             </div>
-                             <div class="flex justify-between items-center text-portal-muted">
-                                <span>{{ __('TVA (19%)') }}</span>
-                                <span class="font-mono text-white" x-text="tax.toFixed(2) + ' {{ __('DA') }}'"></span>
+                            <div>
+                                <label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-2 pl-1">{{ __('Date Souhaitée') }}</label>
+                                <input type="date" name="requested_delivery_date" class="w-full bg-[#0a0a0b] border border-white/10 rounded-xl text-sm text-white focus:ring-1 focus:ring-portal-accent focus:border-portal-accent placeholder-slate-600 py-3 px-4 transition-shadow">
+                            </div>
+                            <div>
+                                <label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-2 pl-1">{{ __('Configuration Logistique') }}</label>
+                                <div class="relative">
+                                    <select name="logistics_type" class="w-full bg-[#0a0a0b] border border-white/10 rounded-xl text-sm text-white focus:ring-1 focus:ring-portal-accent focus:border-portal-accent py-3 px-4 appearance-none">
+                                        <option value="standard">{{ __('Standard (Palette)') }}</option>
+                                        <option value="bundle">{{ __('Mini Lot (Allégé)') }}</option>
+                                        <option value="pallet">{{ __('Palette Complète (Filmée)') }}</option>
+                                        <option value="bulk">{{ __('Vrac (Chargement direct)') }}</option>
+                                    </select>
+                                    <x-lucide-chevron-down class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-2 pl-1">{{ __('Notes de Commande') }}</label>
+                                <textarea name="notes" rows="2" placeholder="{{ __('Instructions accès chantier, urgence...') }}" class="w-full bg-[#0a0a0b] border border-white/10 rounded-xl text-sm text-white focus:ring-1 focus:ring-portal-accent focus:border-portal-accent placeholder-slate-600 py-3 px-4 transition-shadow"></textarea>
                             </div>
                         </div>
 
-                        <div class="flex justify-between items-center mb-8">
-                            <span class="font-bold text-lg">{{ __('Total Estimated') }}</span>
-                            <span class="font-mono text-2xl font-bold text-portal-accent" x-text="totalWithTax.toFixed(2) + ' {{ __('DA') }}'"></span>
+                        <div class="border-t border-white/5 pt-6 mb-6">
+                            <h4 class="font-bold text-white text-sm uppercase tracking-widest mb-4">{{ __('Résumé Logistique') }}</h4>
+                            
+                            <div class="bg-[#0a0a0b] rounded-xl p-4 border border-white/5 space-y-3">
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-slate-400 font-medium">{{ __('Poids Net Total') }}</span>
+                                    <span class="font-mono text-white font-bold" x-text="totalWeight.toFixed(2) + ' {{ __('kg') }}'"></span>
+                                </div>
+                                <div class="space-y-1">
+                                    <div class="flex justify-between items-center text-sm">
+                                        <span class="text-slate-400 font-medium">{{ __('Taux de Chargement') }}</span>
+                                        <span class="font-mono font-bold" :class="utility > 100 ? 'text-red-500' : 'text-portal-accent'" x-text="utility.toFixed(1) + '%'"></span>
+                                    </div>
+                                    <div class="w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
+                                        <div class="h-full transition-all duration-500" :class="utility > 100 ? 'bg-red-500' : 'bg-portal-accent'" :style="`width: ${Math.min(utility, 100)}%`"></div>
+                                    </div>
+                                    <div x-show="utility > 100" class="text-[0.6rem] text-red-500 font-bold mt-1">
+                                        {{ __('Surcharge détectée (>24t)') }}
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
-                        <button type="submit" class="w-full bg-portal-accent text-black font-bold py-4 rounded-xl hover:bg-white transition-colors flex items-center justify-center gap-2">
-                             {{ __('Transmit Requisition') }} <x-lucide-arrow-right class="w-4 h-4" />
-                        </button>
-                        <p class="text-xs text-center text-portal-muted mt-4">{{ __('By transmitting this order, you agree to our B2B procurement terms.') }}</p>
-                    </div>
-                </form>
+                        <div class="border-t border-white/5 pt-6 mb-8">
+                             <h4 class="font-bold text-white text-sm uppercase tracking-widest mb-4">{{ __('Total Financier') }}</h4>
+                             
+                             <div class="space-y-3 text-sm mb-4">
+                                <div class="flex justify-between items-center text-slate-400">
+                                    <span>{{ __('Total HT') }}</span>
+                                    <span class="font-mono text-white" x-text="totalPrice.toFixed(2) + ' {{ __('DA') }}'"></span>
+                                </div>
+                                 <div class="flex justify-between items-center text-slate-400">
+                                    <span>{{ __('TVA (19%)') }}</span>
+                                    <span class="font-mono text-white" x-text="tax.toFixed(2) + ' {{ __('DA') }}'"></span>
+                                </div>
+                             </div>
+                             
+                             <div class="flex justify-between items-end p-4 bg-portal-accent/10 rounded-xl border border-portal-accent/20">
+                                <span class="font-bold text-white uppercase tracking-wider text-xs">{{ __('Total TTC Estimé') }}</span>
+                                <span class="font-mono text-2xl font-bold text-portal-accent" x-text="totalWithTax.toFixed(2) + ' {{ __('DA') }}'"></span>
+                             </div>
+                        </div>
+
+                        @auth
+                            <button type="submit" class="portal-btn portal-btn-primary w-full justify-center py-4 text-sm shadow-[0_0_30px_rgba(250,204,21,0.2)]">
+                                 {{ __('Transmettre la Commande') }} <x-lucide-arrow-right class="w-5 h-5 ml-2" />
+                            </button>
+                            <p class="text-[0.65rem] text-center text-slate-500 mt-4 leading-relaxed">{{ __('En validant, vous acceptez nos conditions générales de vente B2B.') }}</p>
+                        @else
+                            <a href="{{ route('login') }}" class="portal-btn bg-white text-black hover:bg-slate-200 w-full justify-center py-4 text-sm font-bold uppercase tracking-wider">
+                                 <x-lucide-log-in class="w-5 h-5 mr-2" /> {{ __('Se connecter pour commander') }}
+                            </a>
+                            <p class="text-[0.65rem] text-center text-slate-500 mt-4 leading-relaxed">{{ __('Connexion requise pour la validation.') }}</p>
+                        @endauth
+                </div>
+            </form>
         </div>
     @endif
-</x-app-layout>
+    </div>
+</x-public-layout>

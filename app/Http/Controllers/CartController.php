@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\DB;
 class CartController extends Controller
 {
     // Display the cart
+    public static function getCartCount()
+    {
+        return count(session()->get('cart', []));
+    }
+
     public function index()
     {
         $cart = session()->get('cart', []);

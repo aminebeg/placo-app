@@ -47,18 +47,6 @@
             </div>
 
             <nav class="flex-1 px-4 flex flex-col gap-1 overflow-y-auto">
-                <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4">{{ __('Operations') }}</div>
-                
-                <a href="{{ route('dashboard') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('dashboard') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
-                    <x-lucide-layout-dashboard class="w-5 h-5 me-3" />
-                    {{ __('Dashboard') }}
-                </a>
-                
-                <a href="{{ route('orders.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('orders.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
-                    <x-lucide-file-text class="w-5 h-5 me-3" />
-                    {{ __('Purchase Orders') }}
-                </a>
-
                 <a href="{{ route('products.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('products.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
                     <x-lucide-package class="w-5 h-5 me-3" />
                     {{ __('Technical Catalog') }}
@@ -72,34 +60,61 @@
                     @endif
                 </a>
 
-                @if(auth()->user() && auth()->user()->role === 'admin')
-                    <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4">{{ __('Management') }}</div>
+                @auth
+                    <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4">{{ __('Operations') }}</div>
                     
-                    <a href="{{ route('admin.dashboard') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('admin.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
-                        <x-lucide-shield-check class="w-5 h-5 text-portal-accent me-3" />
-                        {{ __('System Control') }}
+                    <a href="{{ route('dashboard') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('dashboard') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
+                        <x-lucide-layout-dashboard class="w-5 h-5 me-3" />
+                        {{ __('Dashboard') }}
                     </a>
-                @endif
+                    
+                    <a href="{{ route('orders.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('orders.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
+                        <x-lucide-file-text class="w-5 h-5 me-3" />
+                        {{ __('Purchase Orders') }}
+                    </a>
+
+                    @if(auth()->user()->role === 'admin')
+                        <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4">{{ __('Management') }}</div>
+                        
+                        <a href="{{ route('admin.dashboard') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('admin.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
+                            <x-lucide-shield-check class="w-5 h-5 text-portal-accent me-3" />
+                            {{ __('System Control') }}
+                        </a>
+                    @endif
+                @endauth
             </nav>
 
             <div class="p-6 border-t border-portal-border bg-portal-sidebar">
-                <div class="flex items-center gap-3 mb-5">
-                    <div class="w-10 h-10 shrink-0 rounded-xl bg-gradient-to-br from-[#2c2c2e] to-[#1c1c1e] border border-portal-border flex items-center justify-center font-bold text-portal-accent">
-                        {{ substr(auth()->user()->first_name ?? 'U', 0, 1) }}
+                @auth
+                    <div class="flex items-center gap-3 mb-5">
+                        <div class="w-10 h-10 shrink-0 rounded-xl bg-gradient-to-br from-[#2c2c2e] to-[#1c1c1e] border border-portal-border flex items-center justify-center font-bold text-portal-accent">
+                            {{ substr(auth()->user()->first_name ?? 'U', 0, 1) }}
+                        </div>
+                        <div class="overflow-hidden">
+                            <div class="font-bold text-sm truncate">{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</div>
+                            <div class="text-xs text-portal-muted truncate">{{ auth()->user()->company ?? __('Independent') }}</div>
+                        </div>
                     </div>
-                    <div class="overflow-hidden">
-                        <div class="font-bold text-sm truncate">{{ auth()->user()->first_name ?? 'User' }} {{ auth()->user()->last_name ?? '' }}</div>
-                        <div class="text-xs text-portal-muted truncate">{{ auth()->user()->company ?? __('Independent') }}</div>
+                    
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="w-full p-3 bg-red-500/5 border border-red-500/10 text-red-400 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-red-500/10 hover:border-red-400 transition-all">
+                            <x-lucide-log-out class="w-4 h-4 me-2" />
+                            {{ __('Terminate Session') }}
+                        </button>
+                    </form>
+                @else
+                    <div class="flex flex-col gap-3">
+                        <a href="{{ route('login') }}" class="w-full p-3 bg-portal-accent text-black rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-portal-accent/90 transition-all">
+                            <x-lucide-log-in class="w-4 h-4 me-2" />
+                            {{ __('Login') }}
+                        </a>
+                        <a href="{{ route('register') }}" class="w-full p-3 bg-white/5 border border-portal-border text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-white/10 transition-all">
+                            <x-lucide-user-plus class="w-4 h-4 me-2" />
+                            {{ __('Register') }}
+                        </a>
                     </div>
-                </div>
-                
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="w-full p-3 bg-red-500/5 border border-red-500/10 text-red-400 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-red-500/10 hover:border-red-400 transition-all">
-                        <x-lucide-log-out class="w-4 h-4 me-2" />
-                        {{ __('Terminate Session') }}
-                    </button>
-                </form>
+                @endauth
             </div>
         </aside>
 
@@ -169,10 +184,13 @@
 
         <!-- Mobile Bottom Navigation -->
         <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-[#0f0f10]/90 backdrop-blur-xl border-t border-portal-border flex items-center justify-around px-4 py-3 z-40 pb-safe">
+            @auth
             <a href="{{ route('dashboard') }}" class="flex flex-col items-center gap-1 {{ request()->routeIs('dashboard') ? 'text-portal-accent' : 'text-portal-muted' }}">
                 <x-lucide-layout-dashboard class="w-5 h-5" />
                 <span class="text-[0.65rem] font-bold">{{ __('Home') }}</span>
             </a>
+            @endauth
+            
             <a href="{{ route('products.index') }}" class="flex flex-col items-center gap-1 {{ request()->routeIs('products.*') ? 'text-portal-accent' : 'text-portal-muted' }}">
                 <x-lucide-package class="w-5 h-5" />
                 <span class="text-[0.65rem] font-bold">{{ __('Catalog') }}</span>
@@ -184,10 +202,14 @@
                     <span x-text="cartCount" class="absolute -top-1 -right-1 bg-portal-accent text-black text-[8px] font-black w-3.5 h-3.5 rounded-full flex items-center justify-center border border-[#0f0f10]"></span>
                 </template>
             </a>
+            
+            @auth
             <a href="{{ route('orders.index') }}" class="flex flex-col items-center gap-1 {{ request()->routeIs('orders.*') ? 'text-portal-accent' : 'text-portal-muted' }}">
                 <x-lucide-file-text class="w-5 h-5" />
                 <span class="text-[0.65rem] font-bold">{{ __('Orders') }}</span>
             </a>
+            @endauth
+            
             <button @click="sidebarOpen = true" class="flex flex-col items-center gap-1 text-portal-muted">
                 <x-lucide-menu class="w-5 h-5" />
                 <span class="text-[0.65rem] font-bold">{{ __('More') }}</span>

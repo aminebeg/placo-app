@@ -10,7 +10,7 @@ class Product extends Model
         'name_en', 'name_fr', 'name_ar',
         'description_en', 'description_fr', 'description_ar',
         'category_id', 'price', 'currency', 'in_stock',
-        'image_url', 'specs', 'technical_sheet_url',
+        'image_url', 'specs',
         'weight_kg', 'pieces_per_bundle'
     ];
 
