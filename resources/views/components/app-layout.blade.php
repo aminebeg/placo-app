@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'MyFix Pro') }}</title>
+    <title>{{ config('app.name', 'Global Accessoires') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,9 +37,14 @@
         <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
                class="fixed lg:sticky top-0 left-0 w-[280px] bg-portal-sidebar border-e border-portal-border flex flex-col h-screen z-50 transition-transform duration-300 ease-in-out">
             <div class="p-8 flex items-center justify-between font-display font-bold text-lg tracking-tight">
-                <div class="flex items-center gap-3">
-                    <img src="/images/logo-myfix.png" alt="MyFix Logo" class="h-8 w-auto">
-                    <span>MYFIX <small class="bg-portal-accent text-white px-1.5 py-0.5 rounded text-[0.6rem] align-middle ms-1 font-bold">PRO</small></span>
+                <div class="flex items-center gap-3 group">
+                    <div class="w-8 h-8 bg-portal-accent rounded-lg flex items-center justify-center text-black shadow-lg shadow-portal-accent/20 transition-transform group-hover:scale-110">
+                        <x-lucide-building-2 class="w-5 h-5" />
+                    </div>
+                    <div class="flex flex-col leading-tight">
+                        <span class="text-white text-base font-display font-black tracking-tight uppercase">{{ __('GLOBAL') }}</span>
+                        <span class="text-portal-accent text-[0.55rem] font-bold uppercase tracking-[0.2em]">{{ __('Accessoires') }}</span>
+                    </div>
                 </div>
                 <button @click="sidebarOpen = false" class="lg:hidden p-2 text-portal-muted hover:text-white">
                     <x-lucide-x class="w-6 h-6" />
@@ -91,6 +96,7 @@
                             {{ substr(auth()->user()->first_name ?? 'U', 0, 1) }}
                         </div>
                         <div class="overflow-hidden">
+                            <h4 class="font-bold text-white mb-2">{{ __('Assistance Technique') }}</h4>
                             <div class="font-bold text-sm truncate">{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</div>
                             <div class="text-xs text-portal-muted truncate">{{ auth()->user()->company ?? __('Professionnel') }}</div>
                         </div>

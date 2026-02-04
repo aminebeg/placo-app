@@ -24,6 +24,7 @@ Route::get('/language/{locale}', function ($locale) {
 
 Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/qui-sommes-nous', [PageController::class, 'about'])->name('about');
+Route::get('/myfix', [PageController::class, 'myfix'])->name('brand.myfix');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 
 // Catalog Routes (Public)

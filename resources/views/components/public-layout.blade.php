@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'MyFix Pro - Leader en Systèmes Sèches et Isolation')</title>
+    <title>@yield('title', 'MyFix - Leader en Systèmes Sèches et Isolation')</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,19 +26,23 @@
     <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-[#0a0a0b]/80 backdrop-blur-md transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-            <a href="/" class="flex items-center gap-3 font-display font-bold text-2xl tracking-tight">
-                <img src="/images/logo-myfix.png" alt="Global Accessoires Logo" class="h-8 w-auto">
-                <div class="flex flex-col leading-none">
-                    <span class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">{{ __('SARL Global Accessoires') }}</span>
-                    <span class="text-white">MYFIX <span class="text-portal-accent">PRO</span></span>
+            <a href="/" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 bg-portal-accent rounded-lg flex items-center justify-center text-black shadow-lg shadow-portal-accent/20 transition-transform group-hover:scale-110">
+                    <x-lucide-building-2 class="w-6 h-6" />
+                </div>
+                <div class="flex flex-col leading-tight">
+                    <span class="text-white text-lg font-display font-black tracking-tight uppercase">{{ __('SARL Global') }}</span>
+                    <span class="text-portal-accent text-[0.65rem] font-bold uppercase tracking-[0.2em]">{{ __('Accessoires') }}</span>
                 </div>
             </a>
             
             <!-- Desktop Links -->
-            <div class="hidden md:flex items-center gap-8">
-                <a href="{{ route('about') }}" class="text-sm font-medium hover:text-white transition-colors text-slate-400">{{ __('Qui sommes-nous') }}</a>
-                <a href="{{ route('about') }}#expertise" class="text-sm font-medium hover:text-white transition-colors text-slate-400">{{ __('Expertise') }}</a>
-                <a href="{{ route('contact') }}" class="text-sm font-medium hover:text-white transition-colors text-slate-400">{{ __('Contact') }}</a>
+            <div class="hidden lg:flex items-center gap-8">
+                <a href="{{ route('about') }}" class="text-[0.7rem] font-bold hover:text-white transition-colors {{ request()->routeIs('about') ? 'text-white border-b border-portal-accent pb-1' : 'text-slate-400' }} uppercase tracking-widest">{{ __('À Propos') }}</a>
+                <a href="{{ route('brand.myfix') }}" class="relative px-5 py-2 rounded-full border border-portal-accent/30 bg-portal-accent/5 text-[0.7rem] font-black hover:bg-portal-accent hover:text-black transition-all {{ request()->routeIs('brand.myfix') ? 'bg-portal-accent text-black border-portal-accent' : 'text-portal-accent' }} uppercase tracking-[0.2em]">
+                    {{ __('MYFIX') }}
+                </a>
+                <a href="/#contact" class="text-[0.7rem] font-bold hover:text-white transition-colors text-slate-400 uppercase tracking-widest">{{ __('Contact') }}</a>
             </div>
 
             <div class="flex items-center gap-4">
@@ -65,9 +69,11 @@
 
                 @if (Route::has('login'))
                     @auth
-                        <a href="{{ url('/dashboard') }}" class="hidden md:block font-bold text-xs uppercase tracking-wider hover:text-white transition-colors text-slate-400 bg-white/5 px-4 py-2 rounded-lg border border-white/5">{{ __('Dashboard') }}</a>
+                        <a href="{{ url('/dashboard') }}" class="p-2 text-slate-400 hover:text-white transition-all bg-white/5 rounded-lg border border-white/5" title="{{ __('Tableau de Bord') }}">
+                            <x-lucide-user class="w-5 h-5" />
+                        </a>
                     @else
-                        <a href="{{ route('login') }}" class="hidden md:block font-bold text-xs uppercase tracking-wider hover:text-white transition-colors text-slate-400">{{ __('Connexion') }}</a>
+                        <a href="{{ route('login') }}" class="hidden md:block font-bold text-[0.65rem] uppercase tracking-wider hover:text-white transition-colors text-slate-400">{{ __('Connexion') }}</a>
                     @endauth
                 @endif
                 <a href="{{ route('products.index') }}" class="bg-portal-accent text-black px-5 py-2.5 rounded-lg font-bold text-xs uppercase tracking-widest hover:bg-white transition-colors flex items-center gap-2">
@@ -88,10 +94,10 @@
                 <div class="col-span-1 md:col-span-2 space-y-4">
                     <div class="flex items-center gap-2 font-display font-bold text-xl tracking-tight">
                         <img src="/images/logo-myfix.png" alt="Global Accessoires Logo" class="h-6 w-auto">
-                        <span>GLOBAL <span class="text-portal-accent">ACCESSOIRES</span></span>
+                        <span class="uppercase tracking-widest text-base">SARL <span class="text-portal-accent">GLOBAL</span> ACCESSOIRES</span>
                     </div>
                     <p class="text-slate-500 text-sm max-w-sm">
-                        {{ __('SARL Global Accessoires est un distributeur multi-marques leader, spécialisé dans les systèmes de construction et d\'isolation de haute qualité.') }}
+                        {{ __('SARL Global Accessoires est un fabricant et distributeur multi-marques leader, spécialisé dans les systèmes de construction sèche et d\'isolation de haute performance.') }}
                     </p>
                 </div>
                 <div>

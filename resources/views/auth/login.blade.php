@@ -13,11 +13,16 @@
 <body class="font-sans antialiased bg-portal-bg text-portal-text min-h-screen flex items-center justify-center p-4">
     <div class="w-full max-w-md">
         <div class="text-center mb-10">
-            <div class="flex items-center justify-center gap-4 font-display font-bold text-2xl tracking-tight mb-2 uppercase">
-                <img src="/images/logo-myfix.png" alt="MyFix Logo" class="h-12 w-auto">
-                <span>MYFIX <small class="bg-portal-accent text-white px-1.5 py-0.5 rounded text-[0.6rem] align-middle ms-1 font-bold">PRO</small></span>
+            <div class="flex flex-col items-center justify-center gap-2 font-display font-bold text-2x tracking-tight mb-2 uppercase group">
+                <div class="w-12 h-12 bg-portal-accent rounded-xl flex items-center justify-center text-black shadow-lg shadow-portal-accent/20 mb-2 transition-transform group-hover:scale-110">
+                    <x-lucide-building-2 class="w-7 h-7" />
+                </div>
+                <div class="flex flex-col leading-[0.9]">
+                    <span class="text-white text-2xl font-black tracking-tighter">{{ __('GLOBAL') }}</span>
+                    <span class="text-portal-accent text-sm font-bold tracking-[0.3em] ms-0.5">{{ __('ACCESSOIRES') }}</span>
+                </div>
             </div>
-            <p class="text-portal-muted">{{ __('Secure Access for Authorized Personnel') }}</p>
+            <p class="text-portal-muted text-xs uppercase tracking-widest mt-4">{{ __('Accès Sécurisé • Portail Partenaire') }}</p>
         </div>
 
         <div class="bg-portal-sidebar border border-portal-border rounded-xl p-8 shadow-2xl">
@@ -55,7 +60,7 @@
             </form>
         </div>
         
-        <p class="text-center text-xs text-portal-muted mt-8 opacity-50">&copy; {{ date('Y') }} Placo Algerie. {{ __('All rights reserved.') }}</p>
+        <p class="text-center text-xs text-portal-muted mt-8 opacity-50">&copy; {{ date('Y') }} SARL Global Accessoires. {{ __('All rights reserved.') }}</p>
     </div>
 </body>
 </html>

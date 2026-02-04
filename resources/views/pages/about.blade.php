@@ -1,5 +1,5 @@
 <x-public-layout>
-    @section('title', 'Qui sommes-nous - MyFix')
+    @section('title', 'À Propos - Global Accessoires')
 
     <!-- Hero Section -->
     <div class="relative py-24 md:py-32 overflow-hidden">
@@ -12,11 +12,11 @@
         <div class="max-w-7xl mx-auto px-6 relative z-10">
             <span class="text-portal-accent font-bold uppercase tracking-widest text-xs mb-4 block">{{ __('Notre Entreprise') }}</span>
             <h1 class="text-5xl md:text-7xl font-display font-black tracking-tight mb-8 text-white">
-                {{ __('Une Histoire de') }} <br>
-                <span class="text-slate-500">{{ __('Partenariat et de Confiance') }}</span>
+                SARL GLOBAL <br>
+                <span class="text-slate-500">ACCESSOIRES</span>
             </h1>
             <p class="text-xl text-slate-400 max-w-2xl leading-relaxed">
-                {{ __('Depuis plus de 10 ans, SARL MYFIX s\'impose comme un acteur incontournable dans la distribution de systèmes de construction sèche et d\'isolation en Algérie.') }}
+                {{ __('Fabricant de la marque MYFIX et distributeur multi-marques, SARL Global Accessoires s\'est imposée depuis 2015 comme un acteur industriel et commercial majeur du second œuvre en Algérie.') }}
             </p>
         </div>
     </div>
@@ -52,24 +52,25 @@
                 <div class="relative">
                     <div class="absolute inset-0 bg-portal-accent/10 blur-[80px] rounded-full"></div>
                     <!-- Placeholder for Company Image -->
-                    <div class="relative rounded-2xl overflow-hidden border border-white/10 aspect-[4/3] bg-[#141415]">
-                        <div class="absolute inset-0 flex items-center justify-center text-slate-600">
-                             <!-- Ideally a real image goes here -->
-                             <span class="flex flex-col items-center gap-4">
-                                <x-lucide-building-2 class="w-16 h-16 opacity-50" />
-                                <span class="text-xs uppercase font-bold tracking-widest">{{ __('Image: Dépôt MyFix') }}</span>
-                             </span>
+                    <div class="relative rounded-2xl overflow-hidden border border-white/10 aspect-[4/3] bg-[#141415] group">
+                        <img src="/images/headquarters.png" alt="Siège Global Accessoires" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0b] via-transparent to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-portal-accent/20 backdrop-blur-md flex items-center justify-center border border-white/10">
+                                <x-lucide-building-2 class="w-5 h-5 text-portal-accent" />
+                            </div>
+                            <span class="text-xs uppercase font-bold tracking-widest text-white">{{ __('Siège & Dépôt Central') }}</span>
                         </div>
                     </div>
                 </div>
                 <div>
-                    <h2 class="text-3xl font-display font-bold mb-6 text-white">{{ __('Notre Mission') }}</h2>
+                    <h2 class="text-3xl font-display font-bold mb-6 text-white">{{ __('Notre Engagement Industriel') }}</h2>
                     <div class="space-y-6 text-slate-400 text-lg leading-relaxed">
                         <p>
-                            {{ __('Chez MYFIX, nous croyons que la qualité des matériaux définit la longévité d\'un ouvrage. C\'est pourquoi nous ne distribuons que des marques leaders mondiaux comme Knauf, Placo et Isover.') }}
+                            {{ __('SARL Global Accessoires n\'est pas seulement un distributeur. Nous sommes avant tout un fabricant engagé. Avec MYFIX, nous produisons localement des solutions de fixation et d\'isolation répondant aux plus hautes exigences techniques.') }}
                         </p>
                         <p>
-                            {{ __('Notre rôle dépasse la simple distribution. Nous accompagnons les architectes, les entreprises de réalisation et les artisans dans le choix des solutions techniques les plus adaptées à leurs chantiers.') }}
+                            {{ __('Cette maîtrise de la production nous permet de garantir une qualité constante et une disponibilité immédiate, tout en proposant les produits de nos partenaires mondiaux pour une offre 360°.') }}
                         </p>
                         <ul class="space-y-4 mt-8">
                             <li class="flex items-center gap-3">
@@ -105,38 +106,33 @@
                 <h2 class="text-4xl font-display font-black text-white">{{ __('Au-delà des Produits') }}</h2>
             </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
                 <!-- Card 1 -->
-                <div class="bg-[#141415] border border-white/5 rounded-2xl p-8 hover:border-portal-accent/20 transition-all">
-                    <div class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center mb-6">
-                        <x-lucide-truck class="w-6 h-6 text-portal-accent" />
+                <div class="group relative bg-[#141415] border border-white/5 rounded-2xl p-8 overflow-hidden hover:border-portal-accent/30 transition-all duration-500">
+                    <img src="/images/logistics.png" alt="Logistique" class="absolute inset-0 w-full h-full object-cover opacity-[0.05] group-hover:opacity-10 transition-opacity">
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 bg-portal-accent/10 rounded-xl flex items-center justify-center mb-6 border border-portal-accent/20">
+                            <x-lucide-truck class="w-6 h-6 text-portal-accent" />
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-4">{{ __('Logistique Performante') }}</h3>
+                        <p class="text-slate-400">
+                            {{ __('Notre centre logistique basé à Bordj Bou Arreridj est le cœur battant de notre distribution, nous permettant de livrer nos produits MYFIX et nos marques partenaires dans tout le pays.') }}
+                        </p>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-4">{{ __('Logistique Performante') }}</h3>
-                    <p class="text-slate-400">
-                        {{ __('Notre situation stratégique à Oued Smar nous permet de desservir rapidement Alger et ses environs. Nos camions assurent des livraisons sécurisées.') }}
-                    </p>
                 </div>
 
                 <!-- Card 2 -->
-                <div class="bg-[#141415] border border-white/5 rounded-2xl p-8 hover:border-portal-accent/20 transition-all">
-                    <div class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center mb-6">
-                        <x-lucide-file-text class="w-6 h-6 text-portal-accent" />
+                <div class="group relative bg-[#141415] border border-white/5 rounded-2xl p-8 overflow-hidden hover:border-portal-accent/30 transition-all duration-500">
+                    <img src="/images/certification.png" alt="Formation" class="absolute inset-0 w-full h-full object-cover opacity-[0.05] group-hover:opacity-10 transition-opacity">
+                    <div class="relative z-10">
+                        <div class="w-12 h-12 bg-portal-accent/10 rounded-xl flex items-center justify-center mb-6 border border-portal-accent/20">
+                            <x-lucide-graduation-cap class="w-6 h-6 text-portal-accent" />
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-4">{{ __('Formation & Conseil') }}</h3>
+                        <p class="text-slate-400">
+                            {{ __('Nous organisons régulièrement des sessions de démonstration avec nos partenaires pour former les artisans aux nouvelles techniques de pose.') }}
+                        </p>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-4">{{ __('Bureau d\'Études') }}</h3>
-                    <p class="text-slate-400">
-                        {{ __('Besoin d\'un quantitatif précis ? Notre équipe technique analyse vos plans et vous fournit une estimation détaillée des matériaux nécessaires.') }}
-                    </p>
-                </div>
-
-                <!-- Card 3 -->
-                <div class="bg-[#141415] border border-white/5 rounded-2xl p-8 hover:border-portal-accent/20 transition-all">
-                    <div class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center mb-6">
-                        <x-lucide-graduation-cap class="w-6 h-6 text-portal-accent" />
-                    </div>
-                    <h3 class="text-xl font-bold text-white mb-4">{{ __('Formation & Conseil') }}</h3>
-                    <p class="text-slate-400">
-                        {{ __('Nous organisons régulièrement des sessions de démonstration avec nos partenaires pour former les artisans aux nouvelles techniques de pose.') }}
-                    </p>
                 </div>
             </div>
         </div>
@@ -163,7 +159,7 @@
             <h2 class="text-4xl font-display font-black text-black mb-6">{{ __('Prêt à démarrer votre chantier ?') }}</h2>
             <p class="text-black/80 text-xl mb-10">{{ __('Contactez notre service commercial ou commandez directement en ligne.') }}</p>
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="{{ route('contact') }}" class="px-8 py-4 bg-black text-white rounded-lg font-bold text-lg hover:bg-black/80 transition-all">
+                <a href="/#contact" class="px-8 py-4 bg-black text-white rounded-lg font-bold text-lg hover:bg-black/80 transition-all">
                     {{ __('Nous Contacter') }}
                 </a>
                 <a href="{{ route('products.index') }}" class="px-8 py-4 bg-white/20 border border-black/10 text-black rounded-lg font-bold text-lg hover:bg-white/30 transition-all backdrop-blur-md">

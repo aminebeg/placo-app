@@ -1,5 +1,5 @@
 <x-public-layout>
-    @section('title', 'Contact - MyFix')
+    @section('title', 'Contact - Global Accessoires')
 
     <div class="relative min-h-screen py-24 flex flex-col justify-center">
         <!-- Background -->
@@ -27,12 +27,20 @@
                             <div>
                                 <h3 class="text-xl font-bold text-white mb-2">{{ __('Siège & Dépôt') }}</h3>
                                 <p class="text-slate-400 leading-relaxed">
-                                    Zone Industrielle Oued Smar<br>
-                                    Alger, Algérie
+                                    Zone Industrielle Bordj Bou Arreridj<br>
+                                    Bordj Bou Arreridj, Algérie
                                 </p>
                                 <a href="https://maps.google.com" target="_blank" class="inline-flex items-center gap-2 text-sm font-bold text-portal-accent mt-2 hover:underline">
                                     {{ __('Voir sur la carte') }} <x-lucide-arrow-right class="w-3 h-3" />
                                 </a>
+                            </div>
+                        </div>
+
+                        <div class="relative rounded-2xl overflow-hidden border border-white/10 aspect-video mb-10 group">
+                            <img src="/images/contact.png" alt="Support MyFix" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#0a0a0b] via-transparent to-transparent"></div>
+                            <div class="absolute bottom-4 left-4 right-4 p-4 bg-white/5 backdrop-blur-md rounded-xl border border-white/10">
+                                <p class="text-xs font-bold text-white uppercase tracking-widest text-center">{{ __('Une équipe à votre écoute') }}</p>
                             </div>
                         </div>
 

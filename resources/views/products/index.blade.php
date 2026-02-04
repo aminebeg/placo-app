@@ -191,7 +191,7 @@
                 <div class="w-12 h-12 bg-portal-accent rounded-xl flex items-center justify-center mx-auto mb-4 text-black">
                     <x-lucide-phone class="w-6 h-6" />
                 </div>
-                <h4 class="font-bold text-white mb-2">{{ __('Assistance Pro') }}</h4>
+                <h4 class="font-bold text-white mb-2">{{ __('Assistance Technique') }}</h4>
                 <p class="text-xs text-slate-400 mb-4">{{ __('Besoin d\'un devis spécifique ou d\'un conseil technique ?') }}</p>
                 <div class="font-mono text-portal-accent font-bold text-lg">+213 550 00 00 00</div>
             </div>
@@ -284,7 +284,7 @@
                             </div>
                             
                             <div class="absolute top-4 left-4 z-20 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm">
-                                <span class="text-[0.6rem] font-bold text-slate-700 uppercase tracking-widest">MyFix Pro</span>
+                                <span class="text-[0.6rem] font-bold text-slate-700 uppercase tracking-widest">MYFIX</span>
                             </div>
                         </div>
 
