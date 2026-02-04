@@ -3,7 +3,7 @@
         <div class="mb-8">
             <a href="{{ route('products.index') }}" class="inline-flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-white transition-colors mb-6 group">
                 <x-lucide-arrow-left class="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-                {{ __('Retour au catalogue') }}
+                {{ __('Retour au Catalogue') }}
             </a>
         </div>
 
@@ -16,7 +16,7 @@
                      <!-- Decorative elements -->
                      <div class="absolute top-8 left-8">
                         <div class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-widest border border-white/10 px-3 py-1 rounded-full bg-black/20 backdrop-blur-md">
-                            {{ __('Aperçu 360°') }}
+                            {{ __('Spécification Pro') }}
                         </div>
                      </div>
 
@@ -52,7 +52,7 @@
                             </div>
                             <div class="mb-1.5 text-xs font-bold text-slate-500 uppercase tracking-wider">{{ __('HT / Unité') }}</div>
                         @else
-                            <div class="text-xl font-medium text-slate-500 italic">{{ __('Connectez-vous pour voir les prix') }}</div>
+                            <div class="text-xl font-medium text-slate-500 italic">{{ __('Accès Client Requis pour Tarification') }}</div>
                         @endauth
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                 <div class="space-y-8 mb-12">
                     <div>
                         <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
-                            <x-lucide-align-left class="w-4 h-4 text-portal-accent" /> {{ __('Description') }}
+                            <x-lucide-align-left class="w-4 h-4 text-portal-accent" /> {{ __('Description du Produit') }}
                         </h3>
                         <p class="text-slate-400 leading-relaxed text-sm lg:text-base">
                             {{ $product->description_fr ?? $product->description_en ?? __('Aucune description disponible pour ce produit.') }}
@@ -76,7 +76,7 @@
                             </div>
                         </div>
                         <div class="p-5 rounded-2xl bg-[#141415] border border-white/5">
-                            <div class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-wider mb-2">{{ __('Conditionnement') }}</div>
+                            <div class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-wider mb-2">{{ __('Logistique / Colisage') }}</div>
                             <div class="font-bold text-white flex items-center gap-2 text-lg">
                                 <x-lucide-layers class="w-5 h-5 text-portal-accent" />
                                 <span>{{ $product->pieces_per_bundle ? $product->pieces_per_bundle . ' pcs/lot' : 'N/A' }}</span>
@@ -87,7 +87,7 @@
 
                 @auth
                 <div class="mt-auto bg-[#141415] border border-white/5 rounded-2xl p-6 lg:p-8" x-data="{ quantity: 1 }">
-                    <h3 class="text-sm font-bold text-white mb-6 uppercase tracking-widest">{{ __('Commander') }}</h3>
+                    <h3 class="text-sm font-bold text-white mb-6 uppercase tracking-widest">{{ __('Ma Commande') }}</h3>
                     
                     <div class="flex flex-col gap-4">
                         <div class="flex items-center gap-4">
@@ -102,10 +102,10 @@
                             </div>
                             
                             <button 
-                                @click="$dispatch('add-to-cart', { productId: {{ $product->id }}, quantity: quantity })"
+                                @click="$dispatch('add-to-requisition', { productId: {{ $product->id }}, quantity: quantity })"
                                 class="flex-1 bg-portal-accent text-black font-bold text-sm uppercase tracking-wider rounded-xl hover:bg-white transition-colors h-12 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(250,204,21,0.2)]"
                             >
-                                {{ __('Ajouter au Panier') }} <x-lucide-shopping-cart class="w-5 h-5 ml-1" />
+                                {{ __('Ajouter à ma Liste') }} <x-lucide-plus-circle class="w-5 h-5 ml-1" />
                             </button>
                         </div>
                         
@@ -113,19 +113,19 @@
                         <div class="text-center">
                             <span class="text-xs font-medium text-slate-500 italic bg-white/5 px-3 py-1 rounded-full">
                                 <x-lucide-info class="w-3 h-3 inline mr-1" />
-                                <span x-text="'Soit ' + Math.ceil(quantity / {{ $product->pieces_per_bundle }}) + ' palette(s)'"></span>
+                                <span x-text="'Équivaut à ' + Math.ceil(quantity / {{ $product->pieces_per_bundle }}) + ' lot(s) de transport'"></span>
                             </span>
                         </div>
                         @endif
                     </div>
                 </div>
-                <!-- Helper script for add to cart dispatch -->
+                <!-- Helper script for requisition dispatch -->
                 <script>
                     document.addEventListener('alpine:init', () => {
-                        window.addEventListener('add-to-cart', async (e) => {
+                        window.addEventListener('add-to-requisition', async (e) => {
                             const { productId, quantity } = e.detail;
                             try {
-                                const response = await fetch(`/cart/add/${productId}`, {
+                                const response = await fetch(`/requisition/add/${productId}`, {
                                     method: 'POST',
                                     headers: {
                                         'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content'),
@@ -137,14 +137,13 @@
                                 const data = await response.json();
                                 if (data.success) {
                                     window.showToast(data.message, 'success');
-                                    // Optionally dispatch event to update cart count in header if it listens
-                                     window.dispatchEvent(new CustomEvent('cart-updated', { detail: { count: data.cart_count } }));
+                                    window.dispatchEvent(new CustomEvent('requisition-updated', { detail: { count: data.requisition_count } }));
                                 } else {
                                     window.showToast(data.message, 'error');
                                 }
                             } catch (error) {
-                                console.error('Error adding to cart:', error);
-                                window.showToast('Erreur lors de l\'ajout au panier', 'error');
+                                console.error('Error adding to requisition:', error);
+                                window.showToast('Erreur lors de l\'ajout à votre liste', 'error');
                             }
                         });
                     });
@@ -152,7 +151,7 @@
                 @else
                 <div class="mt-auto p-6 rounded-2xl bg-white/5 border border-white/5 text-center">
                     <x-lucide-lock class="w-8 h-8 text-slate-500 mx-auto mb-3" />
-                    <p class="text-slate-400 mb-4 font-medium">{{ __('Vous devez être connecté pour commander ce produit.') }}</p>
+                    <p class="text-slate-400 mb-4 font-medium">{{ __('Veuillez vous connecter pour commander.') }}</p>
                     <a href="{{ route('login') }}" class="portal-btn portal-btn-primary inline-flex">
                         {{ __('Se connecter') }}
                     </a>
@@ -173,6 +172,5 @@
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </x-public-layout>

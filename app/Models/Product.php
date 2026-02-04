@@ -10,12 +10,13 @@ class Product extends Model
         'name_en', 'name_fr', 'name_ar',
         'description_en', 'description_fr', 'description_ar',
         'category_id', 'price', 'currency', 'in_stock',
-        'image_url', 'specs',
-        'weight_kg', 'pieces_per_bundle'
+        'image_url', 'images', 'specs',
+        'weight_kg', 'pieces_per_bundle', 'technical_sheet_url'
     ];
 
     protected $casts = [
         'specs' => 'array',
+        'images' => 'array',
         'in_stock' => 'boolean',
         'price' => 'decimal:2'
     ];

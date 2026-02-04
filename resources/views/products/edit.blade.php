@@ -63,14 +63,18 @@
             <div class="space-y-6">
                 <h3 class="font-display font-bold text-lg border-b border-portal-border pb-2 mb-4">Technical Data</h3>
                 
-                <div class="grid grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="space-y-2">
-                        <label class="block text-xs font-bold text-portal-muted uppercase tracking-wider">Description (EN)</label>
-                        <textarea name="description_en" rows="3" class="w-full bg-white/5 border border-portal-border rounded-lg px-4 py-2.5 text-white focus:border-portal-accent focus:ring-0 placeholder-portal-muted text-sm">{{ old('description_en', $product->description_en) }}</textarea>
+                        <label class="block text-xs font-bold text-portal-muted uppercase tracking-wider">{{ __('Description (EN)') }}</label>
+                        <textarea name="description_en" rows="4" class="w-full bg-white/5 border border-portal-border rounded-lg px-4 py-2.5 text-white focus:border-portal-accent focus:ring-0 placeholder-portal-muted text-sm">{{ old('description_en', $product->description_en) }}</textarea>
                     </div>
                     <div class="space-y-2">
-                        <label class="block text-xs font-bold text-portal-muted uppercase tracking-wider">Description (FR)</label>
-                        <textarea name="description_fr" rows="3" class="w-full bg-white/5 border border-portal-border rounded-lg px-4 py-2.5 text-white focus:border-portal-accent focus:ring-0 placeholder-portal-muted text-sm">{{ old('description_fr', $product->description_fr) }}</textarea>
+                        <label class="block text-xs font-bold text-portal-muted uppercase tracking-wider">{{ __('Description (FR)') }}</label>
+                        <textarea name="description_fr" rows="4" class="w-full bg-white/5 border border-portal-border rounded-lg px-4 py-2.5 text-white focus:border-portal-accent focus:ring-0 placeholder-portal-muted text-sm">{{ old('description_fr', $product->description_fr) }}</textarea>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-portal-muted uppercase tracking-wider">{{ __('Description (AR)') }}</label>
+                        <textarea name="description_ar" rows="4" dir="rtl" class="w-full bg-white/5 border border-portal-border rounded-lg px-4 py-2.5 text-white focus:border-portal-accent focus:ring-0 placeholder-portal-muted text-sm">{{ old('description_ar', $product->description_ar) }}</textarea>
                     </div>
                 </div>
                 

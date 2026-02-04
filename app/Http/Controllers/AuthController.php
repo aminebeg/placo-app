@@ -16,8 +16,8 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:225',
+            'last_name' => 'required|string|max:225',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
             'company' => 'nullable|string|max:255',
@@ -31,16 +31,22 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'company' => $request->company,
             'phone' => $request->phone,
-            'role' => 'client', // Default role
+            'role' => 'client',
         ]);
 
-        $token = $user->createToken('auth_token')->plainTextToken;
+        // Log the user in for web sessions
+        Auth::login($user);
 
-        return response()->json([
-            'user' => $user,
-            'token' => $token,
-            'message' => 'Registration successful'
-        ], 201);
+        if ($request->wantsJson() || $request->ajax()) {
+            $token = $user->createToken('auth_token')->plainTextToken;
+            return response()->json([
+                'user' => $user,
+                'token' => $token,
+                'message' => 'Registration successful'
+            ], 201);
+        }
+
+        return redirect()->route('dashboard')->with('success', 'Bienvenue sur MyFix Pro ! Votre compte a été créé avec succès.');
     }
 
     /**

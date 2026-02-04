@@ -97,9 +97,9 @@
                 document.body.classList.remove('overflow-hidden');
             },
 
-            async addToCart(productId, quantity = 1) {
+            async addToRequisition(productId, quantity = 1) {
                 try {
-                    const response = await fetch(`/cart/add/${productId}`, {
+                    const response = await fetch(`/requisition/add/${productId}`, {
                         method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content'),
@@ -112,17 +112,17 @@
                     const data = await response.json();
                     
                     if (data.success) {
-                        this.$dispatch('cart-updated', { 
-                            count: data.cart_count,
+                        this.$dispatch('requisition-updated', { 
+                            count: data.requisition_count,
                             message: data.message
                         });
-                        window.showToast(data.message || @js(__("Item added to cart successfully!")), 'success');
+                        window.showToast(data.message || @js(__("Produit ajouté !")), 'success');
                     } else {
-                        window.showToast(data.message || @js(__("Failed to add item to cart")), 'error');
+                        window.showToast(data.message || @js(__("Erreur lors de l'ajout")), 'error');
                     }
                 } catch (error) {
-                    console.error('Failed to add to cart:', error);
-                    window.showToast(@js(__("An error occurred. Please try again.")), 'error');
+                    console.error('Failed to add to requisition:', error);
+                    window.showToast(@js(__("Une erreur est survenue.")), 'error');
                 }
             }
         }"
@@ -191,8 +191,8 @@
                 <div class="w-12 h-12 bg-portal-accent rounded-xl flex items-center justify-center mx-auto mb-4 text-black">
                     <x-lucide-phone class="w-6 h-6" />
                 </div>
-                <h4 class="font-bold text-white mb-2">{{ __('Besoin d\'aide ?') }}</h4>
-                <p class="text-xs text-slate-400 mb-4">{{ __('Nos experts sont disponibles pour vous conseiller.') }}</p>
+                <h4 class="font-bold text-white mb-2">{{ __('Assistance Pro') }}</h4>
+                <p class="text-xs text-slate-400 mb-4">{{ __('Besoin d\'un devis spécifique ou d\'un conseil technique ?') }}</p>
                 <div class="font-mono text-portal-accent font-bold text-lg">+213 550 00 00 00</div>
             </div>
         </div>
@@ -229,9 +229,9 @@
                     <div class="p-2 max-h-[400px] overflow-y-auto">
                         <template x-for="product in products.slice(0, 5)" :key="'suggest-'+product.id">
                             <div @click="openQuickView(product); showSuggestions = false" class="flex items-center gap-4 p-4 hover:bg-white/5 rounded-xl cursor-pointer transition-colors border border-transparent hover:border-white/5">
-                                <div class="w-12 h-12 rounded-lg bg-white/5 flex items-center justify-center p-2 flex-shrink-0">
+                                <div class="w-14 h-14 rounded-lg bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center p-2 flex-shrink-0 overflow-hidden">
                                     <template x-if="product.image_url">
-                                        <img :src="product.image_url" class="max-h-full max-w-full object-contain">
+                                        <img :src="product.image_url" :alt="product.name" class="w-full h-full object-contain">
                                     </template>
                                     <template x-if="!product.image_url">
                                         <x-lucide-package class="w-6 h-6 text-slate-500 opacity-50" />
@@ -258,22 +258,33 @@
                         @click="openQuickView(product)"
                     >
                         <!-- Image Area -->
-                        <div class="relative h-56 bg-[#0a0a0b] p-8 flex items-center justify-center overflow-hidden border-b border-white/5">
-                             <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-white/5 via-[#0a0a0b] to-[#0a0a0b]"></div>
+                        <div class="relative h-72 bg-gradient-to-br from-white via-slate-50 to-slate-100 flex items-center justify-center overflow-hidden border-b border-white/5 group-hover:from-slate-50 group-hover:to-white transition-all duration-500">
+                             <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(circle, #000 1px, transparent 1px); background-size: 20px 20px;"></div>
                             
-                            <template x-if="product.image_url">
-                                <img :src="product.image_url" :alt="product.name" class="relative z-10 max-h-full max-w-full object-contain mix-blend-normal hover:scale-110 transition-transform duration-500 drop-shadow-2xl">
-                            </template>
-                            <template x-if="!product.image_url">
-                                <div class="relative z-10">
-                                    <x-lucide-package class="w-16 h-16 text-slate-700 stroke-1" />
-                                </div>
-                            </template>
+                            <div class="relative z-10 w-full h-full p-8 flex items-center justify-center">
+                                <template x-if="product.image_url">
+                                    <div class="w-full h-full flex items-center justify-center">
+                                        <img 
+                                            :src="product.image_url" 
+                                            :alt="product.name" 
+                                            class="max-w-full max-h-full w-auto h-auto object-contain group-hover:scale-105 transition-all duration-700 filter drop-shadow-[0_10px_30px_rgba(0,0,0,0.15)]"
+                                            style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;"
+                                        >
+                                    </div>
+                                </template>
+                                <template x-if="!product.image_url">
+                                    <x-lucide-package class="w-16 h-16 text-slate-300 stroke-1" />
+                                </template>
+                            </div>
 
                             <div class="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button class="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white hover:bg-portal-accent hover:text-black transition-colors">
+                                <button class="w-9 h-9 rounded-xl bg-black/5 backdrop-blur-sm flex items-center justify-center text-slate-700 hover:bg-portal-accent hover:text-black transition-all shadow-sm">
                                     <x-lucide-maximize-2 class="w-4 h-4" />
                                 </button>
+                            </div>
+                            
+                            <div class="absolute top-4 left-4 z-20 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm">
+                                <span class="text-[0.6rem] font-bold text-slate-700 uppercase tracking-widest">MyFix Pro</span>
                             </div>
                         </div>
 
@@ -299,7 +310,7 @@
                                         </div>
                                     </template>
                                     <template x-if="!isAuthenticated">
-                                        <div class="text-sm font-medium text-slate-500 italic mb-2">{{ __('Connectez-vous pour le prix') }}</div>
+                                        <div class="text-sm font-medium text-slate-500 italic mb-2">{{ __('Connectez-vous pour voir les tarifs') }}</div>
                                     </template>
 
                                     <div class="flex items-center gap-2" @click.stop>
@@ -314,14 +325,14 @@
                                                         <x-lucide-plus class="w-3 h-3" />
                                                     </button>
                                                 </div>
-                                                <button @click="addToCart(product.id, localQty)" class="flex-1 bg-portal-accent text-black font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-white transition-colors flex items-center justify-center gap-2">
-                                                    {{ __('Ajouter') }} <x-lucide-shopping-cart class="w-3 h-3" />
+                                                <button @click="addToRequisition(product.id, localQty)" class="flex-1 bg-portal-accent text-black font-bold text-[0.6rem] uppercase tracking-wider rounded-lg hover:bg-white transition-colors flex items-center justify-center gap-2">
+                                                    {{ __('Sélectionner') }} <x-lucide-plus-circle class="w-3 h-3" />
                                                 </button>
                                             </div>
                                         </template>
                                         <template x-if="!isAuthenticated">
-                                            <a href="{{ route('login') }}" class="w-full bg-white/5 border border-white/10 text-white text-xs font-bold uppercase tracking-wider py-3 rounded-lg text-center hover:bg-white/10 transition-colors">
-                                                {{ __('Se connecter pour commander') }}
+                                            <a href="{{ route('login') }}" class="w-full bg-white/5 border border-white/10 text-white text-[0.6rem] font-bold uppercase tracking-wider py-3 rounded-lg text-center hover:bg-white/10 transition-colors">
+                                                {{ __('Accès Client Requis') }}
                                             </a>
                                         </template>
                                     </div>
@@ -337,24 +348,24 @@
                 <template x-if="loading">
                     <div class="flex items-center gap-3 text-slate-400 font-bold text-sm bg-white/5 px-6 py-3 rounded-full border border-white/5">
                         <x-lucide-loader-2 class="w-4 h-4 animate-spin text-portal-accent" />
-                        {{ __('Chargement des produits...') }}
+                        {{ __('Chargement...') }}
                     </div>
                 </template>
                 <template x-if="!loading && !hasMore && products.length > 0">
-                    <div class="text-slate-500 font-bold text-xs uppercase tracking-widest opacity-50">
-                        {{ __('Fin du catalogue') }}
+                    <div class="text-slate-500 font-bold text-[0.6rem] uppercase tracking-widest opacity-50">
+                        {{ __('Fin du catalogue technique') }}
                     </div>
                 </template>
                 <template x-if="!loading && products.length === 0">
                     <div class="text-slate-400 font-medium text-sm py-20 text-center bg-white/5 rounded-3xl border border-white/5">
                         <x-lucide-search-x class="w-12 h-12 mx-auto mb-4 text-slate-600" />
-                        {{ __('Aucun produit ne correspond à votre recherche.') }}
+                        {{ __('Aucun produit correspondant.') }}
                     </div>
                 </template>
             </div>
         </div>
 
-        <!-- Quick View Modal (Updated Design) -->
+        <!-- Quick View Modal -->
         <template x-teleport="body">
             <div x-show="showQuickView" 
                  class="fixed inset-0 z-[100] flex items-center justify-center p-4 lg:p-10"
@@ -364,9 +375,6 @@
                      x-transition:enter="transition ease-out duration-300"
                      x-transition:enter-start="opacity-0"
                      x-transition:enter-end="opacity-100"
-                     x-transition:leave="transition ease-in duration-200"
-                     x-transition:leave-start="opacity-100"
-                     x-transition:leave-end="opacity-0"
                      class="fixed inset-0 bg-black/90 backdrop-blur-xl" 
                      @click="closeQuickView()"></div>
                 
@@ -375,9 +383,6 @@
                      x-transition:enter="transition ease-out duration-300 transform"
                      x-transition:enter-start="opacity-0 scale-95 translate-y-4"
                      x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                     x-transition:leave="transition ease-in duration-200 transform"
-                     x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-                     x-transition:leave-end="opacity-0 scale-95 translate-y-4"
                      class="relative bg-[#141415] border border-white/10 w-full max-w-5xl max-h-[90vh] rounded-[2rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row">
                     
                     <button @click="closeQuickView()" class="absolute top-6 right-6 z-20 p-2 rounded-full bg-black/20 text-slate-400 hover:text-white hover:bg-white/10 transition-all backdrop-blur-md">
@@ -385,14 +390,41 @@
                     </button>
 
                     <!-- Left: Image Gallery -->
-                    <div class="lg:w-1/2 bg-[#0a0a0b] p-12 flex items-center justify-center relative min-h-[300px]">
-                        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-white/5 via-[#0a0a0b] to-[#0a0a0b]"></div>
-                        <template x-if="selectedProduct?.image_url">
-                            <img :src="selectedProduct.image_url" class="relative z-10 max-h-full max-w-full object-contain drop-shadow-2xl">
-                        </template>
-                        <template x-if="!selectedProduct?.image_url">
-                            <x-lucide-package class="relative z-10 w-32 h-32 text-slate-700 stroke-1" />
-                        </template>
+                    <div class="lg:w-1/2 bg-gradient-to-br from-white via-slate-50 to-slate-100 flex flex-col relative min-h-[500px]" 
+                         x-data="{ 
+                             currentImageIndex: 0,
+                             get allImages() {
+                                 let imgs = [];
+                                 if (selectedProduct?.image_url) imgs.push(selectedProduct.image_url);
+                                 if (selectedProduct?.images && Array.isArray(selectedProduct.images)) {
+                                     imgs = imgs.concat(selectedProduct.images);
+                                 }
+                                 return imgs;
+                             },
+                             get currentImage() {
+                                 return this.allImages[this.currentImageIndex] || null;
+                             },
+                             nextImage() { if (this.currentImageIndex < this.allImages.length - 1) this.currentImageIndex++; },
+                             prevImage() { if (this.currentImageIndex > 0) this.currentImageIndex--; }
+                         }"
+                    >
+                        <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(circle, #000 1px, transparent 1px); background-size: 20px 20px;"></div>
+                        
+                        <div class="relative z-10 flex-1 w-full p-12 flex items-center justify-center">
+                            <template x-if="currentImage">
+                                <div class="w-full h-full flex items-center justify-center relative">
+                                    <img 
+                                        :src="currentImage" 
+                                        :alt="selectedProduct?.name"
+                                        class="max-w-full max-h-full w-auto h-auto object-contain filter drop-shadow-[0_20px_50px_rgba(0,0,0,0.2)]" 
+                                        style="image-rendering: -webkit-optimize-contrast;"
+                                    >
+                                </div>
+                            </template>
+                            <template x-if="!currentImage">
+                                <x-lucide-package class="w-32 h-32 text-slate-300 stroke-1" />
+                            </template>
+                        </div>
                     </div>
 
                     <!-- Right: Details -->
@@ -402,45 +434,35 @@
                         
                         <div class="flex items-center gap-6 mb-8 py-6 border-y border-white/5">
                             <div>
-                                <div class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-wider mb-1">{{ __('Prix Unitaire') }}</div>
+                                <div class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-wider mb-1">{{ __('Tarif B2B Unitaire') }}</div>
                                 <template x-if="isAuthenticated">
                                     <div class="text-3xl font-display font-bold text-white flex items-baseline gap-1">
                                         <span x-text="Number(selectedProduct?.price).toFixed(2)"></span>
-                                        <span class="text-sm font-sans font-normal text-slate-500">DA</span>
+                                        <span class="text-sm font-sans font-normal text-slate-500">DA HT</span>
                                     </div>
                                 </template>
                                 <template x-if="!isAuthenticated">
-                                    <div class="text-lg font-bold text-slate-500 italic">{{ __('Prix masqué') }}</div>
+                                    <div class="text-lg font-bold text-slate-500 italic">{{ __('Tarification Réservée') }}</div>
                                 </template>
-                            </div>
-                            <!-- Add stock status if exists -->
-                            <div class="ml-auto">
-                                <div class="flex items-center gap-2 text-green-500 bg-green-500/10 px-3 py-1.5 rounded-full border border-green-500/20">
-                                    <span class="relative flex h-2 w-2">
-                                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-                                      <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                                    </span>
-                                    <span class="text-xs font-bold uppercase tracking-wider">{{ __('En Stock') }}</span>
-                                </div>
                             </div>
                         </div>
 
                         <div class="space-y-8 mb-10">
                             <div>
-                                    <h4 class="text-sm font-bold text-white mb-2">{{ __('Description') }}</h4>
+                                    <h4 class="text-sm font-bold text-white mb-2">{{ __('Spécifications Techniques') }}</h4>
                                     <p class="text-slate-400 leading-relaxed text-sm" x-text="selectedProduct?.description"></p>
                             </div>
                             
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="p-4 rounded-2xl bg-[#0a0a0b] border border-white/5">
-                                    <div class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-wider mb-2">{{ __('Poids') }}</div>
+                                    <div class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-wider mb-2">{{ __('Masse Totale') }}</div>
                                     <div class="font-bold text-white flex items-center gap-2">
                                         <x-lucide-weight class="w-4 h-4 text-portal-accent" />
                                         <span x-text="selectedProduct?.weight_kg ? Number(selectedProduct.weight_kg).toFixed(2) + ' ' + '{{ __('kg') }}' : 'N/A'"></span>
                                     </div>
                                 </div>
                                 <div class="p-4 rounded-2xl bg-[#0a0a0b] border border-white/5">
-                                    <div class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-wider mb-2">{{ __('Conditionnement') }}</div>
+                                    <div class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-wider mb-2">{{ __('Logistique') }}</div>
                                     <div class="font-bold text-white flex items-center gap-2">
                                         <x-lucide-layers class="w-4 h-4 text-portal-accent" />
                                         <span x-text="selectedProduct?.pieces_per_bundle ? selectedProduct.pieces_per_bundle + ' {{ __('pcs/lot') }}' : 'N/A'"></span>
@@ -451,13 +473,13 @@
 
                         <div class="flex gap-4">
                             <template x-if="isAuthenticated">
-                                <button @click="addToCart(selectedProduct.id)" class="bg-portal-accent text-black font-bold text-sm uppercase tracking-wider rounded-xl hover:bg-white transition-colors flex-1 h-14 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(250,204,21,0.2)]">
-                                    {{ __('Ajouter au Panier') }} <x-lucide-shopping-cart class="w-5 h-5 ml-1" />
+                                <button @click="addToRequisition(selectedProduct.id)" class="bg-portal-accent text-black font-bold text-sm uppercase tracking-wider rounded-xl hover:bg-white transition-colors flex-1 h-14 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(250,204,21,0.2)]">
+                                    {{ __('Ajouter à ma Liste') }} <x-lucide-check-circle class="w-5 h-5 ml-1" />
                                 </button>
                             </template>
                             <template x-if="!isAuthenticated">
                                 <a href="{{ route('login') }}" class="bg-white/10 border border-white/10 text-white font-bold text-sm uppercase tracking-wider flex-1 rounded-xl hover:bg-white/20 transition-colors flex items-center justify-center gap-2">
-                                    <x-lucide-log-in class="w-5 h-5" /> {{ __('Se connecter') }}
+                                    <x-lucide-log-in class="w-5 h-5" /> {{ __('Se connecter pour commander') }}
                                 </a>
                             </template>
                         </div>
@@ -465,8 +487,5 @@
                 </div>
             </div>
         </template>
-    </div>
-    </div>
-    </div>
     </div>
 </x-public-layout>

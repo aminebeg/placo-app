@@ -2,6 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RequisitionController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,42 +22,40 @@ Route::get('/language/{locale}', function ($locale) {
     return back();
 })->name('language.switch');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [PageController::class, 'home'])->name('home');
+Route::get('/qui-sommes-nous', [PageController::class, 'about'])->name('about');
+Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 
-// Temporary Public Access for Testing
-Route::get('/test-admin', [AdminDashboardController::class, 'index']);
+// Catalog Routes (Public)
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/create', [ProductController::class, 'create'])->name('products.create'); // Must be before {product}
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/products/{id}/technical-sheet', [ProductController::class, 'technicalSheet'])->name('products.technical_sheet');
 
-// Public Catalog Routes
-Route::get('/products', [\App\Http\Controllers\ProductController::class, 'index'])->name('products.index');
-Route::get('/products/{product}', [\App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
-Route::get('/products/{id}/technical-sheet', [\App\Http\Controllers\ProductController::class, 'technicalSheet'])->name('products.technical_sheet');
+// Requisition Routes (Formerly Cart)
+Route::get('/requisition', [RequisitionController::class, 'index'])->name('requisition.index');
+Route::post('/requisition/add/{id}', [RequisitionController::class, 'add'])->name('requisition.add');
+Route::patch('/requisition/update/{id}', [RequisitionController::class, 'update'])->name('requisition.update');
+Route::delete('/requisition/remove/{id}', [RequisitionController::class, 'remove'])->name('requisition.remove');
 
-// Public Cart Routes
-Route::get('/cart', [\App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
-Route::post('/cart/add/{id}', [\App\Http\Controllers\CartController::class, 'add'])->name('cart.add');
-Route::patch('/cart/update/{id}', [\App\Http\Controllers\CartController::class, 'update'])->name('cart.update');
-Route::delete('/cart/remove/{id}', [\App\Http\Controllers\CartController::class, 'remove'])->name('cart.remove');
-
-// Auth Routes (Placeholder - would typically use Breeze/Fortify)
+// Auth Routes
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard'); 
     })->name('dashboard');
 
-    Route::resource('orders', \App\Http\Controllers\OrderController::class);
+    Route::resource('orders', OrderController::class);
     
-    // Protected Product Management
-    Route::get('/products/create', [\App\Http\Controllers\ProductController::class, 'create'])->name('products.create');
-    Route::post('/products', [\App\Http\Controllers\ProductController::class, 'store'])->name('products.store');
-    Route::get('/products/{product}/edit', [\App\Http\Controllers\ProductController::class, 'edit'])->name('products.edit');
-    Route::put('/products/{product}', [\App\Http\Controllers\ProductController::class, 'update'])->name('products.update');
-    Route::delete('/products/{product}', [\App\Http\Controllers\ProductController::class, 'destroy'])->name('products.destroy');
+    // Product Management (Protected)
+    Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
     
-    // Cart Checkout (Requires Login)
-    Route::post('/cart/checkout', [\App\Http\Controllers\CartController::class, 'checkout'])->name('cart.checkout');
+    // Requisition Finalization (Checkout)
+    Route::post('/requisition/finalize', [RequisitionController::class, 'store'])->name('requisition.finalize');
     
+    // Admin Routes
     Route::middleware(['can:admin'])->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
         Route::patch('/orders/{order}/status', [AdminDashboardController::class, 'updateOrderStatus'])->name('orders.updateStatus');
@@ -61,6 +64,7 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
+// Login/Register
 Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
@@ -69,7 +73,9 @@ Route::get('/register', function () {
     return view('auth.register');
 })->name('register');
 
-// Auth routes handled manually for now
-Route::post('/login', [\App\Http\Controllers\AuthController::class, 'webLogin']);
-Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register']); // Reusing the JSON one for now or it might work if it redirects? AuthController register returns JSON.
-Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'webLogout'])->name('logout');
+Route::post('/login', [AuthController::class, 'webLogin']);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'webLogout'])->name('logout');
+
+// Temporary Public Access for Testing
+Route::get('/test-admin', [AdminDashboardController::class, 'index']);

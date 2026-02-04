@@ -1,32 +1,32 @@
 <x-public-layout>
     <div class="max-w-7xl mx-auto px-6 py-12">
         <div class="mb-12 border-b border-white/5 pb-12">
-            <span class="inline-block bg-portal-accent/10 text-portal-accent border border-portal-accent/20 px-3 py-1 rounded-full text-[0.65rem] font-bold uppercase tracking-widest mb-4">{{ __('Espace Client') }}</span>
-            <h1 class="text-4xl md:text-5xl font-display font-black tracking-tighter mb-4">{{ __('Validation de la Commande') }}</h1>
-            <p class="text-slate-400 text-lg max-w-2xl">{{ __('Vérifiez votre commande avant transmission pour traitement.') }}</p>
+            <span class="inline-block bg-portal-accent/10 text-portal-accent border border-portal-accent/20 px-3 py-1 rounded-full text-[0.65rem] font-bold uppercase tracking-widest mb-4">{{ __('Espace B2B') }}</span>
+            <h1 class="text-4xl md:text-5xl font-display font-black tracking-tighter mb-4">{{ __('Ma Sélection') }}</h1>
+            <p class="text-slate-400 text-lg max-w-2xl">{{ __('Vérifiez votre sélection de matériaux avant transmission pour traitement logistique.') }}</p>
         </div>
 
-    @if(empty($cart))
+    @if(empty($requisition))
         <div class="bg-[#141415] border border-white/5 rounded-3xl p-16 text-center flex flex-col items-center shadow-2xl">
             <div class="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mb-8 border border-white/5">
-                <x-lucide-shopping-cart class="w-10 h-10 text-slate-500" />
+                <x-lucide-clipboard-list class="w-10 h-10 text-slate-500" />
             </div>
-            <h3 class="font-display font-bold text-3xl mb-4 text-white">{{ __('Votre panier est vide') }}</h3>
-            <p class="text-slate-400 mb-8 max-w-md mx-auto text-lg">{{ __("Vous n'avez pas encore sélectionné de matériaux. Accédez au catalogue pour commencer votre commande.") }}</p>
-            <a href="{{ route('products.index') }}" class="portal-btn portal-btn-primary px-8 py-4 text-sm">
-                {{ __('Ouvrir le Catalogue') }}
+            <h3 class="font-display font-bold text-3xl mb-4 text-white">{{ __('Votre bon de commande est vide') }}</h3>
+            <p class="text-slate-400 mb-8 max-w-md mx-auto text-lg">{{ __("Vous n'avez pas encore sélectionné de matériaux. Accédez au catalogue technique pour commencer votre approvisionnement.") }}</p>
+            <a href="{{ route('products.index') }}" class="portal-btn portal-btn-primary px-8 py-4 text-sm font-bold">
+                {{ __('Consulter le Catalogue') }}
             </a>
         </div>
     @else
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-8" x-data="{
-            cart: {{ json_encode($cart) }},
+            items: {{ json_encode($requisition) }},
             
             get totalPrice() {
-                return Object.values(this.cart).reduce((sum, item) => sum + (item.price * item.quantity), 0);
+                return Object.values(this.items).reduce((sum, item) => sum + (item.price * item.quantity), 0);
             },
             
             get totalWeight() {
-                return Object.values(this.cart).reduce((sum, item) => sum + ((item.weight || 0) * item.quantity), 0);
+                return Object.values(this.items).reduce((sum, item) => sum + ((item.weight || 0) * item.quantity), 0);
             },
             
             get utility() {
@@ -34,18 +34,18 @@
             },
             
             get totalWithTax() {
-                return this.totalPrice * 1.19;
+                return this.totalPrice;
             },
             
             get tax() {
-                return this.totalPrice * 0.19;
+                return 0;
             },
             
             async updateQuantity(id, newQty) {
                 if (newQty < 1) return;
                 
                 try {
-                    const response = await fetch(`/cart/update/${id}`, {
+                    const response = await fetch(`/requisition/update/${id}`, {
                         method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content'),
@@ -59,8 +59,8 @@
                     });
                     
                     if (response.ok) {
-                        this.cart[id].quantity = newQty;
-                        this.$dispatch('cart-updated', { count: Object.keys(this.cart).length });
+                        this.items[id].quantity = newQty;
+                        this.$dispatch('requisition-updated', { count: Object.keys(this.items).length });
                     }
                 } catch (error) {
                     console.error('Failed to update quantity:', error);
@@ -68,10 +68,10 @@
             },
             
             async removeItem(id) {
-                if (!confirm('{{ __('Retirer cet article de votre liste ?') }}')) return;
+                if (!confirm('{{ __('Retirer cette référence de votre bon de commande ?') }}')) return;
                 
                 try {
-                    const response = await fetch(`/cart/remove/${id}`, {
+                    const response = await fetch(`/requisition/remove/${id}`, {
                         method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content'),
@@ -81,10 +81,10 @@
                     });
                     
                     if (response.ok) {
-                        delete this.cart[id];
-                        this.$dispatch('cart-updated', { count: Object.keys(this.cart).length });
+                        delete this.items[id];
+                        this.$dispatch('requisition-updated', { count: Object.keys(this.items).length });
                         
-                        if (Object.keys(this.cart).length === 0) {
+                        if (Object.keys(this.items).length === 0) {
                             window.location.reload();
                         }
                     }
@@ -93,11 +93,11 @@
                 }
             }
         }">
-            <!-- Cart Items -->
+            <!-- Items List -->
             <div class="xl:col-span-2 space-y-6">
                 <div class="bg-[#141415] border border-white/5 rounded-3xl overflow-hidden shadow-xl">
                     <div class="p-6 border-b border-white/5 bg-white/[0.02]">
-                        <h3 class="font-bold text-lg text-white">{{ __('Articles') }}</h3>
+                        <h3 class="font-bold text-base text-white">{{ __('Liste des Matériaux') }}</h3>
                     </div>
                     
                     <!-- Desktop Table View -->
@@ -105,15 +105,15 @@
                         <table class="w-full text-start">
                             <thead class="bg-white/[0.02] text-[0.65rem] font-bold text-slate-500 uppercase tracking-wider border-b border-white/5">
                                 <tr>
-                                    <th class="px-6 py-4 text-start font-bold">{{ __('Produit') }}</th>
+                                    <th class="px-6 py-4 text-start font-bold">{{ __('Matériau') }}</th>
                                     <th class="px-6 py-4 text-center font-bold">{{ __('Quantité') }}</th>
-                                    <th class="px-6 py-4 text-end font-bold">{{ __('Prix Unitaire') }}</th>
-                                    <th class="px-6 py-4 text-end font-bold">{{ __('Total') }}</th>
+                                    <th class="px-6 py-4 text-end font-bold">{{ __('P.U HT') }}</th>
+                                    <th class="px-6 py-4 text-end font-bold">{{ __('Total HT') }}</th>
                                     <th class="px-6 py-4 text-end font-bold">{{ __('Actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-white/5">
-                                <template x-for="(item, id) in cart" :key="id">
+                                <template x-for="(item, id) in items" :key="id">
                                     <tr class="hover:bg-white/[0.02] transition-colors group">
                                         <td class="px-6 py-6">
                                             <div class="flex items-center gap-6">
@@ -187,7 +187,7 @@
 
                     <!-- Mobile View -->
                     <div class="md:hidden divide-y divide-white/5">
-                        <template x-for="(item, id) in cart" :key="id">
+                        <template x-for="(item, id) in items" :key="id">
                             <div class="p-6 flex flex-col gap-4">
                                 <div class="flex items-start gap-4">
                                     <div class="w-16 h-16 bg-[#0a0a0b] rounded-xl border border-white/10 flex items-center justify-center p-2 flex-shrink-0">
@@ -226,98 +226,96 @@
             </div>
 
             <!-- Sidebar Summary -->
-            <form action="{{ route('cart.checkout') }}" method="POST" class="xl:col-span-1 space-y-6">
+            <form action="{{ route('requisition.finalize') }}" method="POST" class="xl:col-span-1 space-y-6">
                 @csrf
                 <div class="bg-[#141415] border border-white/5 rounded-3xl p-6 lg:p-8 shadow-xl sticky top-28">
                         <h3 class="font-bold text-lg text-white mb-6 flex items-center gap-2">
-                            <x-lucide-clipboard-check class="w-5 h-5 text-portal-accent" />
-                            {{ __('Détails de la commande') }}
+                            <x-lucide-truck class="w-5 h-5 text-portal-accent" />
+                            {{ __('Expédition & Logistique') }}
                         </h3>
                         
                         <div class="space-y-4 mb-8">
                             <div>
-                                <label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-2 pl-1">{{ __('Référence Projet (Optionnel)') }}</label>
-                                <input type="text" name="project_reference" placeholder="{{ __('ex: Bâtiment A, Étage 5') }}" class="w-full bg-[#0a0a0b] border border-white/10 rounded-xl text-sm text-white focus:ring-1 focus:ring-portal-accent focus:border-portal-accent placeholder-slate-600 py-3 px-4 transition-shadow">
+                                <label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-2 pl-1">{{ __('Destination de Livraison') }} <span class="text-slate-600 text-[0.55rem]">({{ __('Optionnel') }})</span></label>
+                                <textarea name="delivery_address" rows="3" placeholder="{{ __('Indiquez l’adresse exacte si connue...') }}" class="w-full bg-[#0a0a0b] border border-white/10 rounded-xl text-sm text-white focus:ring-1 focus:ring-portal-accent focus:border-portal-accent placeholder-slate-600 py-3 px-4 transition-shadow"></textarea>
                             </div>
                             <div>
-                                <label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-2 pl-1">{{ __('Adresse de Livraison') }}</label>
-                                <textarea name="delivery_address" rows="3" placeholder="{{ __('Adresse complète du chantier...') }}" class="w-full bg-[#0a0a0b] border border-white/10 rounded-xl text-sm text-white focus:ring-1 focus:ring-portal-accent focus:border-portal-accent placeholder-slate-600 py-3 px-4 transition-shadow"></textarea>
-                            </div>
-                            <div>
-                                <label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-2 pl-1">{{ __('Date Souhaitée') }}</label>
+                                <label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-2 pl-1">{{ __('Date de Réception Souhaitée') }} <span class="text-slate-600 text-[0.55rem]">({{ __('Optionnel') }})</span></label>
                                 <input type="date" name="requested_delivery_date" class="w-full bg-[#0a0a0b] border border-white/10 rounded-xl text-sm text-white focus:ring-1 focus:ring-portal-accent focus:border-portal-accent placeholder-slate-600 py-3 px-4 transition-shadow">
                             </div>
                             <div>
-                                <label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-2 pl-1">{{ __('Configuration Logistique') }}</label>
+                                <label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-2 pl-1">{{ __('Type de Transport') }} <span class="text-slate-600 text-[0.55rem]">({{ __('Optionnel') }})</span></label>
                                 <div class="relative">
                                     <select name="logistics_type" class="w-full bg-[#0a0a0b] border border-white/10 rounded-xl text-sm text-white focus:ring-1 focus:ring-portal-accent focus:border-portal-accent py-3 px-4 appearance-none">
-                                        <option value="standard">{{ __('Standard (Palette)') }}</option>
-                                        <option value="bundle">{{ __('Mini Lot (Allégé)') }}</option>
-                                        <option value="pallet">{{ __('Palette Complète (Filmée)') }}</option>
-                                        <option value="bulk">{{ __('Vrac (Chargement direct)') }}</option>
+                                        <option value="standard">{{ __('À Définir (Appel Commercial)') }}</option>
+                                        <option value="bundle">{{ __('Allégé (Fardeaux)') }}</option>
+                                        <option value="pallet">{{ __('Palettisé') }}</option>
+                                        <option value="bulk">{{ __('Vrac / Usine') }}</option>
                                     </select>
                                     <x-lucide-chevron-down class="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
                                 </div>
                             </div>
                             <div>
-                                <label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-2 pl-1">{{ __('Notes de Commande') }}</label>
-                                <textarea name="notes" rows="2" placeholder="{{ __('Instructions accès chantier, urgence...') }}" class="w-full bg-[#0a0a0b] border border-white/10 rounded-xl text-sm text-white focus:ring-1 focus:ring-portal-accent focus:border-portal-accent placeholder-slate-600 py-3 px-4 transition-shadow"></textarea>
+                                <label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-2 pl-1">{{ __('Instructions Particulières') }}</label>
+                                <textarea name="notes" rows="2" placeholder="{{ __('Ex: Accès difficile, besoin de déchargement...') }}" class="w-full bg-[#0a0a0b] border border-white/10 rounded-xl text-sm text-white focus:ring-1 focus:ring-portal-accent focus:border-portal-accent placeholder-slate-600 py-3 px-4 transition-shadow"></textarea>
+                            </div>
+
+                            <div class="p-3 rounded-lg bg-blue-500/5 border border-blue-500/10 flex gap-3">
+                                <x-lucide-info class="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                                <p class="text-[0.7rem] text-slate-400 leading-relaxed">
+                                    {{ __('Un conseiller commercial MYFIX vous contactera par téléphone pour confirmer les détails logistiques et valider votre approvisionnement.') }}
+                                </p>
                             </div>
                         </div>
 
                         <div class="border-t border-white/5 pt-6 mb-6">
-                            <h4 class="font-bold text-white text-sm uppercase tracking-widest mb-4">{{ __('Résumé Logistique') }}</h4>
+                            <h4 class="font-bold text-white text-sm uppercase tracking-widest mb-4">{{ __('Audit Logistique') }}</h4>
                             
                             <div class="bg-[#0a0a0b] rounded-xl p-4 border border-white/5 space-y-3">
                                 <div class="flex justify-between items-center text-sm">
-                                    <span class="text-slate-400 font-medium">{{ __('Poids Net Total') }}</span>
+                                    <span class="text-slate-400 font-medium">{{ __('Masse Totale (Est.)') }}</span>
                                     <span class="font-mono text-white font-bold" x-text="totalWeight.toFixed(2) + ' {{ __('kg') }}'"></span>
                                 </div>
                                 <div class="space-y-1">
                                     <div class="flex justify-between items-center text-sm">
-                                        <span class="text-slate-400 font-medium">{{ __('Taux de Chargement') }}</span>
+                                        <span class="text-slate-400 font-medium">{{ __('Volume de Chargement') }}</span>
                                         <span class="font-mono font-bold" :class="utility > 100 ? 'text-red-500' : 'text-portal-accent'" x-text="utility.toFixed(1) + '%'"></span>
                                     </div>
                                     <div class="w-full bg-white/5 rounded-full h-1.5 overflow-hidden">
                                         <div class="h-full transition-all duration-500" :class="utility > 100 ? 'bg-red-500' : 'bg-portal-accent'" :style="`width: ${Math.min(utility, 100)}%`"></div>
                                     </div>
-                                    <div x-show="utility > 100" class="text-[0.6rem] text-red-500 font-bold mt-1">
-                                        {{ __('Surcharge détectée (>24t)') }}
-                                    </div>
+                                    <p x-show="utility > 100" class="text-[0.6rem] text-red-500 font-bold mt-1">
+                                        {{ __('Attention: Capacité maximale d\'un semi-remorque (24t) dépassée.') }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
 
                         <div class="border-t border-white/5 pt-6 mb-8">
-                             <h4 class="font-bold text-white text-sm uppercase tracking-widest mb-4">{{ __('Total Financier') }}</h4>
+                             <h4 class="font-bold text-white text-sm uppercase tracking-widest mb-4">{{ __('Valorisation HT') }}</h4>
                              
                              <div class="space-y-3 text-sm mb-4">
                                 <div class="flex justify-between items-center text-slate-400">
-                                    <span>{{ __('Total HT') }}</span>
+                                    <span>{{ __('Sous-total HT') }}</span>
                                     <span class="font-mono text-white" x-text="totalPrice.toFixed(2) + ' {{ __('DA') }}'"></span>
-                                </div>
-                                 <div class="flex justify-between items-center text-slate-400">
-                                    <span>{{ __('TVA (19%)') }}</span>
-                                    <span class="font-mono text-white" x-text="tax.toFixed(2) + ' {{ __('DA') }}'"></span>
                                 </div>
                              </div>
                              
                              <div class="flex justify-between items-end p-4 bg-portal-accent/10 rounded-xl border border-portal-accent/20">
-                                <span class="font-bold text-white uppercase tracking-wider text-xs">{{ __('Total TTC Estimé') }}</span>
-                                <span class="font-mono text-2xl font-bold text-portal-accent" x-text="totalWithTax.toFixed(2) + ' {{ __('DA') }}'"></span>
+                                <span class="font-bold text-white uppercase tracking-wider text-xs">{{ __('Total Global HT') }}</span>
+                                <span class="font-mono text-2xl font-bold text-portal-accent" x-text="totalPrice.toFixed(2) + ' {{ __('DA') }}'"></span>
                              </div>
                         </div>
 
                         @auth
                             <button type="submit" class="portal-btn portal-btn-primary w-full justify-center py-4 text-sm shadow-[0_0_30px_rgba(250,204,21,0.2)]">
-                                 {{ __('Transmettre la Commande') }} <x-lucide-arrow-right class="w-5 h-5 ml-2" />
+                                 {{ __('Transmettre le Bon de Commande') }} <x-lucide-arrow-right class="w-5 h-5 ml-2" />
                             </button>
-                            <p class="text-[0.65rem] text-center text-slate-500 mt-4 leading-relaxed">{{ __('En validant, vous acceptez nos conditions générales de vente B2B.') }}</p>
+                            <p class="text-[0.65rem] text-center text-slate-500 mt-4 leading-relaxed">{{ __('Toute commande transmise fait l\'objet d\'une validation par notre service commercial.') }}</p>
                         @else
                             <a href="{{ route('login') }}" class="portal-btn bg-white text-black hover:bg-slate-200 w-full justify-center py-4 text-sm font-bold uppercase tracking-wider">
-                                 <x-lucide-log-in class="w-5 h-5 mr-2" /> {{ __('Se connecter pour commander') }}
+                                 <x-lucide-log-in class="w-5 h-5 mr-2" /> {{ __('Se connecter pour valider') }}
                             </a>
-                            <p class="text-[0.65rem] text-center text-slate-500 mt-4 leading-relaxed">{{ __('Connexion requise pour la validation.') }}</p>
                         @endauth
                 </div>
             </form>

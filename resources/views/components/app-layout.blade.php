@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'MyFix Pro') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,36 +49,36 @@
             <nav class="flex-1 px-4 flex flex-col gap-1 overflow-y-auto">
                 <a href="{{ route('products.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('products.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
                     <x-lucide-package class="w-5 h-5 me-3" />
-                    {{ __('Technical Catalog') }}
+                    {{ __('Catalogue Technique') }}
                 </a>
 
-                <a href="{{ route('cart.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('cart.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
-                    <x-lucide-clipboard-list class="w-5 h-5 me-3" />
-                    {{ __('Procurement List') }}
-                    @if(count(session('cart', [])) > 0)
-                        <span class="ms-auto bg-portal-accent text-black text-[0.6rem] font-extrabold px-1.5 py-0.5 rounded">{{ count(session('cart', [])) }}</span>
+                <a href="{{ route('requisition.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('requisition.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
+                    <x-lucide-list-checks class="w-5 h-5 me-3" />
+                    {{ __('Ma Sélection') }}
+                    @if(count(session('requisition', [])) > 0)
+                        <span class="ms-auto bg-portal-accent text-black text-[0.6rem] font-extrabold px-1.5 py-0.5 rounded">{{ count(session('requisition', [])) }}</span>
                     @endif
                 </a>
 
                 @auth
-                    <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4">{{ __('Operations') }}</div>
+                    <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4">{{ __('Opérations') }}</div>
                     
                     <a href="{{ route('dashboard') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('dashboard') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
                         <x-lucide-layout-dashboard class="w-5 h-5 me-3" />
-                        {{ __('Dashboard') }}
+                        {{ __('Tableau de Bord') }}
                     </a>
                     
                     <a href="{{ route('orders.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('orders.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
                         <x-lucide-file-text class="w-5 h-5 me-3" />
-                        {{ __('Purchase Orders') }}
+                        {{ __('Mes Commandes') }}
                     </a>
 
                     @if(auth()->user()->role === 'admin')
-                        <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4">{{ __('Management') }}</div>
+                        <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4">{{ __('Administration') }}</div>
                         
                         <a href="{{ route('admin.dashboard') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('admin.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
                             <x-lucide-shield-check class="w-5 h-5 text-portal-accent me-3" />
-                            {{ __('System Control') }}
+                            {{ __('Contrôle Système') }}
                         </a>
                     @endif
                 @endauth
@@ -92,7 +92,7 @@
                         </div>
                         <div class="overflow-hidden">
                             <div class="font-bold text-sm truncate">{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</div>
-                            <div class="text-xs text-portal-muted truncate">{{ auth()->user()->company ?? __('Independent') }}</div>
+                            <div class="text-xs text-portal-muted truncate">{{ auth()->user()->company ?? __('Professionnel') }}</div>
                         </div>
                     </div>
                     
@@ -100,18 +100,18 @@
                         @csrf
                         <button type="submit" class="w-full p-3 bg-red-500/5 border border-red-500/10 text-red-400 rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-red-500/10 hover:border-red-400 transition-all">
                             <x-lucide-log-out class="w-4 h-4 me-2" />
-                            {{ __('Terminate Session') }}
+                            {{ __('Se Déconnecter') }}
                         </button>
                     </form>
                 @else
                     <div class="flex flex-col gap-3">
                         <a href="{{ route('login') }}" class="w-full p-3 bg-portal-accent text-black rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-portal-accent/90 transition-all">
                             <x-lucide-log-in class="w-4 h-4 me-2" />
-                            {{ __('Login') }}
+                            {{ __('Connexion') }}
                         </a>
                         <a href="{{ route('register') }}" class="w-full p-3 bg-white/5 border border-portal-border text-white rounded-xl font-bold text-sm flex items-center justify-center gap-2 hover:bg-white/10 transition-all">
                             <x-lucide-user-plus class="w-4 h-4 me-2" />
-                            {{ __('Register') }}
+                            {{ __('Créer un Compte') }}
                         </a>
                     </div>
                 @endauth
@@ -123,12 +123,12 @@
             <header 
                 class="h-20 border-b border-portal-border px-4 lg:px-10 flex items-center justify-between bg-[#0f0f10]/80 backdrop-blur-xl sticky top-0 z-40"
                 x-data="{ 
-                    cartCount: {{ count(session('cart', [])) }},
+                    requisitionCount: {{ count(session('requisition', [])) }},
                     showNotify(msg, type) {
                         this.$dispatch('show-toast', { message: msg, type: type });
                     }
                 }"
-                @cart-updated.window="cartCount = $event.detail.count; showNotify($event.detail.message, 'success')"
+                @requisition-updated.window="requisitionCount = $event.detail.count; showNotify($event.detail.message, 'success')"
             >
                 <div class="flex items-center gap-4">
                     <button @click="sidebarOpen = true" class="lg:hidden p-2 text-portal-muted hover:text-white">
@@ -137,16 +137,16 @@
                     
                     <div class="hidden sm:flex items-center gap-3 bg-white/5 border border-portal-border px-4 py-2 rounded-xl w-48 xl:w-80">
                         <x-lucide-search class="w-4 h-4 text-portal-muted me-2" />
-                        <input type="text" placeholder="{{ __('Search...') }}" class="bg-transparent border-none text-sm text-white focus:ring-0 w-full placeholder-portal-muted">
+                        <input type="text" placeholder="{{ __('Recherche rapide...') }}" class="bg-transparent border-none text-sm text-white focus:ring-0 w-full placeholder-portal-muted">
                     </div>
                 </div>
 
                 <div class="flex items-center gap-3 lg:gap-6">
-                    <a href="{{ route('cart.index') }}" class="relative p-2 text-portal-muted hover:text-white transition-all group" title="{{ __('Procurement List') }}">
-                        <x-lucide-clipboard-list class="w-5 h-5 group-hover:scale-110 transition-transform" />
-                        <template x-if="cartCount > 0">
+                    <a href="{{ route('requisition.index') }}" class="relative p-2 text-portal-muted hover:text-white transition-all group" title="{{ __('Ma Sélection') }}">
+                        <x-lucide-list-checks class="w-5 h-5 group-hover:scale-110 transition-transform" />
+                        <template x-if="requisitionCount > 0">
                             <span 
-                                x-text="cartCount"
+                                x-text="requisitionCount"
                                 class="absolute -top-1 -right-1 bg-portal-accent text-black text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(197,160,89,0.5)] border border-portal-bg"
                             ></span>
                         </template>
@@ -167,7 +167,7 @@
                         <x-lucide-bell class="w-5 h-5" />
                     </button>
                     <div class="hidden lg:block w-px h-6 bg-portal-border"></div>
-                    <span class="hidden lg:block text-xs font-bold text-portal-muted uppercase tracking-wider">{{ now()->format('F j, Y') }}</span>
+                    <span class="hidden lg:block text-[0.6rem] font-bold text-portal-muted uppercase tracking-wider">{{ now()->format('d F Y') }}</span>
                 </div>
             </header>
 
@@ -183,36 +183,41 @@
         </main>
 
         <!-- Mobile Bottom Navigation -->
-        <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-[#0f0f10]/90 backdrop-blur-xl border-t border-portal-border flex items-center justify-around px-4 py-3 z-40 pb-safe">
+        <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-[#0f0f10]/90 backdrop-blur-xl border-t border-portal-border flex items-center justify-around px-4 py-3 z-40 pb-safe"
+             x-data="{ 
+                requisitionCount: {{ count(session('requisition', [])) }}
+             }"
+             @requisition-updated.window="requisitionCount = $event.detail.count"
+        >
             @auth
             <a href="{{ route('dashboard') }}" class="flex flex-col items-center gap-1 {{ request()->routeIs('dashboard') ? 'text-portal-accent' : 'text-portal-muted' }}">
                 <x-lucide-layout-dashboard class="w-5 h-5" />
-                <span class="text-[0.65rem] font-bold">{{ __('Home') }}</span>
+                <span class="text-[0.55rem] font-bold uppercase">{{ __('Home') }}</span>
             </a>
             @endauth
             
             <a href="{{ route('products.index') }}" class="flex flex-col items-center gap-1 {{ request()->routeIs('products.*') ? 'text-portal-accent' : 'text-portal-muted' }}">
                 <x-lucide-package class="w-5 h-5" />
-                <span class="text-[0.65rem] font-bold">{{ __('Catalog') }}</span>
+                <span class="text-[0.55rem] font-bold uppercase">{{ __('Catalogue') }}</span>
             </a>
-            <a href="{{ route('cart.index') }}" class="relative flex flex-col items-center gap-1 {{ request()->routeIs('cart.*') ? 'text-portal-accent' : 'text-portal-muted' }}">
-                <x-lucide-clipboard-list class="w-5 h-5" />
-                <span class="text-[0.65rem] font-bold">{{ __('Procurement') }}</span>
-                <template x-if="cartCount > 0">
-                    <span x-text="cartCount" class="absolute -top-1 -right-1 bg-portal-accent text-black text-[8px] font-black w-3.5 h-3.5 rounded-full flex items-center justify-center border border-[#0f0f10]"></span>
+            <a href="{{ route('requisition.index') }}" class="relative flex flex-col items-center gap-1 {{ request()->routeIs('requisition.*') ? 'text-portal-accent' : 'text-portal-muted' }}">
+                <x-lucide-list-checks class="w-5 h-5" />
+                <span class="text-[0.55rem] font-bold uppercase">{{ __('Sélection') }}</span>
+                <template x-if="requisitionCount > 0">
+                    <span x-text="requisitionCount" class="absolute -top-1 -right-1 bg-portal-accent text-black text-[8px] font-black w-3.5 h-3.5 rounded-full flex items-center justify-center border border-[#0f0f10]"></span>
                 </template>
             </a>
             
             @auth
             <a href="{{ route('orders.index') }}" class="flex flex-col items-center gap-1 {{ request()->routeIs('orders.*') ? 'text-portal-accent' : 'text-portal-muted' }}">
                 <x-lucide-file-text class="w-5 h-5" />
-                <span class="text-[0.65rem] font-bold">{{ __('Orders') }}</span>
+                <span class="text-[0.55rem] font-bold uppercase">{{ __('Commandes') }}</span>
             </a>
             @endauth
             
             <button @click="sidebarOpen = true" class="flex flex-col items-center gap-1 text-portal-muted">
                 <x-lucide-menu class="w-5 h-5" />
-                <span class="text-[0.65rem] font-bold">{{ __('More') }}</span>
+                <span class="text-[0.55rem] font-bold uppercase">{{ __('Menu') }}</span>
             </button>
         </nav>
 
@@ -247,7 +252,7 @@
             class="fixed bottom-10 right-10 z-[100]"
             x-cloak
         >
-            <div :class="type === 'success' ? 'bg-[#141415] border-green-500/30' : 'bg-[#141415] border-red-500/30'"
+            <div :class="type === 'success' ? 'bg-[#141415] border-green-500/30 shadow-green-500/10' : 'bg-[#141415] border-red-500/30 shadow-red-500/10'"
                  class="flex items-center gap-4 px-6 py-4 rounded-2xl border shadow-2xl backdrop-blur-xl">
                 <template x-if="type === 'success'">
                     <div class="w-8 h-8 rounded-full bg-green-500/10 flex items-center justify-center text-green-500">
@@ -260,7 +265,7 @@
                     </div>
                 </template>
                 <div>
-                    <div class="text-[0.6rem] font-extrabold text-portal-muted uppercase tracking-[0.2em] mb-0.5" x-text="type === 'success' ? '{{ __('Success') }}' : '{{ __('Attention') }}'"></div>
+                    <div class="text-[0.6rem] font-extrabold text-portal-muted uppercase tracking-[0.2em] mb-0.5" x-text="type === 'success' ? '{{ __('Succès') }}' : '{{ __('Attention') }}'"></div>
                     <div class="text-sm font-bold text-white" x-text="message"></div>
                 </div>
                 <button @click="show = false" class="ms-6 text-portal-muted hover:text-white transition-colors">

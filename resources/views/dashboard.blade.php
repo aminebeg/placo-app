@@ -19,9 +19,9 @@
                         </div>
                     </div>
                     <div>
-                        <div class="text-[0.6rem] font-extrabold text-portal-muted uppercase tracking-[0.2em] mb-1">{{ __('Active Orders') }}</div>
+                        <div class="text-[0.6rem] font-extrabold text-portal-muted uppercase tracking-[0.2em] mb-1">{{ __('Commandes Actives') }}</div>
                         <div class="text-3xl font-display font-bold text-white tracking-tight flex items-baseline gap-2">
-                             3 <span class="text-xs font-bold text-portal-muted uppercase">{{ __('Orders') }}</span>
+                             3 <span class="text-xs font-bold text-portal-muted uppercase">{{ __('Commandes') }}</span>
                         </div>
                         <div class="mt-4 flex items-center gap-2">
                             <div class="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
@@ -42,12 +42,12 @@
                         </div>
                     </div>
                     <div>
-                        <div class="text-[0.6rem] font-extrabold text-portal-muted uppercase tracking-[0.2em] mb-1">{{ __('Requisition List') }}</div>
+                        <div class="text-[0.6rem] font-extrabold text-portal-muted uppercase tracking-[0.2em] mb-1">{{ __('Ma Sélection') }}</div>
                         <div class="text-3xl font-display font-bold text-white tracking-tight flex items-baseline gap-2">
-                            12 <span class="text-xs font-bold text-portal-muted uppercase">{{ __('Items') }}</span>
+                            12 <span class="text-xs font-bold text-portal-muted uppercase">{{ __('Articles') }}</span>
                         </div>
                         <div class="text-[0.65rem] font-bold text-blue-500 mt-2 flex items-center gap-1.5">
-                            <x-lucide-zap class="w-3 h-3" /> {{ __('Ready for PO generation') }}
+                            <x-lucide-zap class="w-3 h-3" /> {{ __('Prêt à commander') }}
                         </div>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                 <div class="p-6 border-b border-portal-border flex items-center justify-between bg-white/5">
                     <div class="flex items-center gap-3">
                         <div class="w-2 h-2 rounded-full bg-portal-accent animate-pulse"></div>
-                        <h2 class="font-display font-bold text-base">{{ __('Procurement Activity') }}</h2>
+                        <h2 class="font-display font-bold text-base">{{ __('Activité des Commandes') }}</h2>
                     </div>
                     <select class="bg-transparent border-none text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider focus:ring-0 cursor-pointer">
                         <option>Last 7 Days</option>
@@ -94,7 +94,7 @@
                     </a>
                     <a href="{{ route('orders.index') }}" class="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 hover:border-portal-accent/30 hover:bg-portal-accent/5 transition-all group">
                         <div class="flex items-center gap-3 text-sm font-bold">
-                            <x-lucide-history class="w-4 h-4 text-portal-accent" /> {{ __('Order History') }}
+                            <x-lucide-history class="w-4 h-4 text-portal-accent" /> {{ __('Mes Commandes') }}
                         </div>
                         <x-lucide-arrow-right class="w-4 h-4 text-portal-muted group-hover:text-portal-accent transition-all rtl:rotate-180" />
                     </a>

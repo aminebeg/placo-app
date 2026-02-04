@@ -2,9 +2,9 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <span class="inline-block bg-portal-accent text-black px-2.5 py-1 rounded-md text-[0.7rem] font-extrabold uppercase tracking-wider mb-2">{{ __('Transaction Record') }}</span>
-                <h1 class="text-4xl font-extrabold tracking-tight mb-2">{{ __('Order #PO-') }}{{ $order->order_number }}</h1>
-                <p class="text-portal-muted text-lg">{{ __('Placed on') }} {{ $order->created_at->format('F j, Y') }} {{ __('at') }} {{ $order->created_at->format('H:i') }}</p>
+                <span class="inline-block bg-portal-accent text-black px-2.5 py-1 rounded-md text-[0.7rem] font-extrabold uppercase tracking-wider mb-2">{{ __('Détails de la Commande') }}</span>
+                <h1 class="text-4xl font-extrabold tracking-tight mb-2">#{{ $order->order_number }}</h1>
+                <p class="text-portal-muted text-lg">{{ __('Passée le') }} {{ $order->created_at->format('d/m/Y') }} {{ __('à') }} {{ $order->created_at->format('H:i') }}</p>
             </div>
             <div class="flex items-center gap-4">
                  <span class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold uppercase tracking-wider
@@ -27,7 +27,7 @@
         <div class="col-span-2 space-y-6">
             <div class="bg-portal-sidebar border border-portal-border rounded-xl overflow-hidden">
                 <div class="p-6 border-b border-portal-border">
-                    <h3 class="font-display font-bold text-lg">{{ __('Requisitioned Materials') }}</h3>
+                    <h3 class="font-display font-bold text-base">{{ __('Liste des Articles') }}</h3>
                 </div>
                 <table class="w-full text-left">
                     <thead class="bg-white/2 text-xs font-bold text-portal-muted uppercase tracking-wider">
@@ -56,16 +56,8 @@
                             <td colspan="3" class="px-6 py-3 text-right text-xs font-bold text-portal-muted uppercase tracking-wider">{{ __('Subtotal') }}</td>
                             <td class="px-6 py-3 text-right font-mono font-bold">{{ number_format($order->subtotal, 2) }} {{ __('DA') }}</td>
                         </tr>
-                        <tr>
-                            <td colspan="3" class="px-6 py-3 text-right text-xs font-bold text-portal-muted uppercase tracking-wider">{{ __('Tax (TVA 19%)') }}</td>
-                            <td class="px-6 py-3 text-right font-mono font-bold">{{ number_format($order->tax, 2) }} {{ __('DA') }}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="px-6 py-3 text-right text-xs font-bold text-portal-muted uppercase tracking-wider">{{ __('Logistics & Shipping') }}</td>
-                            <td class="px-6 py-3 text-right font-mono font-bold">{{ number_format($order->shipping, 2) }} {{ __('DA') }}</td>
-                        </tr>
-                        <tr class="bg-portal-accent/5">
-                            <td colspan="3" class="px-6 py-4 text-right font-bold text-white uppercase tracking-wider text-sm">{{ __('Total Valuation') }}</td>
+                         <tr class="bg-portal-accent/5">
+                            <td colspan="3" class="px-6 py-4 text-right font-bold text-white uppercase tracking-wider text-sm">{{ __('Total Commande HT') }}</td>
                             <td class="px-6 py-4 text-right font-mono font-bold text-xl text-portal-accent">{{ number_format($order->total, 2) }} {{ __('DA') }}</td>
                         </tr>
                     </tfoot>
@@ -98,17 +90,11 @@
         <!-- Sidebar Info -->
         <div class="space-y-6">
             <div class="bg-portal-sidebar border border-portal-border rounded-xl p-6">
-                <h3 class="font-display font-bold text-lg mb-4">{{ __('Stakeholder Info') }}</h3>
-                <div class="flex items-center gap-4 mb-6">
-                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#2c2c2e] to-[#1c1c1e] border border-portal-border flex items-center justify-center font-bold text-xl text-portal-accent">
-                        {{ substr($order->user->first_name, 0, 1) }}
-                    </div>
-                    <div>
-                        <div class="font-bold">{{ $order->user->first_name }} {{ $order->user->last_name }}</div>
-                        <div class="text-xs text-portal-muted">{{ $order->user->company ?? __('Independent Contractor') }}</div>
-                    </div>
-                </div>
+                <h3 class="font-display font-bold text-lg mb-4">{{ __('Contact Info') }}</h3>
                 <div class="space-y-3 text-sm border-b border-portal-border pb-6 mb-6">
+                    <div class="flex items-center gap-3 text-portal-muted">
+                        <x-lucide-user class="w-4 h-4" /> {{ $order->user->first_name }} {{ $order->user->last_name }}
+                    </div>
                     <div class="flex items-center gap-3 text-portal-muted">
                         <x-lucide-mail class="w-4 h-4" /> {{ $order->user->email }}
                     </div>
@@ -121,12 +107,6 @@
 
                 <h3 class="font-display font-bold text-lg mb-4">{{ __('Logistics Details') }}</h3>
                 <div class="space-y-4">
-                    @if($order->project_reference)
-                    <div>
-                        <span class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-1">{{ __('Project Ref') }}</span>
-                        <div class="text-sm font-bold text-white">{{ $order->project_reference }}</div>
-                    </div>
-                    @endif
                     <div>
                         <span class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-1">{{ __('Delivery Site') }}</span>
                         <div class="text-sm text-white bg-white/5 p-3 rounded-lg border border-portal-border">{{ $order->delivery_address ?? __('Pickup from Factory') }}</div>
@@ -149,6 +129,7 @@
                     @endif
                 </div>
             </div>
+        </div>
         </div>
     </div>
 </x-app-layout>
