@@ -118,7 +118,7 @@
             </div>
             
             <div class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
-                 <p class="text-slate-600 text-xs">{{ __('© ') . date('Y') . __(' SARL Global Accessoires. Tous droits réservés.') }}</p>
+                 <p class="text-slate-600 text-xs">{{ __('© :year SARL Global Accessoires. Tous droits réservés.', ['year' => date('Y')]) }}</p>
                  <div class="flex gap-4 text-slate-500">
                      <x-lucide-facebook class="w-4 h-4 hover:text-white cursor-pointer" />
                      <x-lucide-linkedin class="w-4 h-4 hover:text-white cursor-pointer" />

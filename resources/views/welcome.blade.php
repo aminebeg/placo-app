@@ -336,7 +336,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">{{ __('Votre Nom') }}</label>
-                                <input type="text" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-portal-accent focus:ring-0 transition-colors" placeholder="Nom complet">
+                                <input type="text" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-portal-accent focus:ring-0 transition-colors" placeholder="{{ __('Nom complet') }}">
                             </div>
                             <div>
                                 <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">{{ __('Téléphone') }}</label>
@@ -361,7 +361,7 @@
 
                         <div>
                             <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">{{ __('Message') }}</label>
-                            <textarea rows="4" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-portal-accent focus:ring-0 transition-colors" placeholder="Comment pouvons-nous vous aider ?"></textarea>
+                            <textarea rows="4" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-4 text-white focus:border-portal-accent focus:ring-0 transition-colors" placeholder="{{ __('Comment pouvons-nous vous aider ?') }}"></textarea>
                         </div>
 
                         <button type="button" class="w-full bg-portal-accent text-black font-black py-5 rounded-xl hover:bg-white transition-all transform hover:-translate-y-1 flex items-center justify-center gap-3 shadow-xl shadow-portal-accent/10">
