@@ -86,37 +86,64 @@
                 </div>
 
                 @auth
-                <div class="mt-auto bg-[#141415] border border-white/5 rounded-2xl p-6 lg:p-8" x-data="{ quantity: 1 }">
+                <div class="mt-auto bg-[#141415] border border-white/5 rounded-2xl p-6 lg:p-8" 
+                    x-data="{ 
+                        quantity: 1,
+                        piecesPerBundle: {{ $product->pieces_per_bundle ?? 1 }},
+                        get isMultiple() { return this.piecesPerBundle > 1 && this.quantity % this.piecesPerBundle === 0; },
+                        get needsSuggestion() { return this.piecesPerBundle > 1 && this.quantity % this.piecesPerBundle !== 0; },
+                        get suggestedQuantity() {
+                            return Math.ceil(this.quantity / this.piecesPerBundle) * this.piecesPerBundle;
+                        }
+                    }">
                     <h3 class="text-sm font-bold text-white mb-6 uppercase tracking-widest">{{ __('Ma Commande') }}</h3>
                     
-                    <div class="flex flex-col gap-4">
-                        <div class="flex items-center gap-4">
-                            <div class="flex items-center bg-black border border-white/10 rounded-xl h-12 w-32 relative">
-                                <button @click="if(quantity > 1) quantity--" class="w-10 h-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/5 rounded-l-xl transition-colors">
-                                    <x-lucide-minus class="w-4 h-4" />
+                    <div class="flex flex-col gap-6">
+                        <div class="flex flex-col md:flex-row gap-4">
+                            <div class="flex items-center bg-black border border-white/10 rounded-xl h-14 w-full md:w-40 relative">
+                                <button @click="if(quantity > 1) quantity--" class="w-12 h-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/5 rounded-l-xl transition-colors">
+                                    <x-lucide-minus class="w-5 h-5" />
                                 </button>
-                                <input type="number" x-model.number="quantity" class="w-full bg-transparent border-none text-center text-white font-bold text-lg focus:ring-0 p-0 h-full appearance-none">
-                                <button @click="quantity++" class="w-10 h-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/5 rounded-r-xl transition-colors">
-                                    <x-lucide-plus class="w-4 h-4" />
+                                <input type="number" x-model.number="quantity" class="w-full bg-transparent border-none text-center text-white font-bold text-xl focus:ring-0 p-0 h-full appearance-none">
+                                <button @click="quantity++" class="w-12 h-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/5 rounded-r-xl transition-colors">
+                                    <x-lucide-plus class="w-5 h-5" />
                                 </button>
                             </div>
                             
                             <button 
                                 @click="$dispatch('add-to-requisition', { productId: {{ $product->id }}, quantity: quantity })"
-                                class="flex-1 bg-portal-accent text-black font-bold text-sm uppercase tracking-wider rounded-xl hover:bg-white transition-colors h-12 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(250,204,21,0.2)]"
+                                class="flex-1 bg-portal-accent text-black font-bold text-sm uppercase tracking-wider rounded-xl hover:bg-white transition-all h-14 flex items-center justify-center gap-2 shadow-[0_10px_20px_rgba(var(--portal-accent-rgb),0.3)] group"
                             >
-                                {{ __('Ajouter à ma Liste') }} <x-lucide-plus-circle class="w-5 h-5 ml-1" />
+                                <x-lucide-shopping-cart class="w-5 h-5 group-hover:scale-110 transition-transform" />
+                                {{ __('Ajouter à ma Liste') }}
                             </button>
                         </div>
-                        
-                        @if($product->pieces_per_bundle)
-                        <div class="text-center">
-                            <span class="text-xs font-medium text-slate-500 italic bg-white/5 px-3 py-1 rounded-full">
-                                <x-lucide-info class="w-3 h-3 inline mr-1" />
-                                <span x-text="'Équivaut à ' + Math.ceil(quantity / {{ $product->pieces_per_bundle }}) + ' lot(s) de transport'"></span>
-                            </span>
+
+                        <!-- Smart Suggestion Alert -->
+                        <div x-show="needsSuggestion" x-transition class="bg-blue-500/10 border border-blue-500/20 rounded-2xl p-4 flex gap-4 items-center">
+                            <div class="p-2 rounded-lg bg-blue-500/20 text-blue-400 flex-shrink-0">
+                                <x-lucide-lightbulb class="w-5 h-5" />
+                            </div>
+                            <div class="flex-1">
+                                <div class="text-sm font-bold text-blue-400 mb-1">{{ __('Optimisation Logistique') }}</div>
+                                <p class="text-xs text-blue-300 leading-relaxed mb-3">
+                                    {{ __('Ce produit est conditionné en paquets de') }} <span class="font-bold text-white">{{ $product->pieces_per_bundle }}</span>. 
+                                    {{ __('Commandez-en') }} <span class="font-bold text-white" x-text="suggestedQuantity"></span> {{ __('pour un transport optimal.') }}
+                                </p>
+                                <button type="button" @click="quantity = suggestedQuantity" class="text-xs font-black uppercase tracking-tighter text-white bg-blue-500 px-3 py-1.5 rounded-lg hover:bg-blue-400 transition-colors">
+                                    {{ __('Ajuster à') }} <span x-text="suggestedQuantity"></span>
+                                </button>
+                            </div>
                         </div>
-                        @endif
+
+                        <div x-show="isMultiple" x-transition class="bg-green-500/10 border border-green-500/20 rounded-2xl p-4 flex gap-4 items-center">
+                            <div class="p-2 rounded-lg bg-green-500/20 text-green-400 flex-shrink-0">
+                                <x-lucide-check-circle class="w-5 h-5" />
+                            </div>
+                            <p class="text-xs text-green-300 font-bold">
+                                {{ __('Votre commande correspond parfaitement au conditionnement standard.') }}
+                            </p>
+                        </div>
                     </div>
                 </div>
                 <!-- Helper script for requisition dispatch -->

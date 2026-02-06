@@ -39,4 +39,9 @@ class Product extends Model
         $locale = app()->getLocale();
         return $this->attributes["description_{$locale}"] ?? $this->attributes['description_en'] ?? '';
     }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
 }

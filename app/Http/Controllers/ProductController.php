@@ -34,6 +34,11 @@ class ProductController extends Controller
             // Ensure the computed attributes are included in the JSON
             $products->getCollection()->transform(function ($product) {
                 $product->append(['name', 'description']);
+                if (auth()->check()) {
+                    $product->is_favorite = auth()->user()->favorites()->where('product_id', $product->id)->exists();
+                } else {
+                    $product->is_favorite = false;
+                }
                 return $product;
             });
 

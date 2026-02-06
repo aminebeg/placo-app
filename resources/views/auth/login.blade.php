@@ -54,6 +54,14 @@
                     </div>
                 </div>
 
+                <div class="flex items-center justify-between mt-4">
+                    <label class="flex items-center gap-2 cursor-pointer group">
+                        <input type="checkbox" name="remember" class="rounded border-portal-border bg-white/5 text-portal-accent focus:ring-portal-accent transition-all">
+                        <span class="text-xs font-medium text-portal-muted group-hover:text-white transition-colors">{{ __('Remember Me') }}</span>
+                    </label>
+                    <a href="#" class="text-xs font-medium text-portal-accent hover:text-white transition-colors">{{ __('Forgot Password?') }}</a>
+                </div>
+
                 <button type="submit" class="w-full bg-portal-accent text-black font-bold py-3.5 rounded-lg hover:bg-white transition-colors flex items-center justify-center gap-2">
                     {{ __('Access Portal') }} <x-lucide-arrow-right class="w-4 h-4 ml-2" />
                 </button>

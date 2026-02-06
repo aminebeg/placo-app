@@ -65,6 +65,11 @@
                     @endif
                 </a>
 
+                <a href="{{ route('favorites.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('favorites.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
+                    <x-lucide-heart class="w-5 h-5 me-3 {{ request()->routeIs('favorites.*') ? 'fill-current' : '' }}" />
+                    {{ __('Mes Favoris') }}
+                </a>
+
                 @auth
                     <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4">{{ __('Opérations') }}</div>
                     
@@ -78,14 +83,14 @@
                         {{ __('Mes Commandes') }}
                     </a>
 
-                    @if(auth()->user()->role === 'admin')
+                    @can('view-admin')
                         <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4">{{ __('Administration') }}</div>
                         
                         <a href="{{ route('admin.dashboard') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('admin.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
                             <x-lucide-shield-check class="w-5 h-5 text-portal-accent me-3" />
                             {{ __('Contrôle Système') }}
                         </a>
-                    @endif
+                    @endcan
                 @endauth
             </nav>
 
@@ -148,6 +153,10 @@
                 </div>
 
                 <div class="flex items-center gap-3 lg:gap-6">
+                    <a href="{{ route('favorites.index') }}" class="relative p-2 text-portal-muted hover:text-white transition-all group" title="{{ __('Mes Favoris') }}">
+                        <x-lucide-heart class="w-5 h-5 group-hover:scale-110 transition-transform group-hover:text-red-500" />
+                    </a>
+
                     <a href="{{ route('requisition.index') }}" class="relative p-2 text-portal-muted hover:text-white transition-all group" title="{{ __('Ma Sélection') }}">
                         <x-lucide-list-checks class="w-5 h-5 group-hover:scale-110 transition-transform" />
                         <template x-if="requisitionCount > 0">

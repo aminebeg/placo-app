@@ -24,6 +24,7 @@ class User extends Authenticatable
         'company',
         'phone',
         'role',
+        'preferred_locale',
         'email',
         'password',
     ];
@@ -49,5 +50,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
     }
 }

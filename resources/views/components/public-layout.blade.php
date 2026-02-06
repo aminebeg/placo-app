@@ -73,7 +73,37 @@
                             <x-lucide-user class="w-5 h-5" />
                         </a>
                     @else
-                        <a href="{{ route('login') }}" class="hidden md:block font-bold text-[0.65rem] uppercase tracking-wider hover:text-white transition-colors text-slate-400">{{ __('Connexion') }}</a>
+                        <div class="relative" x-data="{ open: false }">
+                            <button @click="open = !open" class="flex items-center gap-2 font-bold text-[0.65rem] uppercase tracking-widest text-slate-400 hover:text-white transition-colors border-e border-white/10 pe-4 me-2">
+                                <x-lucide-user-circle class="w-4 h-4" />
+                                {{ __('Espace Client') }}
+                                <x-lucide-chevron-down class="w-3 h-3 pt-0.5" />
+                            </button>
+                            <div x-show="open" @click.away="open = false" 
+                                 x-transition:enter="transition ease-out duration-100"
+                                 x-transition:enter-start="opacity-0 scale-95"
+                                 x-transition:enter-end="opacity-100 scale-100"
+                                 class="absolute end-0 top-full mt-4 w-56 bg-[#18181b] border border-white/10 rounded-xl overflow-hidden shadow-2xl z-50 p-2" x-cloak>
+                                <a href="{{ route('login') }}" class="flex items-center gap-3 px-4 py-3 text-xs font-bold text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-all group">
+                                    <div class="w-8 h-8 rounded-lg bg-portal-accent/10 flex items-center justify-center text-portal-accent group-hover:bg-portal-accent group-hover:text-black transition-colors">
+                                        <x-lucide-log-in class="w-4 h-4" />
+                                    </div>
+                                    {{ __('Se Connecter') }}
+                                </a>
+                                @if (Route::has('register'))
+                                    <div class="h-[1px] bg-white/5 my-1 mx-2"></div>
+                                    <a href="{{ route('register') }}" class="flex items-center gap-3 px-4 py-3 text-xs font-bold text-slate-400 hover:text-white hover:bg-white/5 rounded-lg transition-all group">
+                                        <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-colors">
+                                            <x-lucide-user-plus class="w-4 h-4" />
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span>{{ __('Créer un Compte') }}</span>
+                                            <span class="text-[0.6rem] opacity-50 font-normal normal-case">{{ __('Devenir partenaire MyFix') }}</span>
+                                        </div>
+                                    </a>
+                                @endif
+                            </div>
+                        </div>
                     @endauth
                 @endif
                 <a href="{{ route('products.index') }}" class="bg-portal-accent text-black px-5 py-2.5 rounded-lg font-bold text-xs uppercase tracking-widest hover:bg-white transition-colors flex items-center gap-2">

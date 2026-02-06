@@ -96,7 +96,23 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials)) {
+        // Rate limiting - 5 attempts per minute per IP
+        $key = 'login.' . $request->ip();
+        
+        if (\Illuminate\Support\Facades\RateLimiter::tooManyAttempts($key, 5)) {
+            $seconds = \Illuminate\Support\Facades\RateLimiter::availableIn($key);
+            $minutes = ceil($seconds / 60);
+            
+            return back()->withErrors([
+                'email' => __('Trop de tentatives de connexion. Veuillez réessayer dans :minutes minute(s).', 
+                    ['minutes' => $minutes])
+            ])->onlyInput('email');
+        }
+
+        if (Auth::attempt($credentials, $request->has('remember'))) {
+            // Clear rate limiter on successful login
+            \Illuminate\Support\Facades\RateLimiter::clear($key);
+            
             $request->session()->regenerate();
             
             // Redirect based on role
@@ -105,6 +121,9 @@ class AuthController extends Controller
             }
             return redirect()->intended('dashboard');
         }
+
+        // Increment failed attempts (decay after 60 seconds)
+        \Illuminate\Support\Facades\RateLimiter::hit($key, 60);
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',

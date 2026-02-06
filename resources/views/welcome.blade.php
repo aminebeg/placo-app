@@ -29,11 +29,19 @@
 
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                 <a href="{{ route('products.index') }}" class="min-w-[200px] px-8 py-4 bg-portal-accent text-black rounded-lg font-bold text-lg hover:bg-white transition-all transform hover:-translate-y-1 shadow-[0_0_40px_-10px_rgba(250,204,21,0.3)] flex items-center justify-center gap-2">
-                     {{ __('Notre Catalogue') }} <x-lucide-arrow-right class="w-5 h-5 rtl:rotate-180" />
+                     {{ __('Voir le Catalogue') }} <x-lucide-arrow-right class="w-5 h-5 rtl:rotate-180" />
                 </a>
-                <a href="{{ route('contact') }}" class="min-w-[200px] px-8 py-4 bg-white/5 text-white border border-white/10 rounded-lg font-bold text-lg hover:bg-white/10 transition-all backdrop-blur-md flex items-center justify-center">
-                    {{ __('Demander une Offre') }}
+                @guest
+                <a href="{{ route('register') }}" class="min-w-[200px] px-8 py-4 bg-white/5 text-white border border-white/10 rounded-lg font-bold text-lg hover:bg-white/10 transition-all backdrop-blur-md flex items-center justify-center gap-2 group">
+                    {{ __('Devenir Partenaire') }}
+                    <x-lucide-user-plus class="w-5 h-5 opacity-50 group-hover:opacity-100 transition-opacity" />
                 </a>
+                @else
+                <a href="{{ route('dashboard') }}" class="min-w-[200px] px-8 py-4 bg-white/5 text-white border border-white/10 rounded-lg font-bold text-lg hover:bg-white/10 transition-all backdrop-blur-md flex items-center justify-center gap-2">
+                    {{ __('Accéder au Portail') }}
+                    <x-lucide-layout-dashboard class="w-5 h-5 opacity-50" />
+                </a>
+                @endguest
             </div>
             
             <!-- Stats -->
