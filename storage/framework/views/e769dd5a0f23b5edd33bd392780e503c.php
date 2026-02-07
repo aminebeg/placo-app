@@ -633,7 +633,7 @@
                 <div class="p-6 border-b border-portal-border flex items-center justify-between">
                     <h2 class="font-display font-bold text-lg"><?php echo e(__('Inventory Audit')); ?></h2>
                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('admin')): ?>
-                    <a href="<?php echo e(route('products.create')); ?>" class="bg-portal-accent text-black px-4 py-2 rounded-lg font-bold text-sm hover:bg-white transition-colors flex items-center gap-2">
+                    <a href="<?php echo e(route('admin.products.store')); ?>" class="bg-portal-accent text-black px-4 py-2 rounded-lg font-bold text-sm hover:bg-white transition-colors flex items-center gap-2">
                         <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -721,7 +721,7 @@
                                     <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('admin')): ?>
                                     <td class="px-4 md:px-6 py-4 text-end">
                                         <div class="flex justify-end gap-2">
-                                            <a href="<?php echo e(route('products.edit', $product->id)); ?>" class="p-2.5 md:p-2 hover:bg-white/10 rounded-lg text-portal-muted hover:text-white transition-colors inline-flex items-center justify-center min-h-[44px] min-w-[44px] md:min-h-0 md:min-w-0">
+                                            <a href="<?php echo e(route('admin.products.edit', $product->id)); ?>" class="p-2.5 md:p-2 hover:bg-white/10 rounded-lg text-portal-muted hover:text-white transition-colors inline-flex items-center justify-center min-h-[44px] min-w-[44px] md:min-h-0 md:min-w-0">
                                                 <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -743,7 +743,7 @@
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
                                             </a>
-                                            <form action="<?php echo e(route('products.destroy', $product->id)); ?>" method="POST" onsubmit="return confirm('<?php echo e(__('Are you sure you want to delete this asset?')); ?>');" class="inline-block">
+                                            <form action="<?php echo e(route('admin.products.destroy', $product->id)); ?>" method="POST" onsubmit="return confirm('<?php echo e(__('Are you sure you want to delete this asset?')); ?>');" class="inline-block">
                                                 <?php echo csrf_field(); ?>
                                                 <?php echo method_field('DELETE'); ?>
                                                 <button type="submit" class="p-2.5 md:p-2 hover:bg-red-500/10 rounded-lg text-portal-muted hover:text-red-500 transition-colors inline-flex items-center justify-center min-h-[44px] min-w-[44px] md:min-h-0 md:min-w-0">

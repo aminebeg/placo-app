@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="bg-portal-sidebar border border-portal-border rounded-xl p-8 max-w-4xl">
-        <form method="POST" action="{{ route('products.update', $product->id) }}" enctype="multipart/form-data" class="space-y-8">
+        <form method="POST" action="{{ route('admin.products.update', $product->id) }}" enctype="multipart/form-data" class="space-y-8">
             @csrf
             @method('PUT')
 

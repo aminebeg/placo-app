@@ -191,7 +191,7 @@
                         <span class="text-sm font-bold">{{ __('Fiche Technique PDF') }}</span>
                     </a>
                     @if(auth()->check() && auth()->user()->role === 'admin')
-                        <a href="{{ route('products.edit', $product->id) }}" class="flex-1 p-4 rounded-xl border border-white/10 hover:bg-white/5 transition-colors flex items-center justify-center gap-2 text-slate-400 hover:text-white group">
+                        <a href="{{ route('admin.products.edit', $product->id) }}" class="flex-1 p-4 rounded-xl border border-white/10 hover:bg-white/5 transition-colors flex items-center justify-center gap-2 text-slate-400 hover:text-white group">
                             <x-lucide-edit-2 class="w-5 h-5 text-blue-400" />
                             <span class="text-sm font-bold">{{ __('Modifier') }}</span>
                         </a>

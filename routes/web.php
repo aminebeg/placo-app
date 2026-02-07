@@ -57,8 +57,10 @@ Route::middleware(['auth'])->group(function () {
 // Commande Finalization (Checkout)
     Route::post('/commande/finalize', [OrderController::class, 'finalize'])->name('commande.finalize');
     
-    // Print a printable order (bon de commande)
+    // Print a printable order (bon de commande) - screen view
+    // Print a printable order (bon de commande) - screen view
     Route::get('/orders/{order}/print', [OrderController::class, 'print'])->name('orders.print');
+    // Print a PDF version of the order
     Route::get('/orders/{order}/print/pdf', [OrderController::class, 'printPdf'])->name('orders.print_pdf');
 
     // Favorites

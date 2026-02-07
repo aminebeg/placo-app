@@ -120,15 +120,17 @@
         </div>
      <?php $__env->endSlot(); ?>
 
-    <?php if(false): ?>
-    <div class="print-area">
-    <!-- Print Header -->
+    <!-- Print View (will be opened in new tab) -->
+    <div id="print-view" class="hidden">
+        <iframe id="print-iframe" src="<?php echo e(route('orders.print', $order->id)); ?>" width="100%" height="100%" frameborder="0" style="display:none;"></iframe>
+    </div>
+    <?php if(true): ?>
     <div class="mb-8 pb-6 border-b-2 border-black">
         <div class="flex justify-between items-start">
             <div>
                 <h1 class="text-2xl font-bold text-black mb-2">SARL GLOBAL ACCESSOIRES</h1>
                 <p class="text-sm text-gray-600 mb-1">Producteur de la marque MYFIX</p>
-                <p class="text-sm text-gray-600">Zone Industrielle - Bordj Bou Arreridj, Algérie</p>
+                <p class="text-sm text-gray-600">Zone Industrielle - Bordj Bou Arreridid, Algérie</p>
                 <p class="text-sm text-gray-600">Tél: +213 550 00 00 00</p>
                 <p class="text-sm text-gray-600">Email: commercial@myfix-dz.com</p>
             </div>
@@ -154,12 +156,9 @@
             <p class="text-sm text-black"><?php echo e($order->delivery_address ?? 'À définir'); ?></p>
             <?php if($order->requested_delivery_date): ?>
             <p class="text-sm text-black">Date souhaitée: <?php echo e(\Carbon\Carbon::parse($order->requested_delivery_date)->format('d/m/Y')); ?></p>
-            <?php endif; ?>
-            <p class="text-sm text-black">Transport: <?php echo e($order->logistics_type ?? 'Standard'); ?></p>
-        </div>
-    </div>
+    <?php endif; ?>
 
-    <!-- Order Items Table -->
+    <!-- Screen Version (hidden when printing) -->
     <div class="mb-6">
         <table class="w-full border-collapse">
             <thead>
@@ -213,6 +212,61 @@
     </div>
     </div>
     <?php endif; ?>
+
+    <!-- Screen Version (hidden when printing) -->
+    <div class="mb-6">
+        <table class="w-full border-collapse">
+            <thead>
+                <tr class="border-b-2 border-black">
+                    <th class="text-left py-2 px-4 font-bold text-black">RÉFÉRENCE</th>
+                    <th class="text-left py-2 px-4 font-bold text-black">DÉSIGNATION</th>
+                    <th class="text-center py-2 px-4 font-bold text-black">QUANTITÉ</th>
+                    <th class="text-right py-2 px-4 font-bold text-black">P.U. HT</th>
+                    <th class="text-right py-2 px-4 font-bold text-black">TOTAL HT</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $__currentLoopData = $order->items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <tr class="border-b border-gray-300">
+                    <td class="py-2 px-4 text-sm text-black"><?php echo e(str_pad($item->product_id, 6, '0', STR_PAD_LEFT)); ?></td>
+                    <td class="py-2 px-4 text-sm text-black"><?php echo e($item->product->name); ?></td>
+                    <td class="py-2 px-4 text-center text-sm text-black"><?php echo e($item->quantity); ?></td>
+                    <td class="py-2 px-4 text-right text-sm text-black"><?php echo e(number_format($item->price, 2)); ?> DZD</td>
+                    <td class="py-2 px-4 text-right text-sm text-black"><?php echo e(number_format($item->quantity * $item->price, 2)); ?> DZD</td>
+                </tr>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+            </tbody>
+            <tfoot>
+                <tr class="border-t-2 border-black">
+                    <td colspan="4" class="py-3 px-4 text-right font-bold text-black">TOTAL HT:</td>
+                    <td class="py-3 px-4 text-right font-bold text-lg text-black"><?php echo e(number_format($order->total, 2)); ?> DZD</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-12 pt-6 border-t-2 border-black">
+        <div class="grid grid-cols-3 gap-8 text-center">
+            <div>
+                <p class="text-sm font-bold text-black mb-4">Signature Client</p>
+                <div class="border-b border-gray-400 h-12"></div>
+            </div>
+            <div>
+                <p class="text-sm font-bold text-black mb-4">Timbre & Cachet</p>
+                <div class="border-b border-gray-400 h-12"></div>
+            </div>
+            <div>
+                <p class="text-sm font-bold text-black mb-4">Signature MYFIX</p>
+                <div class="border-b border-gray-400 h-12"></div>
+            </div>
+        </div>
+        <div class="mt-8 text-center">
+            <p class="text-xs text-gray-600">Document valable pour approvisionnement - Sous réserve de disponibilité</p>
+        </div>
+    </div>
+    </div>
+
     <!-- Screen Version (hidden when printing) -->
     <div class="grid grid-cols-3 gap-8 no-print">
         <!-- Order Items -->
@@ -608,7 +662,26 @@
             </div>
         </div>
     </div>
-<script>document.addEventListener('DOMContentLoaded', function(){ var el = document.querySelector('.print-area'); if (el) { el.style.display = 'none'; } });</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const printButton = document.querySelector('a[href*="orders.print"]');
+        if (printButton) {
+            printButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Open print view in new tab
+                const printWindow = window.open(this.href, 'PrintWindow', 'width=800,height=600,scrollbars=yes');
+                
+                // Auto-print after 1 second
+                setTimeout(function() {
+                    if (printWindow) {
+                        printWindow.print();
+                    }
+                }, 1000);
+            });
+        }
+    });
+</script>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal4619374cef299e94fd7263111d0abc69)): ?>

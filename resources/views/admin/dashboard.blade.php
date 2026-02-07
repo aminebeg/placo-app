@@ -210,7 +210,7 @@
                 <div class="p-6 border-b border-portal-border flex items-center justify-between">
                     <h2 class="font-display font-bold text-lg">{{ __('Inventory Audit') }}</h2>
                     @can('admin')
-                    <a href="{{ route('products.create') }}" class="bg-portal-accent text-black px-4 py-2 rounded-lg font-bold text-sm hover:bg-white transition-colors flex items-center gap-2">
+                    <a href="{{ route('admin.products.store') }}" class="bg-portal-accent text-black px-4 py-2 rounded-lg font-bold text-sm hover:bg-white transition-colors flex items-center gap-2">
                         <x-lucide-plus class="w-4 h-4" /> {{ __('Add Asset') }}
                     </a>
                     @endcan
@@ -259,10 +259,10 @@
                                     @can('admin')
                                     <td class="px-4 md:px-6 py-4 text-end">
                                         <div class="flex justify-end gap-2">
-                                            <a href="{{ route('products.edit', $product->id) }}" class="p-2.5 md:p-2 hover:bg-white/10 rounded-lg text-portal-muted hover:text-white transition-colors inline-flex items-center justify-center min-h-[44px] min-w-[44px] md:min-h-0 md:min-w-0">
+                                            <a href="{{ route('admin.products.edit', $product->id) }}" class="p-2.5 md:p-2 hover:bg-white/10 rounded-lg text-portal-muted hover:text-white transition-colors inline-flex items-center justify-center min-h-[44px] min-w-[44px] md:min-h-0 md:min-w-0">
                                                 <x-lucide-edit-2 class="w-5 h-5 md:w-4 md:h-4" />
                                             </a>
-                                            <form action="{{ route('products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure you want to delete this asset?') }}');" class="inline-block">
+                                            <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure you want to delete this asset?') }}');" class="inline-block">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="p-2.5 md:p-2 hover:bg-red-500/10 rounded-lg text-portal-muted hover:text-red-500 transition-colors inline-flex items-center justify-center min-h-[44px] min-w-[44px] md:min-h-0 md:min-w-0">

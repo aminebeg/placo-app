@@ -1,0 +1,13 @@
+<svg class="w-5 h-5 md:w-4 md:h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M10 15H6a4 4 0 0 0-4 4v2"/>
+  <path d="m14.305 16.53.923-.382"/>
+  <path d="m15.228 13.852-.923-.383"/>
+  <path d="m16.852 12.228-.383-.923"/>
+  <path d="m16.852 17.772-.383.924"/>
+  <path d="m19.148 12.228.383-.923"/>
+  <path d="m19.53 18.696-.382-.924"/>
+  <path d="m20.772 13.852.924-.383"/>
+  <path d="m20.772 16.148.924.383"/>
+  <circle cx="18" cy="15" r="3"/>
+  <circle cx="9" cy="7" r="4"/>
+</svg><?php /**PATH C:\Users\Bucket\Desktop\Commandes\placo-app\storage\framework\views/af03dde87b798c3b56fd94d56e632e46.blade.php ENDPATH**/ ?>
