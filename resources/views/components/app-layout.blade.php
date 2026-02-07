@@ -57,11 +57,11 @@
                     {{ __('Catalogue Technique') }}
                 </a>
 
-                <a href="{{ route('requisition.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('requisition.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
+                <a href="{{ route('commande.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('commande.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
                     <x-lucide-list-checks class="w-5 h-5 me-3" />
                     {{ __('Ma Sélection') }}
-                    @if(count(session('requisition', [])) > 0)
-                        <span class="ms-auto bg-portal-accent text-black text-[0.6rem] font-extrabold px-1.5 py-0.5 rounded">{{ count(session('requisition', [])) }}</span>
+                    @if(count(session('commande', [])) > 0)
+                        <span class="ms-auto bg-portal-accent text-black text-[0.6rem] font-extrabold px-1.5 py-0.5 rounded">{{ count(session('commande', [])) }}</span>
                     @endif
                 </a>
 
@@ -134,12 +134,12 @@
             <header 
                 class="h-20 border-b border-portal-border px-4 lg:px-10 flex items-center justify-between bg-[#0f0f10]/80 backdrop-blur-xl sticky top-0 z-40"
                 x-data="{ 
-                    requisitionCount: {{ count(session('requisition', [])) }},
+                    commandeCount: {{ count(session('commande', [])) }},
                     showNotify(msg, type) {
                         this.$dispatch('show-toast', { message: msg, type: type });
                     }
                 }"
-                @requisition-updated.window="requisitionCount = $event.detail.count; showNotify($event.detail.message, 'success')"
+                @commande-updated.window="commandeCount = $event.detail.count; showNotify($event.detail.message, 'success')"
             >
                 <div class="flex items-center gap-4">
                     <button @click="sidebarOpen = true" class="lg:hidden p-2 text-portal-muted hover:text-white">
@@ -157,11 +157,11 @@
                         <x-lucide-heart class="w-5 h-5 group-hover:scale-110 transition-transform group-hover:text-red-500" />
                     </a>
 
-                    <a href="{{ route('requisition.index') }}" class="relative p-2 text-portal-muted hover:text-white transition-all group" title="{{ __('Ma Sélection') }}">
+                    <a href="{{ route('commande.index') }}" class="relative p-2 text-portal-muted hover:text-white transition-all group" title="{{ __('Ma Sélection') }}">
                         <x-lucide-list-checks class="w-5 h-5 group-hover:scale-110 transition-transform" />
-                        <template x-if="requisitionCount > 0">
+                        <template x-if="commandeCount > 0">
                             <span 
-                                x-text="requisitionCount"
+                                x-text="commandeCount"
                                 class="absolute -top-1 -right-1 bg-portal-accent text-black text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(197,160,89,0.5)] border border-portal-bg"
                             ></span>
                         </template>
@@ -200,9 +200,9 @@
         <!-- Mobile Bottom Navigation -->
         <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-[#0f0f10]/90 backdrop-blur-xl border-t border-portal-border flex items-center justify-around px-4 py-3 z-40 pb-safe"
              x-data="{ 
-                requisitionCount: {{ count(session('requisition', [])) }}
+                commandeCount: {{ count(session('commande', [])) }}
              }"
-             @requisition-updated.window="requisitionCount = $event.detail.count"
+             @commande-updated.window="commandeCount = $event.detail.count"
         >
             @auth
             <a href="{{ route('dashboard') }}" class="flex flex-col items-center gap-1 {{ request()->routeIs('dashboard') ? 'text-portal-accent' : 'text-portal-muted' }}">
@@ -215,11 +215,11 @@
                 <x-lucide-package class="w-5 h-5" />
                 <span class="text-[0.55rem] font-bold uppercase">{{ __('Catalogue') }}</span>
             </a>
-            <a href="{{ route('requisition.index') }}" class="relative flex flex-col items-center gap-1 {{ request()->routeIs('requisition.*') ? 'text-portal-accent' : 'text-portal-muted' }}">
+            <a href="{{ route('commande.index') }}" class="relative flex flex-col items-center gap-1 {{ request()->routeIs('commande.*') ? 'text-portal-accent' : 'text-portal-muted' }}">
                 <x-lucide-list-checks class="w-5 h-5" />
                 <span class="text-[0.55rem] font-bold uppercase">{{ __('Sélection') }}</span>
-                <template x-if="requisitionCount > 0">
-                    <span x-text="requisitionCount" class="absolute -top-1 -right-1 bg-portal-accent text-black text-[8px] font-black w-3.5 h-3.5 rounded-full flex items-center justify-center border border-[#0f0f10]"></span>
+                <template x-if="commandeCount > 0">
+                    <span x-text="commandeCount" class="absolute -top-1 -right-1 bg-portal-accent text-black text-[8px] font-black w-3.5 h-3.5 rounded-full flex items-center justify-center border border-[#0f0f10]"></span>
                 </template>
             </a>
             

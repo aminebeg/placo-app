@@ -19,9 +19,9 @@
 </head>
 <body class="bg-[#0a0a0b] text-white font-sans antialiased selection:bg-portal-accent selection:text-black overflow-x-hidden"
       x-data="{ 
-          requisitionCount: {{ count(session('requisition', [])) }}
+          commandeCount: {{ count(session('commande', [])) }}
       }"
-      @requisition-updated.window="requisitionCount = $event.detail.count">
+      @commande-updated.window="commandeCount = $event.detail.count">
     
     <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 border-b border-white/5 bg-[#0a0a0b]/80 backdrop-blur-md transition-all duration-300" id="navbar">
@@ -60,10 +60,10 @@
                 </div>
 
                 <!-- Selection List Link -->
-                <a href="{{ route('requisition.index') }}" class="relative p-2 text-slate-400 hover:text-white transition-all group">
+                <a href="{{ route('commande.index') }}" class="relative p-2 text-slate-400 hover:text-white transition-all group">
                     <x-lucide-list-checks class="w-5 h-5" />
-                    <template x-if="requisitionCount > 0">
-                        <span x-text="requisitionCount" class="absolute -top-1 -right-1 bg-portal-accent text-black text-[9px] font-black w-3.5 h-3.5 rounded-full flex items-center justify-center border border-[#0a0a0b]"></span>
+                    <template x-if="commandeCount > 0">
+                        <span x-text="commandeCount" class="absolute -top-1 -right-1 bg-portal-accent text-black text-[9px] font-black w-3.5 h-3.5 rounded-full flex items-center justify-center border border-[#0a0a0b]"></span>
                     </template>
                 </a>
 
@@ -134,7 +134,7 @@
                     <h4 class="font-bold text-white mb-4">{{ __('Accès Rapide') }}</h4>
                     <ul class="space-y-2 text-sm text-slate-500">
                         <li><a href="{{ route('products.index') }}" class="hover:text-portal-accent transition-colors">{{ __('Catalogue Technique') }}</a></li>
-                        <li><a href="{{ route('requisition.index') }}" class="hover:text-portal-accent transition-colors">{{ __('Ma Sélection') }}</a></li>
+                        <li><a href="{{ route('commande.index') }}" class="hover:text-portal-accent transition-colors">{{ __('Ma Sélection') }}</a></li>
                         <li><a href="{{ route('login') }}" class="hover:text-portal-accent transition-colors">{{ __('Espace Client') }}</a></li>
                     </ul>
                 </div>

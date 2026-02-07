@@ -99,7 +99,7 @@
         
             async addToRequisition(productId, quantity = 1) {
                 try {
-                    const response = await fetch(`/requisition/add/${productId}`, {
+                    const response = await fetch(`/commande/add/${productId}`, {
                         method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content'),
@@ -112,8 +112,8 @@
                     const data = await response.json();
         
                     if (data.success) {
-                        this.$dispatch('requisition-updated', {
-                            count: data.requisition_count,
+                        this.$dispatch('commande-updated', {
+                            count: data.commande_count,
                             message: data.message
                         });
                         window.showToast(data.message || @js(__('Produit ajouté !')), 'success');
@@ -121,7 +121,7 @@
                         window.showToast(data.message || @js(__("Erreur lors de l'ajout")), 'error');
                     }
                 } catch (error) {
-                    console.error('Failed to add to requisition:', error);
+                    console.error('Failed to add to commande:', error);
                     window.showToast(@js(__('Une erreur est survenue.')), 'error');
                 }
             },
@@ -531,7 +531,7 @@
                                 <h4 class="text-sm font-bold text-slate-400 uppercase tracking-widest">
                                     {{ __('Approvisionnement') }}</h4>
 
-                                <form :action="'/requisition/add/' + (selectedProduct ? selectedProduct.id : '')"
+                                <form :action="'/commande/add/' + (selectedProduct ? selectedProduct.id : '')"
                                     method="POST" class="space-y-6">
                                     @csrf
                                     <div>

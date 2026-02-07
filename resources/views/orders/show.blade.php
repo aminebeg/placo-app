@@ -1,4 +1,68 @@
 <x-app-layout>
+<style>
+@media screen {
+  .print-area { display: none; }
+}
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .print-area, .print-area * {
+        visibility: visible;
+    }
+    .print-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: white !important;
+        color: black !important;
+    }
+    .no-print {
+        display: none !important;
+    }
+    @page {
+        margin: 1.5cm;
+        size: A4;
+    }
+    
+    /* Print-specific styles */
+    .print-area .bg-portal-sidebar,
+    .print-area .bg-white\/5,
+    .print-area .bg-white\/2 {
+        background: white !important;
+        border: 1px solid #ccc !important;
+    }
+    
+    .print-area .text-white,
+    .print-area .text-portal-accent {
+        color: black !important;
+    }
+    
+    .print-area .text-portal-muted {
+        color: #666 !important;
+    }
+    
+    .print-area .border-portal-border {
+        border-color: #ccc !important;
+    }
+    
+    .print-area .bg-portal-accent\/10,
+    .print-area .bg-yellow-500\/10,
+    .print-area .bg-blue-500\/10,
+    .print-area .bg-green-500\/10 {
+        background: #f5f5f5 !important;
+    }
+    
+    .print-area .text-yellow-500,
+    .print-area .text-blue-500,
+    .print-area .text-green-500,
+    .print-area .text-portal-accent {
+        color: black !important;
+        font-weight: bold;
+    }
+}
+</style>
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
@@ -15,14 +79,108 @@
                 ">
                     {{ __('Status:') }} {{ __($order->status) }}
                 </span>
-                <button class="bg-white/5 border border-portal-border text-white px-4 py-3 rounded-xl font-bold hover:bg-white/10 transition-colors flex items-center gap-2">
-                    <x-lucide-printer class="w-4 h-4" /> {{ __('Print Invoice') }}
-                </button>
+                <a href="{{ route('orders.print', $order->id) }}" target="_blank" class="bg-white/5 border border-portal-border text-white px-4 py-3 rounded-xl font-bold hover:bg-white/10 transition-colors flex items-center gap-2 no-print">
+                    <x-lucide-printer class="w-4 h-4" /> {{ __('Imprimer la commande') }}
+                </a>
             </div>
         </div>
     </x-slot>
 
-    <div class="grid grid-cols-3 gap-8">
+    @if(false)
+    <div class="print-area">
+    <!-- Print Header -->
+    <div class="mb-8 pb-6 border-b-2 border-black">
+        <div class="flex justify-between items-start">
+            <div>
+                <h1 class="text-2xl font-bold text-black mb-2">SARL GLOBAL ACCESSOIRES</h1>
+                <p class="text-sm text-gray-600 mb-1">Producteur de la marque MYFIX</p>
+                <p class="text-sm text-gray-600">Zone Industrielle - Bordj Bou Arreridj, Algérie</p>
+                <p class="text-sm text-gray-600">Tél: +213 550 00 00 00</p>
+                <p class="text-sm text-gray-600">Email: commercial@myfix-dz.com</p>
+            </div>
+            <div class="text-right">
+                <div class="text-3xl font-bold text-black mb-2">BON DE COMMANDE</div>
+                <div class="text-lg font-semibold text-black">N° {{ $order->order_number }}</div>
+                <div class="text-sm text-gray-600">Date: {{ $order->created_at->format('d/m/Y') }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Client Info -->
+    <div class="mb-6 grid grid-cols-2 gap-8">
+        <div>
+            <h3 class="font-bold text-black mb-2 border-b border-gray-300 pb-1">CLIENT:</h3>
+            <p class="text-sm text-black">{{ $order->user->first_name }} {{ $order->user->last_name }}</p>
+            <p class="text-sm text-black">{{ $order->user->company ?? '-' }}</p>
+            <p class="text-sm text-black">{{ $order->user->email }}</p>
+            <p class="text-sm text-black">{{ $order->user->phone ?? '-' }}</p>
+        </div>
+        <div>
+            <h3 class="font-bold text-black mb-2 border-b border-gray-300 pb-1">LIVRAISON:</h3>
+            <p class="text-sm text-black">{{ $order->delivery_address ?? 'À définir' }}</p>
+            @if($order->requested_delivery_date)
+            <p class="text-sm text-black">Date souhaitée: {{ \Carbon\Carbon::parse($order->requested_delivery_date)->format('d/m/Y') }}</p>
+            @endif
+            <p class="text-sm text-black">Transport: {{ $order->logistics_type ?? 'Standard' }}</p>
+        </div>
+    </div>
+
+    <!-- Order Items Table -->
+    <div class="mb-6">
+        <table class="w-full border-collapse">
+            <thead>
+                <tr class="border-b-2 border-black">
+                    <th class="text-left py-2 px-4 font-bold text-black">RÉFÉRENCE</th>
+                    <th class="text-left py-2 px-4 font-bold text-black">DÉSIGNATION</th>
+                    <th class="text-center py-2 px-4 font-bold text-black">QUANTITÉ</th>
+                    <th class="text-right py-2 px-4 font-bold text-black">P.U. HT</th>
+                    <th class="text-right py-2 px-4 font-bold text-black">TOTAL HT</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($order->items as $item)
+                <tr class="border-b border-gray-300">
+                    <td class="py-2 px-4 text-sm text-black">{{ str_pad($item->product_id, 6, '0', STR_PAD_LEFT) }}</td>
+                    <td class="py-2 px-4 text-sm text-black">{{ $item->product->name }}</td>
+                    <td class="py-2 px-4 text-center text-sm text-black">{{ $item->quantity }}</td>
+                    <td class="py-2 px-4 text-right text-sm text-black">{{ number_format($item->price, 2) }} DZD</td>
+                    <td class="py-2 px-4 text-right text-sm text-black">{{ number_format($item->quantity * $item->price, 2) }} DZD</td>
+                </tr>
+                @endforeach
+            </tbody>
+            <tfoot>
+                <tr class="border-t-2 border-black">
+                    <td colspan="4" class="py-3 px-4 text-right font-bold text-black">TOTAL HT:</td>
+                    <td class="py-3 px-4 text-right font-bold text-lg text-black">{{ number_format($order->total, 2) }} DZD</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-12 pt-6 border-t-2 border-black">
+        <div class="grid grid-cols-3 gap-8 text-center">
+            <div>
+                <p class="text-sm font-bold text-black mb-4">Signature Client</p>
+                <div class="border-b border-gray-400 h-12"></div>
+            </div>
+            <div>
+                <p class="text-sm font-bold text-black mb-4">Timbre & Cachet</p>
+                <div class="border-b border-gray-400 h-12"></div>
+            </div>
+            <div>
+                <p class="text-sm font-bold text-black mb-4">Signature MYFIX</p>
+                <div class="border-b border-gray-400 h-12"></div>
+            </div>
+        </div>
+        <div class="mt-8 text-center">
+            <p class="text-xs text-gray-600">Document valable pour approvisionnement - Sous réserve de disponibilité</p>
+        </div>
+    </div>
+    </div>
+    @endif
+    <!-- Screen Version (hidden when printing) -->
+    <div class="grid grid-cols-3 gap-8 no-print">
         <!-- Order Items -->
         <div class="col-span-2 space-y-6">
             <div class="bg-portal-sidebar border border-portal-border rounded-xl overflow-hidden">
@@ -185,7 +343,7 @@
             </div>
         </div>
             <!-- Messages & Communication -->
-            <div class="bg-portal-sidebar border border-portal-border rounded-xl p-6 lg:p-8">
+            <div class="no-print bg-portal-sidebar border border-portal-border rounded-xl p-6 lg:p-8">
                 <div class="flex items-center justify-between mb-6">
                     <h2 class="font-display font-bold text-xl flex items-center gap-3">
                         <x-lucide-message-square class="w-6 h-6 text-portal-accent" />
@@ -254,4 +412,5 @@
             </div>
         </div>
     </div>
+<script>document.addEventListener('DOMContentLoaded', function(){ var el = document.querySelector('.print-area'); if (el) { el.style.display = 'none'; } });</script>
 </x-app-layout>

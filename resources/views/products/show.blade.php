@@ -111,7 +111,7 @@
                             </div>
                             
                             <button 
-                                @click="$dispatch('add-to-requisition', { productId: {{ $product->id }}, quantity: quantity })"
+                                @click="$dispatch('add-to-commande', { productId: {{ $product->id }}, quantity: quantity })"
                                 class="flex-1 bg-portal-accent text-black font-bold text-sm uppercase tracking-wider rounded-xl hover:bg-white transition-all h-14 flex items-center justify-center gap-2 shadow-[0_10px_20px_rgba(var(--portal-accent-rgb),0.3)] group"
                             >
                                 <x-lucide-shopping-cart class="w-5 h-5 group-hover:scale-110 transition-transform" />
@@ -146,13 +146,13 @@
                         </div>
                     </div>
                 </div>
-                <!-- Helper script for requisition dispatch -->
+                <!-- Helper script for commande dispatch -->
                 <script>
                     document.addEventListener('alpine:init', () => {
-                        window.addEventListener('add-to-requisition', async (e) => {
+                        window.addEventListener('add-to-commande', async (e) => {
                             const { productId, quantity } = e.detail;
                             try {
-                                const response = await fetch(`/requisition/add/${productId}`, {
+                                const response = await fetch(`/commande/add/${productId}`, {
                                     method: 'POST',
                                     headers: {
                                         'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content'),
@@ -164,12 +164,12 @@
                                 const data = await response.json();
                                 if (data.success) {
                                     window.showToast(data.message, 'success');
-                                    window.dispatchEvent(new CustomEvent('requisition-updated', { detail: { count: data.requisition_count } }));
+                                    window.dispatchEvent(new CustomEvent('commande-updated', { detail: { count: data.commande_count } }));
                                 } else {
                                     window.showToast(data.message, 'error');
                                 }
                             } catch (error) {
-                                console.error('Error adding to requisition:', error);
+                                console.error('Error adding to commande:', error);
                                 window.showToast('Erreur lors de l\'ajout à votre liste', 'error');
                             }
                         });

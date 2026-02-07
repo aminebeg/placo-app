@@ -6,7 +6,7 @@
             <p class="text-slate-400 text-lg max-w-2xl">{{ __('Vérifiez votre sélection de matériaux avant transmission pour traitement logistique.') }}</p>
         </div>
 
-    @if(empty($requisition))
+    @if(empty($commande))
         <div class="bg-[#141415] border border-white/5 rounded-3xl p-16 text-center flex flex-col items-center shadow-2xl">
             <div class="w-24 h-24 bg-white/5 rounded-full flex items-center justify-center mb-8 border border-white/5">
                 <x-lucide-clipboard-list class="w-10 h-10 text-slate-500" />
@@ -19,7 +19,7 @@
         </div>
     @else
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-8" x-data="{
-            items: {{ json_encode($requisition) }},
+            items: {{ json_encode($commande) }},
             
             get totalPrice() {
                 return Object.values(this.items).reduce((sum, item) => sum + (item.price * item.quantity), 0);
@@ -45,7 +45,7 @@
                 if (newQty < 1) return;
                 
                 try {
-                    const response = await fetch(`/requisition/update/${id}`, {
+                    const response = await fetch(`/commande/update/${id}`, {
                         method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content'),
@@ -60,7 +60,7 @@
                     
                     if (response.ok) {
                         this.items[id].quantity = newQty;
-                        this.$dispatch('requisition-updated', { count: Object.keys(this.items).length });
+                        this.$dispatch('commande-updated', { count: Object.keys(this.items).length });
                     }
                 } catch (error) {
                     console.error('Failed to update quantity:', error);
@@ -71,7 +71,7 @@
                 if (!confirm('{{ __('Retirer cette référence de votre bon de commande ?') }}')) return;
                 
                 try {
-                    const response = await fetch(`/requisition/remove/${id}`, {
+                    const response = await fetch(`/commande/remove/${id}`, {
                         method: 'POST',
                         headers: {
                             'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content'),
@@ -82,7 +82,7 @@
                     
                     if (response.ok) {
                         delete this.items[id];
-                        this.$dispatch('requisition-updated', { count: Object.keys(this.items).length });
+                        this.$dispatch('commande-updated', { count: Object.keys(this.items).length });
                         
                         if (Object.keys(this.items).length === 0) {
                             window.location.reload();
@@ -226,7 +226,7 @@
             </div>
 
             <!-- Sidebar Summary -->
-            <form action="{{ route('requisition.finalize') }}" method="POST" class="xl:col-span-1 space-y-6">
+            <form action="{{ route('commande.finalize') }}" method="POST" class="xl:col-span-1 space-y-6">
                 @csrf
                 <div class="bg-[#141415] border border-white/5 rounded-3xl p-6 lg:p-8 shadow-xl sticky top-28">
                         <h3 class="font-bold text-lg text-white mb-6 flex items-center gap-2">
@@ -240,8 +240,8 @@
                                 <textarea name="delivery_address" rows="3" placeholder="{{ __('Indiquez l’adresse exacte si connue...') }}" class="w-full bg-[#0a0a0b] border border-white/10 rounded-xl text-sm text-white focus:ring-1 focus:ring-portal-accent focus:border-portal-accent placeholder-slate-600 py-3 px-4 transition-shadow"></textarea>
                             </div>
                             <div>
-                                <label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-2 pl-1">{{ __('Date de Réception Souhaitée') }} <span class="text-slate-600 text-[0.55rem]">({{ __('Optionnel') }})</span></label>
-                                <input type="date" name="requested_delivery_date" class="w-full bg-[#0a0a0b] border border-white/10 rounded-xl text-sm text-white focus:ring-1 focus:ring-portal-accent focus:border-portal-accent placeholder-slate-600 py-3 px-4 transition-shadow">
+<label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-2 pl-1">{{ __('Date de Réception Souhaitée') }} <span class="text-slate-600 text-[0.55rem]">({{ __('Optionnel') }})</span></label>
+                                <input type="date" name="requested_delivery_date" class="w-full bg-[#0a0a0b] border border-white/10 rounded-xl text-sm text-white focus:ring-1 focus:ring-portal-accent focus:border-portal-accent placeholder-slate-600 py-3 px-4 transition-shadow" min="{{ \Carbon\Carbon::now()->addDays(3)->format('Y-m-d') }}" x-init="$el.min = new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]">
                             </div>
                             <div>
                                 <label class="text-[0.65rem] font-bold text-portal-muted uppercase tracking-wider block mb-2 pl-1">{{ __('Type de Transport') }} <span class="text-slate-600 text-[0.55rem]">({{ __('Optionnel') }})</span></label>
@@ -260,10 +260,10 @@
                                 <textarea name="notes" rows="2" placeholder="{{ __('Ex: Accès difficile, besoin de déchargement...') }}" class="w-full bg-[#0a0a0b] border border-white/10 rounded-xl text-sm text-white focus:ring-1 focus:ring-portal-accent focus:border-portal-accent placeholder-slate-600 py-3 px-4 transition-shadow"></textarea>
                             </div>
 
-                            <div class="p-3 rounded-lg bg-blue-500/5 border border-blue-500/10 flex gap-3">
-                                <x-lucide-info class="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+<div class="p-3 rounded-lg bg-amber-500/5 border border-amber-500/10 flex gap-3">
+                                <x-lucide-alert-triangle class="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                                 <p class="text-[0.7rem] text-slate-400 leading-relaxed">
-                                    {{ __('Un conseiller commercial MYFIX vous contactera par téléphone pour confirmer les détails logistiques et valider votre approvisionnement.') }}
+                                    {{ __('La date de livraison doit être au moins 3 jours après aujourd\'hui. Le jour exact de livraison peut varier selon les facteurs logistiques, la disponibilité des produits et les conditions de transport.') }}
                                 </p>
                             </div>
                         </div>

@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\RequisitionController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AuthController;
 
@@ -41,11 +40,11 @@ Route::get('/products/create', [ProductController::class, 'create'])->name('prod
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 Route::get('/products/{id}/technical-sheet', [ProductController::class, 'technicalSheet'])->name('products.technical_sheet');
 
-// Requisition Routes (Formerly Cart)
-Route::get('/requisition', [RequisitionController::class, 'index'])->name('requisition.index');
-Route::post('/requisition/add/{id}', [RequisitionController::class, 'add'])->name('requisition.add');
-Route::patch('/requisition/update/{id}', [RequisitionController::class, 'update'])->name('requisition.update');
-Route::delete('/requisition/remove/{id}', [RequisitionController::class, 'remove'])->name('requisition.remove');
+// Commande Routes (Cart)
+Route::get('/commande', [OrderController::class, 'cart'])->name('commande.index');
+Route::post('/commande/add/{id}', [OrderController::class, 'addToCart'])->name('commande.add');
+Route::patch('/commande/update/{id}', [OrderController::class, 'updateCart'])->name('commande.update');
+Route::delete('/commande/remove/{id}', [OrderController::class, 'removeFromCart'])->name('commande.remove');
 
 // Auth Routes
 Route::middleware(['auth'])->group(function () {
@@ -55,8 +54,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('orders', OrderController::class);
     
-    // Requisition Finalization (Checkout)
-    Route::post('/requisition/finalize', [RequisitionController::class, 'store'])->name('requisition.finalize');
+// Commande Finalization (Checkout)
+    Route::post('/commande/finalize', [OrderController::class, 'finalize'])->name('commande.finalize');
+    
+    // Print a printable order (bon de commande)
+    Route::get('/orders/{order}/print', [OrderController::class, 'print'])->name('orders.print');
+    Route::get('/orders/{order}/print/pdf', [OrderController::class, 'printPdf'])->name('orders.print_pdf');
 
     // Favorites
     Route::get('/favorites', [\App\Http\Controllers\FavoriteController::class, 'index'])->name('favorites.index');
