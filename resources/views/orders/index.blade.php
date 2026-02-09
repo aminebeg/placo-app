@@ -24,10 +24,10 @@
                 <div class="w-20 h-20 rounded-full bg-white/5 flex items-center justify-center mb-6">
                     <x-lucide-file-text class="w-10 h-10 opacity-50" />
                 </div>
-                <h3 class="text-xl font-display font-bold text-white mb-2">{{ __('No Orders Found') }}</h3>
-                <p class="mb-8">{{ __("You haven't placed any purchase orders yet.") }}</p>
+                <h3 class="text-xl font-display font-bold text-white mb-2">{{ __('Aucune commande trouvée') }}</h3>
+                <p class="mb-8">{{ __("Vous n'avez pas encore passé de commande.") }}</p>
                 <a href="{{ route('products.index') }}" class="bg-portal-accent text-black px-6 py-3 rounded-xl font-bold hover:bg-white transition-colors flex items-center gap-2">
-                    {{ __('Browse Catalog') }} <x-lucide-arrow-right class="w-4 h-4 rtl:rotate-180" />
+                    {{ __('Parcourir le catalogue') }} <x-lucide-arrow-right class="w-4 h-4 rtl:rotate-180" />
                 </a>
             </div>
         @else
@@ -35,7 +35,7 @@
                 <table class="w-full text-start">
                     <thead class="bg-white/2 text-xs font-bold text-portal-muted uppercase tracking-wider">
                         <tr>
-                            <th class="px-8 py-4 text-start">{{ __('Reference') }}</th>
+                            <th class="px-8 py-4 text-start">{{ __('Référence') }}</th>
                             <th class="px-8 py-4 text-start">{{ __('Date') }}</th>
                             <th class="px-8 py-4 text-center">{{ __('Articles') }}</th>
                             <th class="px-8 py-4 text-center">{{ __('État') }}</th>
@@ -52,16 +52,23 @@
                                 <td class="px-8 py-5 text-center">
                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider
                                         {{ $order->status === 'pending' ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20' : '' }}
-                                        {{ $order->status === 'processing' ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20' : '' }}
+                                        {{ $order->status === 'confirmed' ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20' : '' }}
+                                        {{ $order->status === 'in_delivery' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' : '' }}
                                         {{ $order->status === 'delivered' ? 'bg-green-500/10 text-green-500 border border-green-500/20' : '' }}
                                         {{ $order->status === 'cancelled' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : '' }}
                                     ">
-                                        {{ __($order->status) }}
+                                        {{ [
+                                            'pending' => 'En attente',
+                                            'confirmed' => 'Confirmée',
+                                            'in_delivery' => 'En livraison',
+                                            'delivered' => 'Livrée',
+                                            'cancelled' => 'Annulée'
+                                        ][$order->status] ?? $order->status }}
                                     </span>
                                 </td>
                                 <td class="px-8 py-5 text-end font-mono font-bold text-lg">{{ number_format($order->total, 2) }} <span class="text-sm text-portal-muted">{{ __('DA') }}</span></td>
                                 <td class="px-8 py-5 text-end">
-                                    <a href="{{ route('orders.show', $order->id) }}" class="inline-flex items-center gap-2 text-portal-muted hover:text-white transition-colors p-2 rounded-lg hover:bg-white/5 group-hover:text-portal-accent" title="{{ __('View Details') }}" onclick="event.stopPropagation()">
+                                    <a href="{{ route('orders.show', $order->id) }}" class="inline-flex items-center gap-2 text-portal-muted hover:text-white transition-colors p-2 rounded-lg hover:bg-white/5 group-hover:text-portal-accent" title="{{ __('Voir les détails') }}" onclick="event.stopPropagation()">
                                         <x-lucide-arrow-right class="w-5 h-5 rtl:rotate-180" />
                                     </a>
                                 </td>

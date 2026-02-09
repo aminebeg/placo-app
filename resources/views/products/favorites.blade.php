@@ -1,8 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <span class="inline-block bg-red-500/20 text-red-500 px-3 py-1 rounded-full text-[0.7rem] font-bold uppercase tracking-wider mb-2 border border-red-500/20">
-            <x-lucide-heart class="w-3 h-3 inline-block mr-1 fill-current" /> {{ __('Ma Sélection') }}
-        </span>
+
         <h1 class="text-4xl font-extrabold tracking-tight mb-2 italic">{{ __('Mes Favoris') }}</h1>
         <p class="text-slate-400 text-lg">{{ __('Retrouvez ici les produits que vous avez mis de côté.') }}</p>
     </x-slot>
@@ -11,32 +9,44 @@
         products: {{ Js::from($products) }},
         isAuthenticated: {{ auth()->check() ? 'true' : 'false' }},
         
-        async toggleFavorite(product) {
+        async toggleFavorite(productToToggle) {
+            if (!this.isAuthenticated) {
+                window.location.href = '/login';
+                return;
+            }
+
             try {
-                const response = await fetch(`/favorites/toggle/${product.id}`, {
+                const response = await fetch(`/favorites/toggle/${productToToggle.id}`, {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content'),
-                        'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
                     }
                 });
+
+                if (!response.ok) throw new Error('Network response was not ok');
+
                 const data = await response.json();
                 
                 if (data.success) {
-                    // Remove from list if un-favorited
-                    if (!data.is_favorite) {
-                        this.products = this.products.filter(p => p.id !== product.id);
+                    // Update local state - remove the item if we are on favorites page
+                    this.products = this.products.filter(p => p.id !== productToToggle.id);
+                    
+                    // Show success message
+                    if (window.showToast) {
+                        window.showToast(data.message, 'success');
                     }
-                    window.showToast(data.message, 'success');
                 }
             } catch (error) {
                 console.error('Failed to toggle favorite:', error);
+                if (window.showToast) {
+                    window.showToast('{{ __('Une erreur est survenue') }}', 'error');
+                }
             }
         }
     }">
-        @if($products->isEmpty())
+        <template x-if="products.length === 0">
             <div class="flex flex-col items-center justify-center py-20 bg-white/2 border border-white/5 rounded-[2.5rem]">
                 <div class="w-24 h-24 rounded-full bg-white/5 flex items-center justify-center mb-6">
                     <x-lucide-heart class="w-10 h-10 text-slate-700 opacity-50" />
@@ -47,7 +57,9 @@
                     {{ __('Explorer le Catalogue') }} <x-lucide-arrow-right class="w-4 h-4" />
                 </a>
             </div>
-        @else
+        </template>
+        
+        <template x-if="products.length > 0">
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                 <template x-for="product in products" :key="product.id">
                     <div class="group bg-[#141415] rounded-[2.5rem] border border-white/5 overflow-hidden flex flex-col hover:border-red-500/30 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
@@ -88,6 +100,6 @@
                     </div>
                 </template>
             </div>
-        @endif
+        </template>
     </div>
 </x-app-layout>

@@ -87,7 +87,7 @@
                                     </div>
                                     <div class="text-right">
                                         <div class="font-bold text-white">{{ number_format($order->total, 2) }} DZD</div>
-                                        <div class="text-xs px-2 py-1 rounded-full bg-{{ $order->status === 'pending' ? 'yellow' : ($order->status === 'completed' ? 'green' : 'red') }}-500/20 text-{{ $order->status === 'pending' ? 'yellow' : ($order->status === 'completed' ? 'green' : 'red') }}-400 font-bold uppercase">
+                                        <div class="text-xs px-2 py-1 rounded-full bg-{{ $order->status === 'pending' ? 'yellow' : ($order->status === 'delivered' ? 'green' : ($order->status === 'confirmed' ? 'blue' : 'indigo')) }}-500/20 text-{{ $order->status === 'pending' ? 'yellow' : ($order->status === 'delivered' ? 'green' : ($order->status === 'confirmed' ? 'blue' : 'indigo')) }}-400 font-bold uppercase">
                                             {{ $order->status }}
                                         </div>
                                     </div>

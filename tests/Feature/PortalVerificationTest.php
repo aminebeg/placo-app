@@ -234,11 +234,11 @@ class PortalVerificationTest extends TestCase
 
         $this->actingAs($this->admin);
         $response = $this->patch(route('admin.orders.updateStatus', $order->id), [
-            'status' => 'processing'
+            'status' => 'confirmed'
         ]);
 
         $response->assertRedirect();
-        $this->assertDatabaseHas('orders', ['id' => $order->id, 'status' => 'processing']);
+        $this->assertDatabaseHas('orders', ['id' => $order->id, 'status' => 'confirmed']);
     }
 
     /** @test */

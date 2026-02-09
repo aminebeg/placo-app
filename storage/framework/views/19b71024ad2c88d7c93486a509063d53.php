@@ -90,10 +90,10 @@
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
                 </div>
-                <h3 class="text-xl font-display font-bold text-white mb-2"><?php echo e(__('No Orders Found')); ?></h3>
-                <p class="mb-8"><?php echo e(__("You haven't placed any purchase orders yet.")); ?></p>
+                <h3 class="text-xl font-display font-bold text-white mb-2"><?php echo e(__('Aucune commande trouvée')); ?></h3>
+                <p class="mb-8"><?php echo e(__("Vous n'avez pas encore passé de commande.")); ?></p>
                 <a href="<?php echo e(route('products.index')); ?>" class="bg-portal-accent text-black px-6 py-3 rounded-xl font-bold hover:bg-white transition-colors flex items-center gap-2">
-                    <?php echo e(__('Browse Catalog')); ?> <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+                    <?php echo e(__('Parcourir le catalogue')); ?> <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('lucide-arrow-right'); ?>
@@ -120,7 +120,7 @@
                 <table class="w-full text-start">
                     <thead class="bg-white/2 text-xs font-bold text-portal-muted uppercase tracking-wider">
                         <tr>
-                            <th class="px-8 py-4 text-start"><?php echo e(__('Reference')); ?></th>
+                            <th class="px-8 py-4 text-start"><?php echo e(__('Référence')); ?></th>
                             <th class="px-8 py-4 text-start"><?php echo e(__('Date')); ?></th>
                             <th class="px-8 py-4 text-center"><?php echo e(__('Articles')); ?></th>
                             <th class="px-8 py-4 text-center"><?php echo e(__('État')); ?></th>
@@ -138,20 +138,28 @@
                                     <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider
                                         <?php echo e($order->status === 'pending' ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20' : ''); ?>
 
-                                        <?php echo e($order->status === 'processing' ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20' : ''); ?>
+                                        <?php echo e($order->status === 'confirmed' ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20' : ''); ?>
+
+                                        <?php echo e($order->status === 'in_delivery' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' : ''); ?>
 
                                         <?php echo e($order->status === 'delivered' ? 'bg-green-500/10 text-green-500 border border-green-500/20' : ''); ?>
 
                                         <?php echo e($order->status === 'cancelled' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : ''); ?>
 
                                     ">
-                                        <?php echo e(__($order->status)); ?>
+                                        <?php echo e([
+                                            'pending' => 'En attente',
+                                            'confirmed' => 'Confirmée',
+                                            'in_delivery' => 'En livraison',
+                                            'delivered' => 'Livrée',
+                                            'cancelled' => 'Annulée'
+                                        ][$order->status] ?? $order->status); ?>
 
                                     </span>
                                 </td>
                                 <td class="px-8 py-5 text-end font-mono font-bold text-lg"><?php echo e(number_format($order->total, 2)); ?> <span class="text-sm text-portal-muted"><?php echo e(__('DA')); ?></span></td>
                                 <td class="px-8 py-5 text-end">
-                                    <a href="<?php echo e(route('orders.show', $order->id)); ?>" class="inline-flex items-center gap-2 text-portal-muted hover:text-white transition-colors p-2 rounded-lg hover:bg-white/5 group-hover:text-portal-accent" title="<?php echo e(__('View Details')); ?>" onclick="event.stopPropagation()">
+                                    <a href="<?php echo e(route('orders.show', $order->id)); ?>" class="inline-flex items-center gap-2 text-portal-muted hover:text-white transition-colors p-2 rounded-lg hover:bg-white/5 group-hover:text-portal-accent" title="<?php echo e(__('Voir les détails')); ?>" onclick="event.stopPropagation()">
                                         <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>

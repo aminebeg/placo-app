@@ -14,12 +14,25 @@ class OrderController extends Controller
     // Print a printable version of an order (bon de commande) for on-screen and PDF
     public function print(Order $order)
     {
-        // Print view for the given order (screen access is controlled by routes and screen layout)
+        $order->loadMissing(['user', 'items.product']);
+
+        // Ensure user owns the order or is admin
+        if(auth()->user()->role !== 'admin' && $order->user_id !== auth()->id()) {
+            abort(403);
+        }
+        
         return view('orders.print', compact('order'));
     }
 
     public function printPdf(Order $order)
     {
+        $order->loadMissing(['user', 'items.product']);
+
+        // Ensure user owns the order or is admin
+        if(auth()->user()->role !== 'admin' && $order->user_id !== auth()->id()) {
+            abort(403);
+        }
+        
         // Generate a PDF from a dedicated blade
         $pdf = app('dompdf.wrapper')->loadView('orders.print_pdf', compact('order'));
         return $pdf->download('BON-ORDER-' . $order->order_number . '.pdf');
@@ -168,7 +181,6 @@ class OrderController extends Controller
                 'tax' => 0,
                 'shipping' => 0,
                 'total' => $total,
-                'project_reference' => null,
                 'delivery_address' => $validated['delivery_address'] ?? null,
                 'notes' => $validated['notes'] ?? null,
                 'requested_delivery_date' => $validated['requested_delivery_date'] ?? null,

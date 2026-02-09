@@ -9,15 +9,14 @@ class Product extends Model
     protected $fillable = [
         'name_en', 'name_fr', 'name_ar',
         'description_en', 'description_fr', 'description_ar',
-        'category_id', 'price', 'currency', 'in_stock',
+        'category_id', 'price', 'currency', 'status',
         'image_url', 'images', 'specs',
-        'weight_kg', 'pieces_per_bundle', 'technical_sheet_url'
+        'weight_kg', 'pieces_per_bundle', 'technical_sheet_url', 'how_to_use_video_url'
     ];
 
     protected $casts = [
         'specs' => 'array',
         'images' => 'array',
-        'in_stock' => 'boolean',
         'price' => 'decimal:2'
     ];
 

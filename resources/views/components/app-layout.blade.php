@@ -52,45 +52,74 @@
             </div>
 
             <nav class="flex-1 px-4 flex flex-col gap-1 overflow-y-auto">
-                <a href="{{ route('products.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('products.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
-                    <x-lucide-package class="w-5 h-5 me-3" />
-                    {{ __('Catalogue Technique') }}
-                </a>
+                @if(auth()->user()?->role !== 'admin')
+                    <a href="{{ route('products.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('products.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
+                        <x-lucide-package class="w-5 h-5 me-3" />
+                        {{ __('Catalogue Technique') }}
+                    </a>
 
-                <a href="{{ route('commande.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('commande.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
-                    <x-lucide-list-checks class="w-5 h-5 me-3" />
-                    {{ __('Ma Sélection') }}
-                    @if(count(session('commande', [])) > 0)
-                        <span class="ms-auto bg-portal-accent text-black text-[0.6rem] font-extrabold px-1.5 py-0.5 rounded">{{ count(session('commande', [])) }}</span>
-                    @endif
-                </a>
+                    <a href="{{ route('commande.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('commande.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
+                        <x-lucide-list-checks class="w-5 h-5 me-3" />
+                        {{ __('Ma Sélection') }}
+                        @if(count(session('commande', [])) > 0)
+                            <span class="ms-auto bg-portal-accent text-black text-[0.6rem] font-extrabold px-1.5 py-0.5 rounded">{{ count(session('commande', [])) }}</span>
+                        @endif
+                    </a>
 
-                <a href="{{ route('favorites.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('favorites.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
-                    <x-lucide-heart class="w-5 h-5 me-3 {{ request()->routeIs('favorites.*') ? 'fill-current' : '' }}" />
-                    {{ __('Mes Favoris') }}
-                </a>
+                    <a href="{{ route('favorites.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('favorites.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
+                        <x-lucide-heart class="w-5 h-5 me-3 {{ request()->routeIs('favorites.*') ? 'fill-current' : '' }}" />
+                        {{ __('Mes Favoris') }}
+                    </a>
+                @endif
 
                 @auth
-                    <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4">{{ __('Opérations') }}</div>
-                    
-                    <a href="{{ route('dashboard') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('dashboard') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
-                        <x-lucide-layout-dashboard class="w-5 h-5 me-3" />
-                        {{ __('Tableau de Bord') }}
-                    </a>
-                    
-                    <a href="{{ route('orders.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('orders.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
-                        <x-lucide-file-text class="w-5 h-5 me-3" />
-                        {{ __('Mes Commandes') }}
-                    </a>
+                    @if(auth()->user()->role !== 'admin')
+                        <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4">{{ __('Opérations') }}</div>
+                        
+                        <a href="{{ route('dashboard') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('dashboard') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
+                            <x-lucide-layout-dashboard class="w-5 h-5 me-3" />
+                            {{ __('Tableau de Bord') }}
+                        </a>
+                        
+                        <a href="{{ route('orders.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('orders.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
+                            <x-lucide-file-text class="w-5 h-5 me-3" />
+                            {{ __('Mes Commandes') }}
+                        </a>
 
-                    @can('view-admin')
+                        <a href="{{ route('profile.edit') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('profile.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
+                            <x-lucide-user-circle-2 class="w-5 h-5 me-3" />
+                            {{ __('Mon Profil') }}
+                        </a>
+                    @endif
+
+                    @if(auth()->user()->role === 'admin')
                         <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4">{{ __('Administration') }}</div>
                         
-                        <a href="{{ route('admin.dashboard') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('admin.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
-                            <x-lucide-shield-check class="w-5 h-5 text-portal-accent me-3" />
-                            {{ __('Contrôle Système') }}
+                        <a href="{{ route('admin.dashboard', ['tab' => 'overview']) }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->fullUrlIs(route('admin.dashboard', ['tab' => 'overview'])) || (request()->routeIs('admin.dashboard') && !request()->has('tab')) ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
+                            <x-lucide-bar-chart-3 class="w-5 h-5 me-3" />
+                            {{ __('Vue d\'ensemble') }}
                         </a>
-                    @endcan
+
+                        <a href="{{ route('admin.dashboard', ['tab' => 'products']) }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->fullUrlIs(route('admin.dashboard', ['tab' => 'products'])) ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
+                            <x-lucide-package class="w-5 h-5 me-3" />
+                            {{ __('Inventaire') }}
+                        </a>
+
+                        <a href="{{ route('admin.dashboard', ['tab' => 'orders']) }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->fullUrlIs(route('admin.dashboard', ['tab' => 'orders'])) ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
+                            <x-lucide-trending-up class="w-5 h-5 me-3" />
+                            {{ __('Transactions') }}
+                        </a>
+
+                        <a href="{{ route('admin.dashboard', ['tab' => 'users']) }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->fullUrlIs(route('admin.dashboard', ['tab' => 'users'])) ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
+                            <x-lucide-users class="w-5 h-5 me-3" />
+                            {{ __('Annuaire') }}
+                        </a>
+
+                        <a href="{{ route('admin.settings.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('admin.settings.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
+                            <x-lucide-settings class="w-5 h-5 me-3" />
+                            {{ __('Paramètres') }}
+                        </a>
+                    @endif
                 @endauth
             </nav>
 
@@ -169,7 +198,7 @@
 
                     <div class="relative" x-data="{ open: false }">
                         <button @click="open = !open" class="text-[0.65rem] lg:text-xs font-bold text-portal-muted hover:text-white transition-colors flex items-center gap-2 uppercase">
-                            {{ app()->getLocale() }} <x-lucide-chevron-down class="w-3 h-3" />
+                            {{ strtoupper(app()->getLocale()) }} <x-lucide-chevron-down class="w-3 h-3" />
                         </button>
                         <div x-show="open" @click.away="open = false" class="absolute end-0 mt-2 w-32 bg-portal-sidebar border border-portal-border rounded-lg shadow-xl overflow-hidden py-1 z-50" x-cloak>
                             <a href="{{ route('language.switch', 'fr') }}" class="block px-4 py-2 text-sm text-portal-muted hover:text-white hover:bg-white/5">Français</a>

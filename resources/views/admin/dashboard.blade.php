@@ -1,38 +1,46 @@
 <x-app-layout>
     <x-slot name="header">
-        <span class="inline-block bg-portal-accent text-black px-2.5 py-1 rounded-md text-[0.7rem] font-extrabold uppercase tracking-wider mb-2">{{ __('System Administration') }}</span>
-        <h1 class="text-4xl font-extrabold tracking-tight mb-2">{{ __('Command Center') }}</h1>
-        <p class="text-portal-muted text-lg">{{ __('Central Intelligence & Administrative Controls') }}</p>
+        @php
+            $tab = request()->query('tab', 'overview');
+            $titles = [
+                'overview' => [
+                    'label' => 'Administration Système',
+                    'title' => 'Vue d\'Ensemble',
+                    'desc' => 'Tableau de bord et indicateurs de performance clés.',
+                ],
+                'products' => [
+                    'label' => 'Gestion des Stocks',
+                    'title' => 'Inventaire Global',
+                    'desc' => 'Catalogue technique, état des stocks et gestion des actifs.',
+                ],
+                'orders' => [
+                    'label' => 'Flux Logistique',
+                    'title' => 'Transactions & Commandes',
+                    'desc' => 'Suivi des commandes, livraisons et historique.',
+                ],
+                'users' => [
+                    'label' => 'Ressources Humaines',
+                    'title' => 'Annuaire Utilisateurs',
+                    'desc' => 'Gestion des comptes, rôles et permissions.',
+                ],
+            ];
+            $current = $titles[$tab] ?? $titles['overview'];
+        @endphp
+
+        <span class="inline-block bg-portal-accent text-black px-2.5 py-1 rounded-md text-[0.7rem] font-extrabold uppercase tracking-wider mb-2">{{ __($current['label']) }}</span>
+        <h1 class="text-4xl font-extrabold tracking-tight mb-2 uppercase italic">{{ __($current['title']) }}</h1>
+        <p class="text-portal-muted text-lg">{{ __($current['desc']) }}</p>
     </x-slot>
 
-    <div x-data="{ activeTab: 'overview' }">
+    <div x-data="{ activeTab: '{{ request()->query('tab', 'overview') }}' }">
         <!-- Tab Navigation -->
-        <div class="flex gap-2 bg-white/2 p-1.5 rounded-xl border border-portal-border w-fit mb-8">
-            <button @click="activeTab = 'overview'" :class="{ 'bg-portal-accent/10 text-portal-accent shadow-lg': activeTab === 'overview', 'text-portal-muted hover:bg-white/5 hover:text-white': activeTab !== 'overview' }" class="flex items-center gap-2.5 px-5 py-2.5 rounded-lg text-sm font-bold transition-all duration-300">
-                <x-lucide-bar-chart-3 class="w-4 h-4" />
-                {{ __('Overview') }}
-            </button>
-            <button @click="activeTab = 'products'" :class="{ 'bg-portal-accent/10 text-portal-accent shadow-lg': activeTab === 'products', 'text-portal-muted hover:bg-white/5 hover:text-white': activeTab !== 'products' }" class="flex items-center gap-2.5 px-5 py-2.5 rounded-lg text-sm font-bold transition-all duration-300">
-                <x-lucide-package class="w-4 h-4" />
-                {{ __('Inventory') }}
-            </button>
-            <button @click="activeTab = 'orders'" :class="{ 'bg-portal-accent/10 text-portal-accent shadow-lg': activeTab === 'orders', 'text-portal-muted hover:bg-white/5 hover:text-white': activeTab !== 'orders' }" class="flex items-center gap-2.5 px-5 py-2.5 rounded-lg text-sm font-bold transition-all duration-300">
-                <x-lucide-trending-up class="w-4 h-4" />
-                {{ __('Transactions') }}
-            </button>
-            @can('admin')
-            <button @click="activeTab = 'users'" :class="{ 'bg-portal-accent/10 text-portal-accent shadow-lg': activeTab === 'users', 'text-portal-muted hover:bg-white/5 hover:text-white': activeTab !== 'users' }" class="flex items-center gap-2.5 px-5 py-2.5 rounded-lg text-sm font-bold transition-all duration-300">
-                <x-lucide-users class="w-4 h-4" />
-                {{ __('Directory') }}
-            </button>
-            @endcan
-        </div>
+
 
         <!-- Overview Tab -->
         <div x-show="activeTab === 'overview'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" class="space-y-8">
             
             <!-- KPI Grid -->
-            <div class="grid grid-cols-4 gap-6">
+            <div class="grid grid-cols-3 gap-6">
                 <div class="bg-portal-sidebar border border-portal-border rounded-xl p-6 relative overflow-hidden group hover:border-portal-accent/50 transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_20px_40px_-15px_rgba(var(--portal-accent-rgb),0.1)]">
                     <div class="absolute top-0 end-0 p-6 opacity-10 group-hover:opacity-20 group-hover:scale-110 transition-all duration-700">
                         <x-lucide-trending-up class="w-16 h-16 text-portal-accent" />
@@ -90,23 +98,7 @@
                     </div>
                 </div>
 
-                <div class="bg-portal-sidebar border border-portal-border rounded-xl p-6 relative overflow-hidden group hover:border-portal-accent/50 transition-colors">
-                    <div class="absolute top-0 end-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <x-lucide-alert-triangle class="w-16 h-16 text-red-500" />
-                    </div>
-                    <div class="flex items-center gap-4 mb-4">
-                        <div class="p-3 rounded-lg bg-red-500/10 text-red-500">
-                            <x-lucide-alert-triangle class="w-6 h-6" />
-                        </div>
-                    </div>
-                    <div>
-                        <div class="text-xs font-bold text-portal-muted uppercase tracking-wider mb-1">{{ __('Critical Inventory') }}</div>
-                        <div class="text-2xl font-mono font-bold text-white">{{ $stats['low_stock'] }}</div>
-                        <div class="text-xs font-medium text-red-500 mt-2 flex items-center gap-1">
-                            <x-lucide-arrow-down class="w-3 h-3" /> {{ __('Replenishment Req.') }}
-                        </div>
-                    </div>
-                </div>
+
             </div>
 
             <!-- Recent Activity Block -->
@@ -136,11 +128,18 @@
                                         <td class="px-6 py-4">
                                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider
                                                 {{ $order->status === 'pending' ? 'bg-amber-500/10 text-amber-500' : '' }}
-                                                {{ $order->status === 'processing' ? 'bg-blue-500/10 text-blue-500' : '' }}
+                                                {{ $order->status === 'confirmed' ? 'bg-blue-500/10 text-blue-500' : '' }}
+                                                {{ $order->status === 'in_delivery' ? 'bg-indigo-500/10 text-indigo-400' : '' }}
                                                 {{ $order->status === 'delivered' ? 'bg-emerald-500/10 text-emerald-500' : '' }}
                                                 {{ $order->status === 'cancelled' ? 'bg-rose-500/10 text-rose-500' : '' }}
                                             ">
-                                                {{ __($order->status) }}
+                                                {{ [
+                                                    'pending' => 'En attente',
+                                                    'confirmed' => 'Confirmer',
+                                                    'in_delivery' => 'En livraison',
+                                                    'delivered' => 'Livrer',
+                                                    'cancelled' => 'Annule'
+                                                ][$order->status] ?? $order->status }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 text-end font-mono font-bold flex items-center justify-end gap-2">
@@ -158,7 +157,7 @@
                     <div class="flex items-center justify-between mb-4">
                         <h3 class="font-display font-bold text-sm">{{ __('Audit Trail') }}</h3>
                         @can('admin')
-                        <form action="{{ route('admin.logs.clear') }}" method="POST" onsubmit="return confirm('{{ __('Effacer tout l\'historique d\'activité ?') }}');">
+                        <form action="{{ route('admin.logs.clear') }}" method="POST" onsubmit="return confirm('{{ __('Effacer tout l\'historique d\'activitÃ© ?') }}');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="text-[10px] font-bold text-red-500/50 hover:text-red-500 transition-colors uppercase tracking-widest px-2 py-1 rounded border border-red-500/20 hover:bg-red-500/10">
@@ -205,78 +204,277 @@
              x-transition:enter="transition ease-out duration-200" 
              x-transition:enter-start="opacity-0 translate-y-2" 
              x-transition:enter-end="opacity-100 translate-y-0" 
-             x-cloak>
+             x-cloak x-data="{
+            categoryFilter: 'all',
+            statusFilter: 'all',
+            searchQuery: '',
+            sortField: 'name',
+            sortDirection: 'asc',
+            currentPage: 1,
+            itemsPerPage: 10,
+            
+            get filteredProducts() {
+                let products = {{ Js::from($stat_products) }};
+                
+                // Filter by category
+                if (this.categoryFilter !== 'all') {
+                    products = products.filter(p => p.category_id == this.categoryFilter);
+                }
+                
+                // Filter by status
+                if (this.statusFilter !== 'all') {
+                    products = products.filter(p => p.status === this.statusFilter);
+                }
+                
+                // Filter by search query
+                if (this.searchQuery.length > 0) {
+                    const query = this.searchQuery.toLowerCase();
+                    products = products.filter(p => 
+                        p.name.toLowerCase().includes(query) ||
+                        p.id.toString().includes(query) ||
+                        (p.category && p.category.name_en.toLowerCase().includes(query))
+                    );
+                }
+
+                // Sorting
+                products.sort((a, b) => {
+                    let valA = a[this.sortField];
+                    let valB = b[this.sortField];
+                    
+                    if (this.sortField === 'price') {
+                        valA = Number(valA);
+                        valB = Number(valB);
+                    } else if (typeof valA === 'string') {
+                        valA = valA.toLowerCase();
+                        valB = valB.toLowerCase();
+                    }
+
+                    if (valA < valB) return this.sortDirection === 'asc' ? -1 : 1;
+                    if (valA > valB) return this.sortDirection === 'asc' ? 1 : -1;
+                    return 0;
+                });
+                
+                return products;
+            },
+
+            get paginatedProducts() {
+                const start = (this.currentPage - 1) * this.itemsPerPage;
+                const end = start + this.itemsPerPage;
+                return this.filteredProducts.slice(start, end);
+            },
+
+            get totalPages() {
+                return Math.ceil(this.filteredProducts.length / this.itemsPerPage) || 1;
+            },
+
+            nextPage() {
+                if (this.currentPage < this.totalPages) this.currentPage++;
+            },
+
+            prevPage() {
+                if (this.currentPage > 1) this.currentPage--;
+            },
+            
+            goToPage(page) {
+                this.currentPage = page;
+            },
+
+            sortBy(field) {
+                if (this.sortField === field) {
+                    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+                } else {
+                    this.sortField = field;
+                    this.sortDirection = 'asc';
+                }
+            },
+            
+            // Watch filters to reset page
+            init() {
+                this.$watch('categoryFilter', () => this.currentPage = 1);
+                this.$watch('statusFilter', () => this.currentPage = 1);
+                this.$watch('searchQuery', () => this.currentPage = 1);
+            }
+        }">
             <div class="bg-portal-sidebar border border-portal-border rounded-xl flex flex-col">
-                <div class="p-6 border-b border-portal-border flex items-center justify-between">
-                    <h2 class="font-display font-bold text-lg">{{ __('Inventory Audit') }}</h2>
-                    @can('admin')
-                    <a href="{{ route('admin.products.store') }}" class="bg-portal-accent text-black px-4 py-2 rounded-lg font-bold text-sm hover:bg-white transition-colors flex items-center gap-2">
-                        <x-lucide-plus class="w-4 h-4" /> {{ __('Add Asset') }}
-                    </a>
-                    @endcan
+                <div class="p-6 border-b border-portal-border">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="font-display font-bold text-lg">{{ __('Inventory Overview') }}</h2>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-bold text-portal-muted uppercase tracking-wider" x-text="filteredProducts.length + ' {{ __('Assets') }}'"></span>
+                            @can('admin')
+                            <a href="{{ route('admin.products.create') }}" class="bg-portal-accent text-black px-4 py-2 rounded-lg font-bold text-sm hover:bg-white transition-colors flex items-center gap-2">
+                                <x-lucide-plus class="w-4 h-4" /> {{ __('Add Asset') }}
+                            </a>
+                            @endcan
+                        </div>
+                    </div>
+
+                    <!-- Filter Bar -->
+                    <div class="flex flex-wrap gap-3">
+                        <!-- Category Filter -->
+                        <select x-model="categoryFilter" class="bg-white/5 border border-portal-border text-white text-sm font-bold rounded-lg px-4 py-2 focus:ring-portal-accent focus:border-portal-accent">
+                            <option value="all" class="bg-[#141415] text-white">{{ __('Toutes les catégories') }}</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" class="bg-[#141415] text-white">{{ $category->name_en }}</option>
+                            @endforeach
+                        </select>
+                        
+                        <!-- Status Filter -->
+                        <select x-model="statusFilter" class="bg-white/5 border border-portal-border text-white text-sm font-bold rounded-lg px-4 py-2 focus:ring-portal-accent focus:border-portal-accent">
+                            <option value="all" class="bg-[#141415] text-white">{{ __('Tous les statuts') }}</option>
+                            <option value="active" class="bg-[#141415] text-white">{{ __('Actif') }}</option>
+                            <option value="draft" class="bg-[#141415] text-white">{{ __('Brouillon') }}</option>
+                            <option value="archived" class="bg-[#141415] text-white">{{ __('Archivé') }}</option>
+                        </select>
+                        
+                        <!-- Search Input -->
+                        <div class="flex-1 min-w-[200px]">
+                            <div class="relative">
+                                <x-lucide-search class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-portal-muted" />
+                                <input 
+                                    type="text" 
+                                    x-model="searchQuery" 
+                                    placeholder="{{ __('Rechercher produit, REF...') }}"
+                                    class="w-full bg-white/5 border border-portal-border text-white placeholder-portal-muted text-sm rounded-lg pl-10 pr-4 py-2 focus:ring-portal-accent focus:border-portal-accent"
+                                >
+                            </div>
+                        </div>
+                        
+                        <!-- Clear Filters -->
+                        <button 
+                            @click="categoryFilter = 'all'; statusFilter = 'all'; searchQuery = ''"
+                            class="px-4 py-2 bg-white/5 border border-portal-border text-portal-muted hover:text-white hover:bg-white/10 rounded-lg text-sm font-bold transition-colors flex items-center gap-2"
+                        >
+                            <x-lucide-x class="w-4 h-4" /> {{ __('Réinitialiser') }}
+                        </button>
+                    </div>
                 </div>
+
                 <div class="overflow-x-auto">
                     <table class="w-full text-start whitespace-nowrap">
                         <thead class="bg-white/2 text-xs font-bold text-portal-muted uppercase tracking-wider">
                             <tr>
-                                <th class="px-6 py-4 text-start">{{ __('Produit') }}</th>
+                                <th @click="sortBy('name')" class="px-6 py-4 text-start rounded-tl-xl cursor-pointer hover:text-white transition-colors group">
+                                    <div class="flex items-center gap-1">
+                                        {{ __('Produit') }}
+                                        <x-lucide-arrow-up-down class="w-3 h-3 opacity-50 group-hover:opacity-100" />
+                                    </div>
+                                </th>
                                 <th class="px-6 py-4 text-start">{{ __('Catégorie') }}</th>
                                 <th class="px-6 py-4 text-start">{{ __('Spécifications') }}</th>
-                                <th class="px-6 py-4 text-start">{{ __('Prix Unit.') }}</th>
-                                <th class="px-6 py-4 text-start">{{ __('État Stock') }}</th>
+                                <th @click="sortBy('price')" class="px-6 py-4 text-start cursor-pointer hover:text-white transition-colors group">
+                                    <div class="flex items-center gap-1">
+                                        {{ __('Prix Unit.') }}
+                                        <x-lucide-arrow-up-down class="w-3 h-3 opacity-50 group-hover:opacity-100" />
+                                    </div>
+                                </th>
+                                <th class="px-6 py-4 text-start">{{ __('Statut') }}</th>
                                 @can('admin')
-                                <th class="px-6 py-4 text-end">{{ __('Actions') }}</th>
+                                <th class="px-6 py-4 text-end rounded-tr-xl">{{ __('Actions') }}</th>
                                 @endcan
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-portal-border">
-                            @foreach($stat_products as $product)
-                                <tr class="hover:bg-white/5 transition-colors group">
-                                    <td class="px-4 md:px-6 py-4">
-                                        <div class="flex items-center gap-3">
-                                            <div class="p-2 bg-white/5 rounded-lg text-portal-muted">
-                                                <x-lucide-package class="w-4 h-4" />
+                            <template x-for="product in paginatedProducts" :key="product.id">
+                                <tr class="hover:bg-white/5 transition-all duration-200 group">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-4">
+                                            <div class="p-3 bg-white/5 rounded-xl text-portal-muted border border-portal-border group-hover:border-portal-accent/30 group-hover:text-portal-accent transition-colors">
+                                                <x-lucide-package class="w-5 h-5" />
                                             </div>
                                             <div>
-                                                <div class="font-bold text-sm text-white">{{ $product->name }}</div>
-                                                <div class="text-xs text-portal-muted">{{ __('SKU') }}: {{ $product->id }}</div>
+                                                <div class="font-bold text-sm text-white group-hover:text-portal-accent transition-colors" x-text="product.name"></div>
+                                                <div class="text-[10px] uppercase tracking-wider font-bold text-portal-muted mt-0.5" x-text="'REF: ' + product.id"></div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-4 md:px-6 py-4 text-sm text-portal-muted">{{ $product->category->name ?? 'N/A' }}</td>
-                                    <td class="px-4 md:px-6 py-4">
-                                        <div class="text-[0.65rem] font-bold text-portal-muted uppercase">{{ $product->weight_kg }}kg</div>
-                                        <div class="text-[0.65rem] text-white">{{ $product->pieces_per_bundle }} {{ __('pcs/bndl') }}</div>
+                                    <td class="px-6 py-4">
+                                        <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium bg-white/5 text-portal-muted border border-portal-border" x-text="product.category ? product.category.name_en : 'N/A'"></span>
                                     </td>
-                                    <td class="px-4 md:px-6 py-4 font-mono font-bold text-portal-accent">{{ number_format($product->price, 2) }} {{ __('DA') }}</td>
-                                    <td class="px-4 md:px-6 py-4">
-                                        @if($product->in_stock)
-                                            <span class="inline-flex items-center px-2 py-1 rounded bg-green-500/10 text-green-500 text-[0.65rem] font-bold uppercase tracking-wider">{{ __('Active') }}</span>
-                                        @else
-                                            <span class="inline-flex items-center px-2 py-1 rounded bg-red-500/10 text-red-500 text-[0.65rem] font-bold uppercase tracking-wider">{{ __('Depleted') }}</span>
-                                        @endif
+                                    <td class="px-6 py-4">
+                                        <div class="flex flex-col gap-1">
+                                            <div class="flex items-center gap-2 text-xs text-white">
+                                                <x-lucide-weight class="w-3 h-3 text-portal-muted" />
+                                                <span x-text="(product.weight_kg || '0') + 'kg'"></span>
+                                            </div>
+                                            <div class="flex items-center gap-2 text-xs text-white">
+                                                <x-lucide-layers class="w-3 h-3 text-portal-muted" />
+                                                <span x-text="(product.pieces_per_bundle || '0') + ' pcs/bundle'"></span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="font-mono font-bold text-portal-accent text-sm bg-portal-accent/5 px-3 py-1.5 rounded-lg inline-block border border-portal-accent/10">
+                                            <span x-text="Number(product.price).toFixed(2)"></span> <span class="text-xs ml-0.5">DA</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <template x-if="product.status === 'active'">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+                                                {{ __('Actif') }}
+                                            </span>
+                                        </template>
+                                        <template x-if="product.status === 'draft'">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-yellow-500/10 text-yellow-500 border border-yellow-500/20">
+                                                {{ __('Brouillon') }}
+                                            </span>
+                                        </template>
+                                        <template x-if="product.status === 'archived'">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-white/5 text-portal-muted border border-portal-border">
+                                                {{ __('Archivé') }}
+                                            </span>
+                                        </template>
                                     </td>
                                     @can('admin')
-                                    <td class="px-4 md:px-6 py-4 text-end">
-                                        <div class="flex justify-end gap-2">
-                                            <a href="{{ route('admin.products.edit', $product->id) }}" class="p-2.5 md:p-2 hover:bg-white/10 rounded-lg text-portal-muted hover:text-white transition-colors inline-flex items-center justify-center min-h-[44px] min-w-[44px] md:min-h-0 md:min-w-0">
-                                                <x-lucide-edit-2 class="w-5 h-5 md:w-4 md:h-4" />
+                                    <td class="px-6 py-4 text-end">
+                                        <div class="flex justify-end gap-2 opacity-60 group-hover:opacity-100 transition-opacity">
+                                            <a :href="'/admin/products/' + product.id + '/edit'" class="p-2 rounded-lg hover:bg-portal-accent hover:text-black text-portal-muted transition-all" title="{{ __('Modifier') }}">
+                                                <x-lucide-edit-3 class="w-4 h-4" />
                                             </a>
-                                            <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" onsubmit="return confirm('{{ __('Are you sure you want to delete this asset?') }}');" class="inline-block">
+                                            <form :action="'/admin/products/' + product.id" method="POST" onsubmit="return confirm('{{ __('Are you sure you want to delete this asset?') }}');" class="inline-block">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="p-2.5 md:p-2 hover:bg-red-500/10 rounded-lg text-portal-muted hover:text-red-500 transition-colors inline-flex items-center justify-center min-h-[44px] min-w-[44px] md:min-h-0 md:min-w-0">
-                                                    <x-lucide-trash-2 class="w-5 h-5 md:w-4 md:h-4" />
+                                                <button type="submit" class="p-2 rounded-lg hover:bg-rose-500 hover:text-white text-portal-muted transition-all" title="{{ __('Supprimer') }}">
+                                                    <x-lucide-trash-2 class="w-4 h-4" />
                                                 </button>
                                             </form>
                                         </div>
                                     </td>
                                     @endcan
                                 </tr>
-                                </tr>
-                            @endforeach
+                            </template>
+                            
+                            <!-- Empty State -->
+                            <tr x-show="filteredProducts.length === 0">
+                                <td colspan="6" class="px-6 py-12 text-center text-portal-muted italic">
+                                    {{ __('Aucun produit trouvé.') }}
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
+                </div>
+
+                <!-- Pagination Controls -->
+                <div class="px-6 py-4 border-t border-portal-border bg-white/5 flex items-center justify-between" x-show="totalPages > 1">
+                    <span class="text-xs text-portal-muted font-mono">{{ __('Page') }} <span x-text="currentPage"></span> / <span x-text="totalPages"></span></span>
+                    <div class="flex items-center gap-2">
+                        <button @click="prevPage()" :disabled="currentPage === 1" class="p-2 rounded-lg border border-portal-border hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed text-white transition-colors">
+                            <x-lucide-chevron-left class="w-4 h-4 rtl:rotate-180" />
+                        </button>
+                        <div class="flex items-center gap-1">
+                            <template x-for="page in totalPages">
+                                <button @click="goToPage(page)" 
+                                    class="w-8 h-8 rounded-lg text-xs font-bold transition-colors"
+                                    :class="currentPage === page ? 'bg-portal-accent text-black' : 'hover:bg-white/10 text-portal-muted hover:text-white'"
+                                    x-text="page"
+                                    x-show="page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)"
+                                ></button>
+                            </template>
+                        </div>
+                        <button @click="nextPage()" :disabled="currentPage === totalPages" class="p-2 rounded-lg border border-portal-border hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed text-white transition-colors">
+                             <x-lucide-chevron-right class="w-4 h-4 rtl:rotate-180" />
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -291,6 +489,8 @@
             dateFilter: 'all',
             searchQuery: '',
             selectedOrders: [],
+            currentPage: 1,
+            itemsPerPage: 10,
             
             get filteredOrders() {
                 let orders = {{ Js::from($all_orders) }};
@@ -328,16 +528,45 @@
                 return orders;
             },
 
+            get paginatedOrders() {
+                const start = (this.currentPage - 1) * this.itemsPerPage;
+                const end = start + this.itemsPerPage;
+                return this.filteredOrders.slice(start, end);
+            },
+
+            get totalPages() {
+                return Math.ceil(this.filteredOrders.length / this.itemsPerPage);
+            },
+
+            nextPage() {
+                if (this.currentPage < this.totalPages) this.currentPage++;
+            },
+
+            prevPage() {
+                if (this.currentPage > 1) this.currentPage--;
+            },
+            
+            goToPage(page) {
+                this.currentPage = page;
+            },
+
             get allSelected() {
-                return this.filteredOrders.length > 0 && this.selectedOrders.length === this.filteredOrders.length;
+                return this.paginatedOrders.length > 0 && this.selectedOrders.length === this.paginatedOrders.length; // Only check visible page
             },
             
             toggleAll() {
                 if (this.allSelected) {
                     this.selectedOrders = [];
                 } else {
-                    this.selectedOrders = this.filteredOrders.map(o => o.id);
+                    this.selectedOrders = this.paginatedOrders.map(o => o.id);
                 }
+            },
+            
+            // Watch filters to reset page
+            init() {
+                this.$watch('statusFilter', () => this.currentPage = 1);
+                this.$watch('dateFilter', () => this.currentPage = 1);
+                this.$watch('searchQuery', () => this.currentPage = 1);
             }
         }">
              <div class="bg-portal-sidebar border border-portal-border rounded-xl flex flex-col relative">
@@ -366,9 +595,9 @@
                         
                         <select name="status" class="bg-black border border-white/20 text-white text-xs font-bold uppercase rounded-xl px-4 py-2 focus:ring-portal-accent focus:border-portal-accent outline-none">
                             <option value="pending">{{ __('Set Pending') }}</option>
-                            <option value="processing">{{ __('Process Selection') }}</option>
-                            <option value="delivered">{{ __('Mark Delivered') }}</option>
-                            <option value="cancelled">{{ __('Cancel Selection') }}</option>
+                            <option value="confirmed">{{ __('Confirmer') }}</option>
+                            <option value="in_delivery">{{ __('En Livraison') }}</option>
+                            <option value="delivered">{{ __('Livrer') }}</option>
                         </select>
                         
                         <button type="submit" class="bg-black text-white px-6 py-2 rounded-xl font-bold hover:bg-black/80 transition-colors shadow-lg">
@@ -387,6 +616,11 @@
                         <h2 class="font-display font-bold text-lg">{{ __('Master Transaction Ledger') }}</h2>
                         <div class="flex items-center gap-3">
                             <span class="text-xs font-bold text-portal-muted uppercase tracking-wider" x-text="filteredOrders.length + ' {{ __('Records') }}'"></span>
+                            @can('admin')
+                            <a href="{{ route('admin.orders.create') }}" class="flex items-center gap-2 px-4 py-2 border border-portal-accent text-portal-accent rounded-lg text-sm font-bold hover:bg-portal-accent hover:text-black transition-colors">
+                                <x-lucide-plus class="w-4 h-4" /> {{ __('Créer Commande') }}
+                            </a>
+                            @endcan
                             <a href="{{ route('admin.orders.export') }}" class="flex items-center gap-2 px-4 py-2 bg-portal-accent text-black rounded-lg text-sm font-bold hover:bg-white transition-colors">
                                 <x-lucide-download class="w-4 h-4" /> {{ __('Export CSV') }}
                             </a>
@@ -397,19 +631,19 @@
                     <div class="flex flex-wrap gap-3">
                         <!-- Status Filter -->
                         <select x-model="statusFilter" class="bg-white/5 border border-portal-border text-white text-sm font-bold rounded-lg px-4 py-2 focus:ring-portal-accent focus:border-portal-accent">
-                            <option value="all">{{ __('Tous les statuts') }}</option>
-                            <option value="pending">{{ __('En attente') }}</option>
-                            <option value="processing">{{ __('En traitement') }}</option>
-                            <option value="delivered">{{ __('Livrées') }}</option>
-                            <option value="cancelled">{{ __('Annulées') }}</option>
+                            <option value="all" class="bg-[#141415] text-white">{{ __('Tous les statuts') }}</option>
+                            <option value="pending" class="bg-[#141415] text-white">{{ __('En attente') }}</option>
+                            <option value="confirmed" class="bg-[#141415] text-white">{{ __('Confirmer') }}</option>
+                            <option value="in_delivery" class="bg-[#141415] text-white">{{ __('En Livraison') }}</option>
+                            <option value="delivered" class="bg-[#141415] text-white">{{ __('Livrer') }}</option>
                         </select>
                         
                         <!-- Date Filter -->
                         <select x-model="dateFilter" class="bg-white/5 border border-portal-border text-white text-sm font-bold rounded-lg px-4 py-2 focus:ring-portal-accent focus:border-portal-accent">
-                            <option value="all">{{ __('Toutes les dates') }}</option>
-                            <option value="today">{{ __('Aujourd\'hui') }}</option>
-                            <option value="week">{{ __('Cette semaine') }}</option>
-                            <option value="month">{{ __('Ce mois') }}</option>
+                            <option value="all" class="bg-[#141415] text-white">{{ __('Toutes les dates') }}</option>
+                            <option value="today" class="bg-[#141415] text-white">{{ __('Aujourd\'hui') }}</option>
+                            <option value="week" class="bg-[#141415] text-white">{{ __('Cette semaine') }}</option>
+                            <option value="month" class="bg-[#141415] text-white">{{ __('Ce mois') }}</option>
                         </select>
                         
                         <!-- Search Input -->
@@ -442,7 +676,7 @@
                                 @endcan
                                 <th class="px-6 py-4 text-start">{{ __('N° Commande') }}</th>
                                 <th class="px-6 py-4 text-start">{{ __('Client / Entreprise') }}</th>
-                                <th class="px-6 py-4 text-start">{{ __('Référence Projet') }}</th>
+
                                 <th class="px-6 py-4 text-start">{{ __('Livraison') }}</th>
                                 <th class="px-6 py-4 text-start">{{ __('Date') }}</th>
                                 <th class="px-6 py-4 text-center">{{ __('Statut Logistique') }}</th>
@@ -453,7 +687,7 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-portal-border">
-                            <template x-for="order in filteredOrders" :key="order.id">
+                            <template x-for="order in paginatedOrders" :key="order.id">
                                 <tr class="hover:bg-white/5 transition-all group relative" :class="{'bg-portal-accent/5': selectedOrders.includes(order.id)}">
                                     @can('admin')
                                     <td class="px-6 py-4">
@@ -470,7 +704,7 @@
                                         <div class="font-bold text-sm text-white" x-text="order.user.first_name + ' ' + order.user.last_name"></div>
                                         <div class="text-xs text-portal-muted" x-text="order.user.company || '{{ __('Contractor') }}'"></div>
                                     </td>
-                                    <td class="px-4 md:px-6 py-4 text-sm text-white cursor-pointer" @click="window.location=`/orders/${order.id}`" x-text="order.project_reference || '-'"></td>
+
                                     <td class="px-4 md:px-6 py-4 text-sm text-portal-accent font-bold cursor-pointer" @click="window.location=`/orders/${order.id}`">
                                         <span x-text="order.requested_delivery_date ? new Date(order.requested_delivery_date).toLocaleDateString('fr-FR', {month: 'short', day: 'numeric'}) : '-'"></span>
                                     </td>
@@ -484,19 +718,29 @@
                                                     <form :action="`/admin/orders/${order.id}/status`" method="POST">
                                                         @csrf
                                                         @method('PATCH')
-                                                        <input type="hidden" name="status" value="processing">
+                                                        <input type="hidden" name="status" value="confirmed">
                                                         <button type="submit" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-500 border border-blue-500/20 text-[0.65rem] font-bold uppercase tracking-wider hover:bg-blue-500 hover:text-white transition-all shadow-sm" title="Approve & Process">
-                                                            <x-lucide-play class="w-3 h-3" /> {{ __('Approve') }}
+                                                            <x-lucide-play class="w-3 h-3" /> {{ __('Confirmer') }}
                                                         </button>
                                                     </form>
                                                 </template>
-                                                <template x-if="order.status === 'processing'">
+                                                <template x-if="order.status === 'confirmed'">
+                                                    <form :action="`/admin/orders/${order.id}/status`" method="POST">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <input type="hidden" name="status" value="in_delivery">
+                                                        <button type="submit" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[0.65rem] font-bold uppercase tracking-wider hover:bg-indigo-500 hover:text-white transition-all shadow-sm" title="Set In Delivery">
+                                                            <x-lucide-truck class="w-3 h-3" /> {{ __('En Livraison') }}
+                                                        </button>
+                                                    </form>
+                                                </template>
+                                                <template x-if="order.status === 'in_delivery'">
                                                     <form :action="`/admin/orders/${order.id}/status`" method="POST">
                                                         @csrf
                                                         @method('PATCH')
                                                         <input type="hidden" name="status" value="delivered">
                                                         <button type="submit" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-500/10 text-green-500 border border-green-500/20 text-[0.65rem] font-bold uppercase tracking-wider hover:bg-green-500 hover:text-white transition-all shadow-sm" title="Mark as Delivered">
-                                                            <x-lucide-check-circle class="w-3 h-3" /> {{ __('Deliver') }}
+                                                            <x-lucide-check-circle class="w-3 h-3" /> {{ __('Livrer') }}
                                                         </button>
                                                     </form>
                                                 </template>
@@ -506,29 +750,32 @@
                                                             'bg-green-500/10 text-green-500': order.status === 'delivered',
                                                             'bg-red-500/10 text-red-500': order.status === 'cancelled'
                                                         }"
-                                                        x-text="order.status">
+                                                        x-text="{
+                                                            pending: 'En attente',
+                                                            confirmed: 'Confirmer',
+                                                            in_delivery: 'En livraison',
+                                                            delivered: 'Livrer',
+                                                            cancelled: 'Annulé'
+                                                        }[order.status] ?? order.status">
                                                     </span>
                                                 </template>
 
-                                                <template x-if="order.status !== 'delivered' && order.status !== 'cancelled'">
-                                                    <form :action="`/admin/orders/${order.id}/status`" method="POST">
-                                                        @csrf
-                                                        @method('PATCH')
-                                                        <input type="hidden" name="status" value="cancelled">
-                                                        <button type="submit" class="p-2 hover:bg-red-500/10 rounded-lg text-portal-muted hover:text-red-500 transition-colors" :title="'{{ __('Cancel') }}'">
-                                                            <x-lucide-x-circle class="w-4 h-4" />
-                                                        </button>
-                                                    </form>
-                                                </template>
                                             @else
                                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[0.65rem] font-bold uppercase tracking-wider"
                                                     :class="{
                                                         'bg-amber-500/10 text-amber-500': order.status === 'pending',
-                                                        'bg-blue-500/10 text-blue-500': order.status === 'processing',
+                                                        'bg-blue-500/10 text-blue-500': order.status === 'confirmed',
+                                                        'bg-indigo-500/10 text-indigo-400': order.status === 'in_delivery',
                                                         'bg-green-500/10 text-green-500': order.status === 'delivered',
                                                         'bg-red-500/10 text-red-500': order.status === 'cancelled'
                                                     }"
-                                                    x-text="order.status">
+                                                    x-text="{
+                                                        pending: 'En attente',
+                                                        confirmed: 'Confirmer',
+                                                        in_delivery: 'En livraison',
+                                                        delivered: 'Livrer',
+                                                        cancelled: 'Annulé'
+                                                    }[order.status] ?? order.status">
                                                 </span>
                                             @endcan
                                         </div>
@@ -537,14 +784,44 @@
                                         <span x-text="Number(order.total).toFixed(2) + ' {{ __('DA') }}'"></span>
                                     </td>
                                     <td class="px-4 md:px-6 py-4 text-end" @click.stop>
-                                        <a :href="`/orders/${order.id}`" class="p-2.5 md:p-2 hover:bg-white/10 rounded-lg text-portal-muted hover:text-white transition-colors inline-flex items-center justify-center min-h-[44px] min-w-[44px] md:min-h-0 md:min-w-0" title="{{ __('Inspect Documentation') }}">
-                                            <x-lucide-eye class="w-5 h-5 md:w-4 md:h-4" />
-                                        </a>
+                                        <div class="flex items-center justify-end gap-1">
+                                            @can('admin')
+                                            <a :href="`/admin/orders/${order.id}/edit`" class="p-2.5 md:p-2 hover:bg-white/10 rounded-lg text-portal-muted hover:text-white transition-colors inline-flex items-center justify-center min-h-[44px] min-w-[44px] md:min-h-0 md:min-w-0" title="{{ __('Modifier') }}">
+                                                <x-lucide-edit-2 class="w-5 h-5 md:w-4 md:h-4" />
+                                            </a>
+                                            @endcan
+                                            <a :href="`/orders/${order.id}`" class="p-2.5 md:p-2 hover:bg-white/10 rounded-lg text-portal-muted hover:text-white transition-colors inline-flex items-center justify-center min-h-[44px] min-w-[44px] md:min-h-0 md:min-w-0" title="{{ __('Inspect Documentation') }}">
+                                                <x-lucide-eye class="w-5 h-5 md:w-4 md:h-4" />
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                             </template>
                         </tbody>
                     </table>
+                </div>
+
+                <!-- Pagination Controls -->
+                <div class="px-6 py-4 border-t border-portal-border bg-white/5 flex items-center justify-between" x-show="totalPages > 1">
+                    <span class="text-xs text-portal-muted font-mono">{{ __('Page') }} <span x-text="currentPage"></span> / <span x-text="totalPages"></span></span>
+                    <div class="flex items-center gap-2">
+                        <button @click="prevPage()" :disabled="currentPage === 1" class="p-2 rounded-lg border border-portal-border hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed text-white transition-colors">
+                            <x-lucide-chevron-left class="w-4 h-4 rtl:rotate-180" />
+                        </button>
+                        <div class="flex items-center gap-1">
+                            <template x-for="page in totalPages">
+                                <button @click="goToPage(page)" 
+                                    class="w-8 h-8 rounded-lg text-xs font-bold transition-colors"
+                                    :class="currentPage === page ? 'bg-portal-accent text-black' : 'hover:bg-white/10 text-portal-muted hover:text-white'"
+                                    x-text="page"
+                                    x-show="page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)"
+                                ></button>
+                            </template>
+                        </div>
+                        <button @click="nextPage()" :disabled="currentPage === totalPages" class="p-2 rounded-lg border border-portal-border hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed text-white transition-colors">
+                             <x-lucide-chevron-right class="w-4 h-4 rtl:rotate-180" />
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -618,3 +895,6 @@
         </div>
     </div>
 </x-app-layout>
+
+
+

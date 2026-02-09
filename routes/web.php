@@ -6,6 +6,8 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,10 +35,11 @@ Route::get('/', [PageController::class, 'home'])->name('home');
 Route::get('/qui-sommes-nous', [PageController::class, 'about'])->name('about');
 Route::get('/myfix', [PageController::class, 'myfix'])->name('brand.myfix');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+Route::get('/test-order', [TestController::class, 'orderTest'])->name('test.order');
 
 // Catalog Routes (Public)
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/products/create', [ProductController::class, 'create'])->name('products.create'); // Must be before {product}
+// Route::get('/products/create', [ProductController::class, 'create'])->name('products.create'); // Moved to Admin
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 Route::get('/products/{id}/technical-sheet', [ProductController::class, 'technicalSheet'])->name('products.technical_sheet');
 
@@ -48,6 +51,10 @@ Route::delete('/commande/remove/{id}', [OrderController::class, 'removeFromCart'
 
 // Auth Routes
 Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    Route::middleware('profile.complete')->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard'); 
     })->name('dashboard');
@@ -84,14 +91,26 @@ Route::middleware(['auth'])->group(function () {
             Route::patch('/users/{user}/role', [AdminDashboardController::class, 'updateUserRole'])->name('users.updateRole');
             Route::delete('/users/{user}', [AdminDashboardController::class, 'destroyUser'])->name('users.destroy');
             Route::patch('/orders/bulk-update', [AdminDashboardController::class, 'bulkUpdateOrderStatus'])->name('orders.bulkUpdate');
+            // Manual Order Creation
+            Route::get('/orders/create', [\App\Http\Controllers\AdminOrderController::class, 'create'])->name('orders.create');
+            Route::post('/orders', [\App\Http\Controllers\AdminOrderController::class, 'store'])->name('orders.store');
+            Route::get('/orders/{order}/edit', [\App\Http\Controllers\AdminOrderController::class, 'edit'])->name('orders.edit');
+            Route::put('/orders/{order}', [\App\Http\Controllers\AdminOrderController::class, 'update'])->name('orders.update');
+
             Route::delete('/logs/clear', [AdminDashboardController::class, 'clearActivityLogs'])->name('logs.clear');
 
             // Product Management
+            Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
             Route::post('/products', [ProductController::class, 'store'])->name('products.store');
             Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
             Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
             Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+
+            // Settings
+            Route::get('/settings', [\App\Http\Controllers\AdminSettingsController::class, 'index'])->name('settings.index');
+            Route::post('/settings', [\App\Http\Controllers\AdminSettingsController::class, 'update'])->name('settings.update');
         });
+    });
     });
 });
 

@@ -11,7 +11,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $query = \App\Models\Product::with('category');
+        $query = \App\Models\Product::with('category')->where('status', 'active');
 
         if ($request->ajax()) {
             if ($request->filled('category') && $request->category !== 'all') {
@@ -62,11 +62,17 @@ class ProductController extends Controller
             'description_en' => 'nullable|string',
             'description_fr' => 'nullable|string',
             'description_ar' => 'nullable|string',
-            'in_stock' => 'boolean',
-
+            'status' => 'required|in:active,draft,archived',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'weight_kg' => 'nullable|numeric',
             'pieces_per_bundle' => 'nullable|integer'
         ]);
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+            $validated['image_url'] = '/storage/' . $imagePath;
+        }
 
         \App\Models\Product::create($validated);
 
@@ -114,7 +120,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $valided = $request->validate([
+        $validated = $request->validate([
             'name_en' => 'required|string|max:255',
             'name_fr' => 'required|string|max:255',
             'name_ar' => 'required|string|max:255',
@@ -123,14 +129,27 @@ class ProductController extends Controller
             'description_en' => 'nullable|string',
             'description_fr' => 'nullable|string',
             'description_ar' => 'nullable|string',
-            'in_stock' => 'boolean',
-
+            'status' => 'required|in:active,draft,archived',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'weight_kg' => 'nullable|numeric',
             'pieces_per_bundle' => 'nullable|integer'
         ]);
 
         $product = \App\Models\Product::findOrFail($id);
-        $product->update($valided);
+
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($product->image_url) {
+                $oldImagePath = str_replace('/storage/', '', $product->image_url);
+                \Storage::disk('public')->delete($oldImagePath);
+            }
+            
+            $imagePath = $request->file('image')->store('products', 'public');
+            $validated['image_url'] = '/storage/' . $imagePath;
+        }
+
+        $product->update($validated);
 
         return redirect()->route('admin.dashboard')->with('success', 'Product updated successfully');
     }

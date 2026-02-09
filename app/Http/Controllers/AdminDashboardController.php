@@ -33,17 +33,20 @@ class AdminDashboardController extends Controller
         $stats = [
             'revenue' => Order::sum('total'),
             'revenue_change' => number_format($revenueChange, 1),
-            'active_orders' => Order::whereIn('status', ['pending', 'processing'])->count(),
+            'active_orders' => Order::whereIn('status', ['pending', 'confirmed', 'in_delivery'])->count(),
             'total_users' => User::count(),
-            'low_stock' => Product::where('in_stock', false)->count(),
+            'low_stock' => Product::where('status', 'archived')->count(),
         ];
 
         $activityLogs = \App\Models\ActivityLog::with('user')->orderBy('created_at', 'desc')->take(15)->get();
+
+        $categories = \App\Models\Category::all();
 
         return view('admin.dashboard', [
             'recent_orders' => $recentOrders,
             'all_orders' => $allOrders,
             'stat_products' => $products,
+            'categories' => $categories,
             'users' => $users,
             'stats' => $stats,
             'activity_logs' => $activityLogs
@@ -67,7 +70,7 @@ class AdminDashboardController extends Controller
     public function updateOrderStatus(Request $request, Order $order)
     {
         $validated = $request->validate([
-            'status' => 'required|in:pending,processing,delivered,cancelled'
+            'status' => 'required|in:pending,confirmed,in_delivery,delivered,cancelled'
         ]);
 
         $oldStatus = $order->status;
@@ -179,7 +182,7 @@ class AdminDashboardController extends Controller
         $validated = $request->validate([
             'order_ids' => 'required|array',
             'order_ids.*' => 'exists:orders,id',
-            'status' => 'required|in:pending,processing,delivered,cancelled'
+            'status' => 'required|in:pending,confirmed,in_delivery,delivered,cancelled'
         ]);
 
         Order::whereIn('id', $validated['order_ids'])->update(['status' => $validated['status']]);

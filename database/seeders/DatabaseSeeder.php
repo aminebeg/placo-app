@@ -170,7 +170,7 @@ class DatabaseSeeder extends Seeder
                     'pieces_per_bundle' => $prod['pieces_per_bundle'],
                     'image_url' => $prod['image_url'],
                     'images' => $prod['images'] ?? null,
-                    'in_stock' => true
+                    'status' => 'active'
                 ]);
             }
         }
