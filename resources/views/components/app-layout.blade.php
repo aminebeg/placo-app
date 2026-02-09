@@ -157,7 +157,6 @@
                             {{ substr(auth()->user()->first_name ?? 'U', 0, 1) }}
                         </div>
                         <div class="overflow-hidden">
-                            <h4 class="font-bold text-white mb-2">{{ __('Assistance Technique') }}</h4>
                             <div class="font-bold text-sm truncate">{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</div>
                             <div class="text-xs text-portal-muted truncate">{{ auth()->user()->company ?? __('Professionnel') }}</div>
                         </div>

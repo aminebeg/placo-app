@@ -279,116 +279,116 @@
                 </div>
 
                 <!-- Grid Items -->
-                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <template x-for="product in products" :key="product.id">
-                        <div class="group bg-[#141415] rounded-3xl border border-white/5 overflow-hidden flex flex-col hover:border-portal-accent/30 transition-all duration-300 hover:shadow-[0_0_30px_-10px_rgba(0,0,0,0.5)]"
-                            @click="openQuickView(product)">
-                            <div
-                                class="relative h-72 bg-gradient-to-br from-white via-slate-50 to-slate-100 flex items-center justify-center overflow-hidden border-b border-white/5 group-hover:from-slate-50 group-hover:to-white transition-all duration-500">
-                                <div class="absolute inset-0 opacity-[0.03]"
-                                    style="background-image: radial-gradient(circle, #000 1px, transparent 1px); background-size: 20px 20px;">
+                        <a :href="'/products/' + product.id" 
+                           class="group relative bg-[#1a1a1a] rounded-xl overflow-hidden border border-white/5 hover:border-portal-accent/30 transition-all duration-500">
+                            
+                            <!-- Product Image Area - Larger -->
+                            <div class="relative h-64 bg-gradient-to-br from-[#252525] to-[#1a1a1a] flex items-center justify-center p-8 overflow-hidden">
+                                <!-- Category Badge -->
+                                <div class="absolute top-3 left-3 z-10">
+                                    <span class="inline-flex items-center px-2.5 py-1 rounded text-[0.65rem] font-bold uppercase tracking-wider bg-portal-accent/10 text-portal-accent border border-portal-accent/20">
+                                        <template x-if="product.category">
+                                            <span x-text="product.category.name"></span>
+                                        </template>
+                                        <template x-if="!product.category">
+                                            <span>{{ __('MYFIX') }}</span>
+                                        </template>
+                                    </span>
                                 </div>
 
+                                <!-- Favorite Button -->
                                 <button @click.stop="toggleFavorite(product)"
-                                    class="absolute top-6 right-6 z-20 w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
-                                    :class="product.is_favorite ? 'bg-red-500 text-white shadow-lg' :
-                                        'bg-black/10 text-slate-400 hover:bg-white hover:text-red-500'">
-                                    <x-lucide-heart class="w-5 h-5"
+                                    class="absolute top-3 right-3 z-10 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300"
+                                    :class="product.is_favorite ? 'bg-red-500 text-white' :
+                                        'bg-white/5 text-slate-400 hover:text-red-500 hover:bg-white/10'">
+                                    <x-lucide-heart class="w-4 h-4"
                                         x-bind:class="product.is_favorite ? 'fill-current' : ''" />
                                 </button>
 
-                                <div class="relative z-10 w-full h-full p-8 flex items-center justify-center">
-                                    <template x-if="product.image_url">
-                                        <div class="w-full h-full flex items-center justify-center">
-                                            <img :src="product.image_url" :alt="product.name" loading="lazy"
-                                                class="max-w-full max-h-full w-auto h-auto object-contain group-hover:scale-105 transition-all duration-700 filter drop-shadow-[0_10px_30px_rgba(0,0,0,0.15)]"
-                                                style="image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges;">
-                                        </div>
-                                    </template>
-                                    <template x-if="!product.image_url">
-                                        <x-lucide-package class="w-16 h-16 text-slate-300 stroke-1" />
-                                    </template>
-                                </div>
-
-                                <div
-                                    class="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <button
-                                        class="w-9 h-9 rounded-xl bg-black/5 backdrop-blur-sm flex items-center justify-center text-slate-700 hover:bg-portal-accent hover:text-black transition-all shadow-sm">
-                                        <x-lucide-maximize-2 class="w-4 h-4" />
-                                    </button>
-                                </div>
-
-                                <div
-                                    class="absolute top-4 left-4 z-20 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-sm">
-                                    <span
-                                        class="text-[0.6rem] font-bold text-slate-700 uppercase tracking-widest">MYFIX</span>
-                                </div>
+                                <!-- Product Image - Larger and More Visible -->
+                                <template x-if="product.image_url">
+                                    <img :src="product.image_url" :alt="product.name" loading="lazy"
+                                        class="max-w-full max-h-full object-contain transition-transform duration-700 group-hover:scale-110 filter drop-shadow-xl">
+                                </template>
+                                <template x-if="!product.image_url">
+                                    <div class="flex flex-col items-center justify-center text-slate-500">
+                                        <x-lucide-package class="w-20 h-20 stroke-1 mb-2 opacity-50" />
+                                        <span class="text-xs font-medium">{{ __('Image non disponible') }}</span>
+                                    </div>
+                                </template>
                             </div>
 
-                            <div class="p-6 flex-1 flex flex-col">
-                                <div class="flex items-start justify-between mb-2">
-                                    <div class="text-[0.6rem] font-bold text-slate-500 uppercase tracking-widest"
-                                        x-text="'REF: ' + String(product.id).padStart(6, '0')"></div>
-                                    <div x-show="product.pieces_per_bundle"
-                                        class="text-[0.6rem] font-bold text-slate-500 bg-white/5 px-2 py-0.5 rounded"
-                                        x-text="product.pieces_per_bundle + ' pcs/lot'"></div>
+                            <!-- Product Info -->
+                            <div class="p-4">
+                                <!-- Reference -->
+                                <div class="flex items-center justify-between mb-2">
+                                    <span class="text-[0.7rem] font-bold text-slate-500 uppercase tracking-wider bg-white/5 px-2 py-0.5 rounded"
+                                        x-text="'REF: ' + String(product.id).padStart(5, '0')"></span>
+                                    <template x-if="product.pieces_per_bundle">
+                                        <span class="text-[0.7rem] font-semibold text-slate-400 bg-white/5 px-2 py-0.5 rounded"
+                                            x-text="product.pieces_per_bundle + ' pcs/lot'"></span>
+                                    </template>
                                 </div>
 
-                                <h3 class="font-bold text-white text-lg leading-tight mb-4 line-clamp-2 group-hover:text-portal-accent transition-colors"
+                                <!-- Product Name -->
+                                <h3 class="font-bold text-white text-sm leading-snug mb-3 line-clamp-2 group-hover:text-portal-accent transition-colors"
                                     x-text="product.name"></h3>
 
-                                <div class="mt-auto pt-6 border-t border-white/5" x-data="{ localQty: 1 }">
-                                    <div class="flex flex-col gap-3">
-                                        <template x-if="isAuthenticated">
-                                            <div class="flex items-end justify-between mb-2">
-                                                <div class="text-2xl font-display font-bold text-white tracking-tight">
-                                                    <span x-text="Number(product.price).toFixed(2)"></span>
-                                                    <span
-                                                        class="text-sm text-slate-500 font-sans tracking-normal font-normal">DA</span>
-                                                </div>
-                                                <div class="text-xs text-slate-500 font-bold uppercase tracking-wider">
-                                                    {{ __('HT') }}</div>
-                                            </div>
-                                        </template>
-                                        <template x-if="!isAuthenticated">
-                                            <div class="text-sm font-medium text-slate-500 italic mb-2">
-                                                {{ __('Connectez-vous pour voir les tarifs') }}</div>
-                                        </template>
-
-                                        <div class="flex items-center gap-2" @click.stop>
-                                            <template x-if="isAuthenticated">
-                                                <div class="flex w-full gap-2">
-                                                    <div
-                                                        class="flex items-center bg-[#0a0a0b] border border-white/10 rounded-lg h-10 w-24 relative">
-                                                        <button @click="if(localQty > 1) localQty--"
-                                                            class="w-8 h-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/5 rounded-l-lg transition-colors">
-                                                            <x-lucide-minus class="w-3 h-3" />
-                                                        </button>
-                                                        <input type="number" x-model.number="localQty"
-                                                            class="w-full bg-transparent border-none text-center text-white font-bold text-sm focus:ring-0 p-0 h-full appearance-none">
-                                                        <button @click="localQty++"
-                                                            class="w-8 h-full flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/5 rounded-r-lg transition-colors">
-                                                            <x-lucide-plus class="w-3 h-3" />
-                                                        </button>
-                                                    </div>
-                                                    <button @click="addToRequisition(product.id, localQty)"
-                                                        class="flex-1 bg-portal-accent text-black font-bold text-[0.6rem] uppercase tracking-wider rounded-lg hover:bg-white transition-colors flex items-center justify-center gap-2">
-                                                        {{ __('Sélectionner') }} <x-lucide-plus-circle
-                                                            class="w-3 h-3" />
-                                                    </button>
-                                                </div>
-                                            </template>
-                                            <template x-if="!isAuthenticated">
-                                                <a href="{{ route('login') }}"
-                                                    class="w-full bg-white/5 border border-white/10 text-white text-[0.6rem] font-bold uppercase tracking-wider py-3 rounded-lg text-center hover:bg-white/10 transition-colors">
-                                                    {{ __('Accès Client Requis') }}
-                                                </a>
-                                            </template>
+                                <!-- Price -->
+                                <template x-if="isAuthenticated">
+                                    <div class="flex items-end justify-between mb-3 pb-3 border-t border-white/5">
+                                        <div>
+                                            <span class="text-xl font-bold text-white" x-text="Number(product.price).toFixed(2)"></span>
+                                            <span class="text-sm text-slate-500 ml-1">{{ __('DA') }}</span>
                                         </div>
+                                        <span class="text-[0.6rem] font-semibold text-slate-500 uppercase tracking-wider">{{ __('HT') }}</span>
                                     </div>
+                                </template>
+                                <template x-if="!isAuthenticated">
+                                    <div class="flex items-center gap-2 mb-3 pb-3 border-t border-white/5">
+                                        <x-lucide-lock class="w-4 h-4 text-slate-500" />
+                                        <span class="text-xs font-medium text-slate-500">{{ __('Connectez-vous pour les tarifs') }}</span>
+                                    </div>
+                                </template>
+
+                                <!-- Actions -->
+                                <div @click.stop>
+                                    <template x-if="isAuthenticated">
+                                        <div class="flex gap-2" x-data="{ localQty: 1 }">
+                                            <div class="flex items-center bg-white/5 border border-white/10 rounded-lg h-9 flex-1">
+                                                <button @click="if(localQty > 1) localQty--"
+                                                    class="flex-1 h-full flex items-center justify-center text-slate-400 hover:text-white transition-colors">
+                                                    <x-lucide-minus class="w-3 h-3" />
+                                                </button>
+                                                <span class="w-10 h-full flex items-center justify-center text-xs font-bold text-white border-x border-white/10"
+                                                    x-text="localQty"></span>
+                                                <button @click="localQty++"
+                                                    class="flex-1 h-full flex items-center justify-center text-slate-400 hover:text-white transition-colors">
+                                                    <x-lucide-plus class="w-3 h-3" />
+                                                </button>
+                                            </div>
+                                            <button @click="addToRequisition(product.id, localQty)"
+                                                class="flex items-center justify-center gap-1 px-3 bg-portal-accent text-black font-bold text-xs rounded-lg hover:bg-white transition-colors">
+                                                <x-lucide-plus class="w-3 h-3" />
+                                                {{ __('Ajouter') }}
+                                            </button>
+                                        </div>
+                                    </template>
+                                    <template x-if="!isAuthenticated">
+                                        <a href="{{ route('login') }}"
+                                            class="flex items-center justify-center gap-2 w-full py-2.5 bg-white/5 text-white font-bold text-xs rounded-lg hover:bg-white/10 transition-colors">
+                                            <x-lucide-log-in class="w-3 h-3" />
+                                            {{ __('Se connecter') }}
+                                        </a>
+                                    </template>
                                 </div>
                             </div>
-                        </div>
+
+                            <!-- Hover Border Effect -->
+                            <div class="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none border-2 border-portal-accent m-[-1px]"></div>
+                        </a>
                     </template>
                 </div>
 

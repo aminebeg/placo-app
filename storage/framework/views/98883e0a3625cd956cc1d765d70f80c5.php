@@ -1,0 +1,3 @@
+<svg x-bind:class="selectedCategory === 'metal-framing' ? 'opacity-100' : 'opacity-0'" class="w-4 h-4 rtl:rotate-180 transition-transform group-hover:translate-x-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="m9 18 6-6-6-6"/>
+</svg><?php /**PATH C:\Users\Bucket\Desktop\Commandes\placo-app\storage\framework\views/dbf29eacf8d6a07015fbc10d0f253b39.blade.php ENDPATH**/ ?>

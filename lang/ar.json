@@ -301,7 +301,7 @@
     "Satisfaction Client": "رضا الزبائن",
     "Siège & Dépôt Central": "المقر والمستودع المركزي",
     "Notre Engagement Industriel": "التزامنا الصناعي",
-    "SARL Global Accessoires n'est pas seulement un distributeur. Nous sommes avant tout un fabricant engagé. Avec MYFIX, we produisons محلياً حلول التثبيت والعزل التي تلبي أعلى المتطلبات التقنية.": "ليست SARL Global Accessoires مجرد موزع، بل نحن قبل كل شيء مصنع ملتزم. مع MYFIX، ننتج محلياً حلول التثبيت والعزل التي تلبي أعلى المتطلبات التقنية.",
+    "SARL Global Accessoires n'est pas seulement un distributeur. Nous sommes avant tout un fabricant engagé. Avec MYFIX, we produisons محلياً حلول التثبيت والعزل qui تلبي أعلى المتطلبات التقنية.": "ليست SARL Global Accessoires مجرد موزع، بل نحن قبل كل شيء مصنع ملتزم. مع MYFIX، ننتج محلياً حلول التثبيت والعزل التي تلبي أعلى المتطلبات التقنية.",
     "Cette maîtrise de la production nous permet de garantir une qualité constante et une disponibilité immédiate, tout en proposant les produits de nos partenaires mondiaux pour une offre 360°.": "تسمح لنا هذه السيطرة على الإنتاج بضمان جودة ثابتة وتوفر فوري، مع تقديم منتجات شركائنا العالميين لعرض متكامل 360 درجة.",
     "Disponibilité immédiate sur les produits phares": "توفر فوري للمنتجات الرئيسية",
     "Logistique intégrée vers toutes les Wilayas": "خدمات لوجستية متكاملة لجميع الولايات",
@@ -311,7 +311,7 @@
     "Logistique Performante": "خدمات لوجستية فعالة",
     "Notre centre logistique basé à Bordj Bou Arreridj est le cœur battant de notre distribution, nous permettant de livrer nos produits MYFIX et nos marques partenaires dans tout le pays.": "مركزنا اللوجستي الموجود في برج بوعريريج هو القلب النابض لتوزيعنا، مما يسمح لنا بتسليم منتجات MYFIX وماركات شركائنا في جميع أنحاء البلاد.",
     "Formation & Conseil": "التدريب والاستشارة",
-    "Nous organisons régulièrement des sessions de démonstration with nos partenaires pour former les artisans aux nouvelles techniques de pose.": "ننظم بانتظام جلسات عرض مع شركائنا لتدريب الحرفيين على تقنيات التركيب الجديدة.",
+    "Nous organisons régulièrement des sessions de démonstration with our partenaires pour former les artisans aux nouvelles techniques de pose.": "ننظم بانتظام جلسات عرض مع شركائنا لتدريب الحرفيين على تقنيات التركيب الجديدة.",
     "Ils nous font confiance": "يثقون بنا",
     "Prêt à démarrer votre chantier ?": "جاهز لبدء مشروعك؟",
     "Contactez notre service commercial ou commandez directement en ligne.": "اتصل بقطاعنا التجاري أو اطلب مباشرة عبر الإنترنت.",
@@ -395,5 +395,9 @@
     "Rechercher par nom, email, entreprise...": "البحث بالاسم، البريد الإلكتروني، المؤسسة...",
     "Aucun utilisateur trouvé.": "لم يتم العثور على مستخدمين.",
     "Email": "البريد الإلكتروني",
-    "© :year SARL Global Accessoires. Tous droits réservés.": "© :year SARL Global Accessoires. جميع الحقوق محفوظة."
+    "© :year SARL Global Accessoires. Tous droits réservés.": "© :year SARL Global Accessoires. جميع الحقوق محفوظة.",
+    "Nouvelles Commandes": "الطلبات الجديدة",
+    "Opérations Agent": "عمليات الوكيل",
+    "Commandes": "الطلبات",
+    "Mon Profil": "ملفي الشخصي"
 }
