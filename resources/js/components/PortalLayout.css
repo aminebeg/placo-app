@@ -125,6 +125,14 @@
     border-color: var(--portal-accent);
 }
 
+.u-avatar.agent {
+    border-color: #3b82f6;
+}
+
+.portal-nav-item.admin-link.agent-link {
+    border-left: 3px solid #3b82f6;
+}
+
 .u-info {
     display: flex;
     flex-direction: column;

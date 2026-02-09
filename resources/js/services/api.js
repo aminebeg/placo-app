@@ -122,6 +122,17 @@ export const orderService = {
     updateStatus: async (id, status) => {
         const response = await api.patch(`/admin/orders/${id}/status`, { status });
         return response.data;
+    },
+    createForClient: async (clientId, items, subtotal, total, tax = 0, shipping = 0) => {
+        const response = await api.post('/admin/orders/create-for-client', {
+            client_id: clientId,
+            items,
+            subtotal,
+            total,
+            tax,
+            shipping
+        });
+        return response.data;
     }
 };
 

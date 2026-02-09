@@ -52,7 +52,7 @@
             </div>
 
             <nav class="flex-1 px-4 flex flex-col gap-1 overflow-y-auto">
-                @if(auth()->user()?->role !== 'admin')
+                @if(auth()->user()?->role !== 'admin' && auth()->user()?->role !== 'agent')
                     <a href="{{ route('products.index') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('products.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
                         <x-lucide-package class="w-5 h-5 me-3" />
                         {{ __('Catalogue Technique') }}
@@ -73,7 +73,7 @@
                 @endif
 
                 @auth
-                    @if(auth()->user()->role !== 'admin')
+                    @if(auth()->user()->role !== 'admin' && auth()->user()->role !== 'agent')
                         <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4">{{ __('Opérations') }}</div>
                         
                         <a href="{{ route('dashboard') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('dashboard') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
@@ -92,8 +92,8 @@
                         </a>
                     @endif
 
-                    @if(auth()->user()->role === 'admin')
-                        <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4">{{ __('Administration') }}</div>
+                    @if(auth()->user()->role === 'admin' || auth()->user()->role === 'agent')
+                        <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4">{{ auth()->user()->role === 'agent' ? __('Opérations Agent') : __('Administration') }}</div>
                         
                         <a href="{{ route('admin.dashboard', ['tab' => 'overview']) }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->fullUrlIs(route('admin.dashboard', ['tab' => 'overview'])) || (request()->routeIs('admin.dashboard') && !request()->has('tab')) ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
                             <x-lucide-bar-chart-3 class="w-5 h-5 me-3" />
@@ -110,6 +110,7 @@
                             {{ __('Transactions') }}
                         </a>
 
+                        @if(auth()->user()->role === 'admin')
                         <a href="{{ route('admin.dashboard', ['tab' => 'users']) }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->fullUrlIs(route('admin.dashboard', ['tab' => 'users'])) ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
                             <x-lucide-users class="w-5 h-5 me-3" />
                             {{ __('Annuaire') }}
@@ -119,6 +120,7 @@
                             <x-lucide-settings class="w-5 h-5 me-3" />
                             {{ __('Paramètres') }}
                         </a>
+                        @endif
                     @endif
                 @endauth
             </nav>

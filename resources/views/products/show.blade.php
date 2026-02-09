@@ -85,6 +85,36 @@
                     </div>
                 </div>
 
+                @if($product->how_to_use_video_url)
+                    <div class="mt-8">
+                        <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
+                            <x-lucide-play-circle class="w-4 h-4 text-portal-accent" /> 
+                            {{ __('Vidéo Explicative') }}
+                        </h3>
+                        <div class="rounded-2xl overflow-hidden border border-white/10 bg-[#141415]">
+                            @php
+                                $videoUrl = $product->how_to_use_video_url;
+                                if (str_contains($videoUrl, 'youtube.com/watch?v=')) {
+                                    $videoId = explode('v=', $videoUrl)[1];
+                                    $embedUrl = 'https://www.youtube.com/embed/' . explode('&', $videoId)[0];
+                                } elseif (str_contains($videoUrl, 'youtu.be/')) {
+                                    $videoId = explode('youtu.be/', $videoUrl)[1];
+                                    $embedUrl = 'https://www.youtube.com/embed/' . $videoId;
+                                } else {
+                                    $embedUrl = $videoUrl;
+                                }
+                            @endphp
+                            <iframe 
+                                src="{{ $embedUrl }}" 
+                                class="w-full aspect-video"
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                @endif
+
                 @auth
                 <div class="mt-auto bg-[#141415] border border-white/5 rounded-2xl p-6 lg:p-8" 
                     x-data="{ 

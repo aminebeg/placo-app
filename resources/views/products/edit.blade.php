@@ -106,6 +106,26 @@
                     </div>
                 </div>
 
+                <!-- Media -->
+                <div class="space-y-6">
+                    <h3 class="font-display font-bold text-lg border-b border-portal-border pb-2 mb-6 flex items-center gap-2">
+                        <x-lucide-video class="w-5 h-5 text-portal-accent" />
+                        {{ __('Video Content') }}
+                    </h3>
+                    
+                    <div class="space-y-2">
+                        <label class="block text-xs font-bold text-portal-muted uppercase tracking-wider">{{ __('How-to-Use Video URL') }}</label>
+                        <input 
+                            type="url" 
+                            name="how_to_use_video_url" 
+                            value="{{ old('how_to_use_video_url', $product->how_to_use_video_url) }}"
+                            placeholder="https://www.youtube.com/watch?v=..."
+                            class="w-full bg-white/5 border border-portal-border rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-portal-accent/50 focus:border-portal-accent transition-all placeholder-portal-muted text-sm"
+                        >
+                        <p class="text-xs text-slate-500">{{ __('Optional. Enter a YouTube video URL.') }}</p>
+                    </div>
+                </div>
+
                 <!-- Action Bar -->
                 <div class="flex items-center justify-end gap-4 pt-6 border-t border-portal-border">
                     <a href="{{ route('admin.dashboard') }}" class="px-6 py-3 rounded-xl font-bold text-sm text-portal-muted hover:text-white hover:bg-white/5 transition-colors">{{ __('Discard') }}</a>

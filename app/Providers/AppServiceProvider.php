@@ -46,5 +46,20 @@ class AppServiceProvider extends ServiceProvider
         \Illuminate\Support\Facades\Gate::define('view-admin', function ($user) {
             return in_array($user->role, ['admin', 'agent']);
         });
+
+        // Define gate for agents who can create orders
+        \Illuminate\Support\Facades\Gate::define('create-order', function ($user) {
+            return in_array($user->role, ['admin', 'agent']);
+        });
+
+        // Define gate for agents who can update order status
+        \Illuminate\Support\Facades\Gate::define('update-order-status', function ($user) {
+            return in_array($user->role, ['admin', 'agent']);
+        });
+
+        // Define gate for admins only (full write access)
+        \Illuminate\Support\Facades\Gate::define('admin-only', function ($user) {
+            return $user->role === 'admin';
+        });
     }
 }

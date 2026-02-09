@@ -65,7 +65,8 @@ class ProductController extends Controller
             'status' => 'required|in:active,draft,archived',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'weight_kg' => 'nullable|numeric',
-            'pieces_per_bundle' => 'nullable|integer'
+            'pieces_per_bundle' => 'nullable|integer',
+            'how_to_use_video_url' => 'nullable|url'
         ]);
 
         // Handle image upload
@@ -132,7 +133,8 @@ class ProductController extends Controller
             'status' => 'required|in:active,draft,archived',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'weight_kg' => 'nullable|numeric',
-            'pieces_per_bundle' => 'nullable|integer'
+            'pieces_per_bundle' => 'nullable|integer',
+            'how_to_use_video_url' => 'nullable|url'
         ]);
 
         $product = \App\Models\Product::findOrFail($id);

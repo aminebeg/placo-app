@@ -212,6 +212,56 @@
                     </div>
                 </div>
 
+                <?php if($product->how_to_use_video_url): ?>
+                    <div class="mt-8">
+                        <h3 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
+                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-play-circle'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 text-portal-accent']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?> 
+                            <?php echo e(__('Vidéo Explicative')); ?>
+
+                        </h3>
+                        <div class="rounded-2xl overflow-hidden border border-white/10 bg-[#141415]">
+                            <?php
+                                $videoUrl = $product->how_to_use_video_url;
+                                if (str_contains($videoUrl, 'youtube.com/watch?v=')) {
+                                    $videoId = explode('v=', $videoUrl)[1];
+                                    $embedUrl = 'https://www.youtube.com/embed/' . explode('&', $videoId)[0];
+                                } elseif (str_contains($videoUrl, 'youtu.be/')) {
+                                    $videoId = explode('youtu.be/', $videoUrl)[1];
+                                    $embedUrl = 'https://www.youtube.com/embed/' . $videoId;
+                                } else {
+                                    $embedUrl = $videoUrl;
+                                }
+                            ?>
+                            <iframe 
+                                src="<?php echo e($embedUrl); ?>" 
+                                class="w-full aspect-video"
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
                 <?php if(auth()->guard()->check()): ?>
                 <div class="mt-auto bg-[#141415] border border-white/5 rounded-2xl p-6 lg:p-8" 
                     x-data="{ 

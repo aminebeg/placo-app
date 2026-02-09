@@ -9,9 +9,15 @@
 <?php endif; ?>
 <?php $component->withAttributes([]); ?>
      <?php $__env->slot('header', null, []); ?> 
-        <span class="inline-block bg-portal-accent text-black px-2.5 py-1 rounded-md text-[0.7rem] font-extrabold uppercase tracking-wider mb-2"><?php echo e(__('Mes Commandes')); ?></span>
-        <h1 class="text-4xl font-extrabold tracking-tight mb-2"><?php echo e(__('Historique')); ?></h1>
-        <p class="text-portal-muted text-lg"><?php echo e(__('Suivez l\'état de vos commandes de matériaux.')); ?></p>
+        <?php if(auth()->user()->role === 'admin' || auth()->user()->role === 'agent'): ?>
+            <span class="inline-block bg-portal-accent text-black px-2.5 py-1 rounded-md text-[0.7rem] font-extrabold uppercase tracking-wider mb-2"><?php echo e(__('Gestion des Commandes')); ?></span>
+            <h1 class="text-4xl font-extrabold tracking-tight mb-2"><?php echo e(__('Toutes les Commandes')); ?></h1>
+            <p class="text-portal-muted text-lg"><?php echo e(__('Gérez et suivez toutes les commandes des clients.')); ?></p>
+        <?php else: ?>
+            <span class="inline-block bg-portal-accent text-black px-2.5 py-1 rounded-md text-[0.7rem] font-extrabold uppercase tracking-wider mb-2"><?php echo e(__('Mes Commandes')); ?></span>
+            <h1 class="text-4xl font-extrabold tracking-tight mb-2"><?php echo e(__('Historique')); ?></h1>
+            <p class="text-portal-muted text-lg"><?php echo e(__("Suivez l'état de vos commandes de matériaux.")); ?></p>
+        <?php endif; ?>
      <?php $__env->endSlot(); ?>
 
     <div class="bg-portal-sidebar border border-portal-border rounded-xl flex flex-col min-h-[600px]">
@@ -90,10 +96,10 @@
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
                 </div>
-                <h3 class="text-xl font-display font-bold text-white mb-2"><?php echo e(__('No Orders Found')); ?></h3>
-                <p class="mb-8"><?php echo e(__("You haven't placed any purchase orders yet.")); ?></p>
+                <h3 class="text-xl font-display font-bold text-white mb-2"><?php echo e(__('Aucune commande trouvée')); ?></h3>
+                <p class="mb-8"><?php echo e(__("Vous n'avez pas encore passé de commande.")); ?></p>
                 <a href="<?php echo e(route('products.index')); ?>" class="bg-portal-accent text-black px-6 py-3 rounded-xl font-bold hover:bg-white transition-colors flex items-center gap-2">
-                    <?php echo e(__('Browse Catalog')); ?> <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+                    <?php echo e(__('Parcourir le catalogue')); ?> <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('lucide-arrow-right'); ?>
@@ -120,7 +126,7 @@
                 <table class="w-full text-start">
                     <thead class="bg-white/2 text-xs font-bold text-portal-muted uppercase tracking-wider">
                         <tr>
-                            <th class="px-8 py-4 text-start"><?php echo e(__('Reference')); ?></th>
+                            <th class="px-8 py-4 text-start"><?php echo e(__('Référence')); ?></th>
                             <th class="px-8 py-4 text-start"><?php echo e(__('Date')); ?></th>
                             <th class="px-8 py-4 text-center"><?php echo e(__('Articles')); ?></th>
                             <th class="px-8 py-4 text-center"><?php echo e(__('État')); ?></th>
@@ -135,31 +141,45 @@
                                 <td class="px-8 py-5 text-sm font-medium text-portal-muted"><?php echo e($order->created_at->format('M j, Y')); ?><br><span class="text-xs opacity-60"><?php echo e($order->created_at->format('H:i')); ?></span></td>
                                 <td class="px-8 py-5 text-center font-bold"><?php echo e($order->items_count); ?></td>
                                 <td class="px-8 py-5 text-center">
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider
-                                        <?php echo e($order->status === 'pending' ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20' : ''); ?>
+                                    <?php if(auth()->user()->role === 'admin' || auth()->user()->role === 'agent'): ?>
+                                        <form action="<?php echo e(route('admin.orders.updateStatus', $order->id)); ?>" method="POST" class="inline-block">
+                                            <?php echo csrf_field(); ?>
+                                            <?php echo method_field('PATCH'); ?>
+                                            <select name="status" onchange="this.form.submit()" class="bg-white/5 border border-portal-border rounded-lg px-3 py-1 text-xs font-bold uppercase cursor-pointer focus:border-portal-accent">
+                                                <option value="pending" <?php echo e($order->status === 'pending' ? 'selected' : ''); ?>>En attente</option>
+                                                <option value="confirmed" <?php echo e($order->status === 'confirmed' ? 'selected' : ''); ?>>Confirmée</option>
+                                                <option value="in_delivery" <?php echo e($order->status === 'in_delivery' ? 'selected' : ''); ?>>En livraison</option>
+                                                <option value="delivered" <?php echo e($order->status === 'delivered' ? 'selected' : ''); ?>>Livrée</option>
+                                                <option value="cancelled" <?php echo e($order->status === 'cancelled' ? 'selected' : ''); ?>>Annulée</option>
+                                            </select>
+                                        </form>
+                                    <?php else: ?>
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider
+                                            <?php echo e($order->status === 'pending' ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20' : ''); ?>
 
-                                        <?php echo e($order->status === 'confirmed' ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20' : ''); ?>
+                                            <?php echo e($order->status === 'confirmed' ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20' : ''); ?>
 
-                                        <?php echo e($order->status === 'in_delivery' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' : ''); ?>
+                                            <?php echo e($order->status === 'in_delivery' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' : ''); ?>
 
-                                        <?php echo e($order->status === 'delivered' ? 'bg-green-500/10 text-green-500 border border-green-500/20' : ''); ?>
+                                            <?php echo e($order->status === 'delivered' ? 'bg-green-500/10 text-green-500 border border-green-500/20' : ''); ?>
 
-                                        <?php echo e($order->status === 'cancelled' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : ''); ?>
+                                            <?php echo e($order->status === 'cancelled' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : ''); ?>
 
-                                    ">
-                                        <?php echo e([
-                                            'pending' => 'En attente',
-                                            'confirmed' => 'Confirmer',
-                                            'in_delivery' => 'En livraison',
-                                            'delivered' => 'Livrer',
-                                            'cancelled' => 'Annule'
-                                        ][$order->status] ?? $order->status); ?>
+                                        ">
+                                            <?php echo e([
+                                                'pending' => 'En attente',
+                                                'confirmed' => 'Confirmée',
+                                                'in_delivery' => 'En livraison',
+                                                'delivered' => 'Livrée',
+                                                'cancelled' => 'Annulée'
+                                            ][$order->status] ?? $order->status); ?>
 
-                                    </span>
+                                        </span>
+                                    <?php endif; ?>
                                 </td>
                                 <td class="px-8 py-5 text-end font-mono font-bold text-lg"><?php echo e(number_format($order->total, 2)); ?> <span class="text-sm text-portal-muted"><?php echo e(__('DA')); ?></span></td>
                                 <td class="px-8 py-5 text-end">
-                                    <a href="<?php echo e(route('orders.show', $order->id)); ?>" class="inline-flex items-center gap-2 text-portal-muted hover:text-white transition-colors p-2 rounded-lg hover:bg-white/5 group-hover:text-portal-accent" title="<?php echo e(__('View Details')); ?>" onclick="event.stopPropagation()">
+                                    <a href="<?php echo e(route('orders.show', $order->id)); ?>" class="inline-flex items-center gap-2 text-portal-muted hover:text-white transition-colors p-2 rounded-lg hover:bg-white/5 group-hover:text-portal-accent" title="<?php echo e(__('Voir les détails')); ?>" onclick="event.stopPropagation()">
                                         <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>

@@ -9,29 +9,7 @@
 <?php endif; ?>
 <?php $component->withAttributes([]); ?>
      <?php $__env->slot('header', null, []); ?> 
-        <span class="inline-block bg-red-500/20 text-red-500 px-3 py-1 rounded-full text-[0.7rem] font-bold uppercase tracking-wider mb-2 border border-red-500/20">
-            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
-<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('lucide-heart'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['class' => 'w-3 h-3 inline-block mr-1 fill-current']); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
-<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
-<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
-<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
-<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
-<?php endif; ?> <?php echo e(__('Ma Sélection')); ?>
 
-        </span>
         <h1 class="text-4xl font-extrabold tracking-tight mb-2 italic"><?php echo e(__('Mes Favoris')); ?></h1>
         <p class="text-slate-400 text-lg"><?php echo e(__('Retrouvez ici les produits que vous avez mis de côté.')); ?></p>
      <?php $__env->endSlot(); ?>
@@ -40,32 +18,44 @@
         products: <?php echo e(Js::from($products)); ?>,
         isAuthenticated: <?php echo e(auth()->check() ? 'true' : 'false'); ?>,
         
-        async toggleFavorite(product) {
+        async toggleFavorite(productToToggle) {
+            if (!this.isAuthenticated) {
+                window.location.href = '/login';
+                return;
+            }
+
             try {
-                const response = await fetch(`/favorites/toggle/${product.id}`, {
+                const response = await fetch(`/favorites/toggle/${productToToggle.id}`, {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content'),
-                        'X-Requested-With': 'XMLHttpRequest',
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
                     }
                 });
+
+                if (!response.ok) throw new Error('Network response was not ok');
+
                 const data = await response.json();
                 
                 if (data.success) {
-                    // Remove from list if un-favorited
-                    if (!data.is_favorite) {
-                        this.products = this.products.filter(p => p.id !== product.id);
+                    // Update local state - remove the item if we are on favorites page
+                    this.products = this.products.filter(p => p.id !== productToToggle.id);
+                    
+                    // Show success message
+                    if (window.showToast) {
+                        window.showToast(data.message, 'success');
                     }
-                    window.showToast(data.message, 'success');
                 }
             } catch (error) {
                 console.error('Failed to toggle favorite:', error);
+                if (window.showToast) {
+                    window.showToast('<?php echo e(__('Une erreur est survenue')); ?>', 'error');
+                }
             }
         }
     }">
-        <?php if($products->isEmpty()): ?>
+        <template x-if="products.length === 0">
             <div class="flex flex-col items-center justify-center py-20 bg-white/2 border border-white/5 rounded-[2.5rem]">
                 <div class="w-24 h-24 rounded-full bg-white/5 flex items-center justify-center mb-6">
                     <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
@@ -114,7 +104,9 @@
 <?php endif; ?>
                 </a>
             </div>
-        <?php else: ?>
+        </template>
+        
+        <template x-if="products.length > 0">
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
                 <template x-for="product in products" :key="product.id">
                     <div class="group bg-[#141415] rounded-[2.5rem] border border-white/5 overflow-hidden flex flex-col hover:border-red-500/30 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
@@ -193,7 +185,7 @@
                     </div>
                 </template>
             </div>
-        <?php endif; ?>
+        </template>
     </div>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>

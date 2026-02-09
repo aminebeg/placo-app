@@ -90,7 +90,7 @@
             </div>
 
             <nav class="flex-1 px-4 flex flex-col gap-1 overflow-y-auto">
-                <?php if(auth()->user()?->role !== 'admin'): ?>
+                <?php if(auth()->user()?->role !== 'admin' && auth()->user()?->role !== 'agent'): ?>
                     <a href="<?php echo e(route('products.index')); ?>" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all <?php echo e(request()->routeIs('products.*') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white'); ?>">
                         <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
@@ -171,7 +171,7 @@
                 <?php endif; ?>
 
                 <?php if(auth()->guard()->check()): ?>
-                    <?php if(auth()->user()->role !== 'admin'): ?>
+                    <?php if(auth()->user()->role !== 'admin' && auth()->user()->role !== 'agent'): ?>
                         <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4"><?php echo e(__('Opérations')); ?></div>
                         
                         <a href="<?php echo e(route('dashboard')); ?>" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all <?php echo e(request()->routeIs('dashboard') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white'); ?>">
@@ -250,8 +250,8 @@
                         </a>
                     <?php endif; ?>
 
-                    <?php if(auth()->user()->role === 'admin'): ?>
-                        <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4"><?php echo e(__('Administration')); ?></div>
+                    <?php if(auth()->user()->role === 'admin' || auth()->user()->role === 'agent'): ?>
+                        <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4"><?php echo e(auth()->user()->role === 'agent' ? __('Opérations Agent') : __('Administration')); ?></div>
                         
                         <a href="<?php echo e(route('admin.dashboard', ['tab' => 'overview'])); ?>" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all <?php echo e(request()->fullUrlIs(route('admin.dashboard', ['tab' => 'overview'])) || (request()->routeIs('admin.dashboard') && !request()->has('tab')) ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white'); ?>">
                             <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
@@ -328,6 +328,7 @@
 
                         </a>
 
+                        <?php if(auth()->user()->role === 'admin'): ?>
                         <a href="<?php echo e(route('admin.dashboard', ['tab' => 'users'])); ?>" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all <?php echo e(request()->fullUrlIs(route('admin.dashboard', ['tab' => 'users'])) ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white'); ?>">
                             <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
@@ -377,6 +378,7 @@
                             <?php echo e(__('Paramètres')); ?>
 
                         </a>
+                        <?php endif; ?>
                     <?php endif; ?>
                 <?php endif; ?>
             </nav>

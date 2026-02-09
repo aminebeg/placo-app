@@ -16,9 +16,11 @@ import { useCart } from '../contexts/CartContext';
 import './PortalLayout.css';
 
 const PortalLayout = ({ children, activePage, title, subtitle, tag }) => {
-    const { user, isAdmin, logout } = useAuth();
+    const { user, isAdmin, isAgent, logout } = useAuth();
     const { cart } = useCart();
     const navigate = useNavigate();
+
+    const showAdminLink = isAdmin || isAgent;
 
     return (
         <div className="portal-container">
@@ -49,12 +51,12 @@ const PortalLayout = ({ children, activePage, title, subtitle, tag }) => {
                         Technical Catalog
                     </Link>
 
-                    {isAdmin && (
+                    {showAdminLink && (
                         <>
                             <div className="sidebar-label">Management</div>
-                            <Link to="/admin" className={`portal-nav-item admin-link ${activePage === 'admin' ? 'active' : ''}`}>
-                                <ShieldCheck size={20} className="text-gold" />
-                                System Control
+                            <Link to="/admin" className={`portal-nav-item admin-link ${isAgent ? 'agent-link' : ''} ${activePage === 'admin' ? 'active' : ''}`}>
+                                <ShieldCheck size={20} className={isAdmin ? 'text-gold' : 'text-blue-500'} />
+                                {isAdmin ? 'System Control' : 'Agent Operations'}
                             </Link>
                         </>
                     )}
@@ -62,12 +64,12 @@ const PortalLayout = ({ children, activePage, title, subtitle, tag }) => {
 
                 <div className="sidebar-footer">
                     <div className="user-context">
-                        <div className={`u-avatar ${isAdmin ? 'admin' : ''}`}>
+                        <div className={`u-avatar ${isAdmin ? 'admin' : ''} ${isAgent ? 'agent' : ''}`}>
                             {user?.firstName?.[0] || 'U'}
                         </div>
                         <div className="u-info">
                             <span className="u-name">{user?.firstName} {user?.lastName}</span>
-                            <span className="u-company">{isAdmin ? 'System Administrator' : (user?.company || 'Authenticated Contractor')}</span>
+                            <span className="u-company">{isAdmin ? 'System Administrator' : (isAgent ? 'Operations Agent' : (user?.company || 'Authenticated Contractor'))}</span>
                         </div>
                     </div>
                     <button onClick={logout} className="portal-logout-btn">

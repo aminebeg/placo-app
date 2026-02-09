@@ -16,8 +16,9 @@ class OrderController extends Controller
     {
         $order->loadMissing(['user', 'items.product']);
 
-        // Ensure user owns the order or is admin
-        if(auth()->user()->role !== 'admin' && $order->user_id !== auth()->id()) {
+        // Ensure user owns the order or is admin/agent
+        $user = auth()->user();
+        if($user->role !== 'admin' && $user->role !== 'agent' && $order->user_id !== $user->id) {
             abort(403);
         }
         
@@ -28,8 +29,9 @@ class OrderController extends Controller
     {
         $order->loadMissing(['user', 'items.product']);
 
-        // Ensure user owns the order or is admin
-        if(auth()->user()->role !== 'admin' && $order->user_id !== auth()->id()) {
+        // Ensure user owns the order or is admin/agent
+        $user = auth()->user();
+        if($user->role !== 'admin' && $user->role !== 'agent' && $order->user_id !== $user->id) {
             abort(403);
         }
         
@@ -207,10 +209,18 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = \App\Models\Order::where('user_id', auth()->id())
-                    ->withCount('items')
-                    ->orderBy('created_at', 'desc')
-                    ->paginate(10);
+        if (auth()->user()->role === 'admin' || auth()->user()->role === 'agent') {
+            // Agents and admins see all orders
+            $orders = \App\Models\Order::withCount('items')
+                        ->orderBy('created_at', 'desc')
+                        ->paginate(10);
+        } else {
+            // Clients see only their own orders
+            $orders = \App\Models\Order::where('user_id', auth()->id())
+                        ->withCount('items')
+                        ->orderBy('created_at', 'desc')
+                        ->paginate(10);
+        }
                     
         return view('orders.index', compact('orders'));
     }
@@ -238,8 +248,9 @@ class OrderController extends Controller
     {
         $order = \App\Models\Order::with(['items.product', 'user'])->findOrFail($id);
         
-        // Ensure user owns the order or is admin
-        if(auth()->user()->role !== 'admin' && $order->user_id !== auth()->id()) {
+        // Ensure user owns the order or is admin/agent
+        $user = auth()->user();
+        if($user->role !== 'admin' && $user->role !== 'agent' && $order->user_id !== $user->id) {
             abort(403);
         }
 
@@ -259,7 +270,21 @@ class OrderController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $order = \App\Models\Order::findOrFail($id);
+        
+        // Only admin or agent can update order status
+        $user = auth()->user();
+        if($user->role !== 'admin' && $user->role !== 'agent') {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'status' => 'required|string|in:pending,confirmed,processing,shipped,delivered,cancelled'
+        ]);
+
+        $order->update(['status' => $validated['status']]);
+
+        return redirect()->back()->with('success', __('Statut de la commande mis à jour.'));
     }
 
     /**

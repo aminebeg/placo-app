@@ -30,7 +30,7 @@ import PortalLayout from '../components/PortalLayout';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
-    const { isAuthenticated, isAdmin, loading: authLoading } = useAuth();
+    const { isAuthenticated, isAdmin, isAgent, loading: authLoading } = useAuth();
     const [activeTab, setActiveTab] = useState('overview');
     const [products, setProducts] = useState([]);
     const [orders, setOrders] = useState([]);
@@ -47,24 +47,24 @@ const AdminDashboard = () => {
     });
 
     useEffect(() => {
-        if (isAdmin && !authLoading) {
+        if ((isAdmin || isAgent) && !authLoading) {
             fetchAllData();
         }
-    }, [isAdmin, authLoading]);
+    }, [isAdmin, isAgent, authLoading]);
 
     const fetchAllData = async () => {
         setLoading(true);
+        console.log('Fetching data... isAdmin:', isAdmin, 'isAgent:', isAgent);
         try {
-            const [prodData, orderData, userData, catData] = await Promise.all([
+            const [prodData, orderData, catData] = await Promise.all([
                 productService.getAll(),
                 orderService.getAllOrders(),
-                userService.getAll(),
                 productService.getCategories()
             ]);
 
+            console.log('Orders received:', orderData.length);
             setProducts(prodData);
             setOrders(orderData);
-            setUsersList(userData);
             setCategories(catData);
 
             // Calculate Stats
@@ -72,10 +72,17 @@ const AdminDashboard = () => {
             const active = orderData.filter(o => ['pending', 'processing'].includes(o.status)).length;
             const lowStock = prodData.filter(p => !p.inStock).length;
 
+            // Only fetch users for admins
+            let userData = [];
+            if (isAdmin) {
+                userData = await userService.getAll();
+                setUsersList(userData);
+            }
+
             setStats({
                 totalRevenue: revenue,
                 activeOrders: active,
-                totalUsers: userData.length,
+                totalUsers: userData.length || 0,
                 lowStockItems: lowStock
             });
 
@@ -245,6 +252,11 @@ const AdminDashboard = () => {
                     <h2>Master Transaction Ledger</h2>
                     <span className="item-count-tag">{orders.length} Global Records</span>
                 </div>
+                {isAgent && (
+                    <button className="btn btn-primary" onClick={() => alert('Order creation form coming soon!')}>
+                        <Plus size={18} /> Create Order
+                    </button>
+                )}
             </div>
             <div className="data-table-wrapper">
                 <table className="portal-table">
@@ -432,8 +444,9 @@ const AdminDashboard = () => {
                                         value={u.role}
                                         onChange={(e) => handleUpdateUserRole(u.id, e.target.value)}
                                     >
-                                        <option value="customer">Operational Partner</option>
-                                        <option value="admin">System Administrator</option>
+                                        <option value="client">Client</option>
+                                        <option value="agent">Agent</option>
+                                        <option value="admin">Administrator</option>
                                     </select>
                                 </td>
                                 <td className="text-right">
@@ -457,8 +470,8 @@ const AdminDashboard = () => {
         <PortalLayout
             activePage="admin"
             title={activeTab === 'overview' ? 'Command Center' : activeTab === 'products' ? 'Inventory Audit' : activeTab === 'orders' ? 'Master Ledger' : 'Stakeholder Directory'}
-            subtitle="Central Intelligence & Administrative Controls"
-            tag="System Administrator"
+            subtitle={isAgent ? 'Agent Operations Portal' : 'Central Intelligence & Administrative Controls'}
+            tag={isAgent ? 'Agent' : 'System Administrator'}
         >
             <div className="admin-page-content">
                 <div className="admin-tab-nav premium-tabs">
@@ -471,9 +484,11 @@ const AdminDashboard = () => {
                     <button className={`admin-tab-btn ${activeTab === 'orders' ? 'active' : ''}`} onClick={() => { setActiveTab('orders'); setIsEditing(false); }}>
                         <TrendingUp size={18} /> Transactions
                     </button>
-                    <button className={`admin-tab-btn ${activeTab === 'users' ? 'active' : ''}`} onClick={() => { setActiveTab('users'); setIsEditing(false); }}>
-                        <Users size={18} /> Directory
-                    </button>
+                    {isAdmin && (
+                        <button className={`admin-tab-btn ${activeTab === 'users' ? 'active' : ''}`} onClick={() => { setActiveTab('users'); setIsEditing(false); }}>
+                            <Users size={18} /> Directory
+                        </button>
+                    )}
                 </div>
 
                 <AnimatePresence mode="wait">

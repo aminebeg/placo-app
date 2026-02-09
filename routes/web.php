@@ -85,9 +85,13 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/orders/export', [AdminDashboardController::class, 'exportOrders'])->name('orders.export');
         });
 
-        // Write routes for Admin only
-        Route::middleware(['can:admin'])->group(function() {
+        // Write routes for Admin and Agent
+        Route::middleware(['can:view-admin'])->group(function() {
             Route::patch('/orders/{order}/status', [AdminDashboardController::class, 'updateOrderStatus'])->name('orders.updateStatus');
+        });
+
+        // Admin-only routes
+        Route::middleware(['can:admin'])->group(function() {
             Route::patch('/users/{user}/role', [AdminDashboardController::class, 'updateUserRole'])->name('users.updateRole');
             Route::delete('/users/{user}', [AdminDashboardController::class, 'destroyUser'])->name('users.destroy');
             Route::patch('/orders/bulk-update', [AdminDashboardController::class, 'bulkUpdateOrderStatus'])->name('orders.bulkUpdate');

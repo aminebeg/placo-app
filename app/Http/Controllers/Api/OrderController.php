@@ -70,4 +70,38 @@ class OrderController extends Controller
 
         return response()->json(['message' => 'Order status updated', 'status' => $order->status]);
     }
+
+    // Agent: Create order on behalf of a client
+    public function storeForClient(Request $request)
+    {
+        $validated = $request->validate([
+            'client_id' => 'required|exists:users,id',
+            'items' => 'required|array',
+            'subtotal' => 'required|numeric',
+            'total' => 'required|numeric',
+        ]);
+
+        return DB::transaction(function () use ($request) {
+            $order = Order::create([
+                'user_id' => $validated['client_id'],
+                'order_number' => 'ORD-' . time() . '-' . rand(100, 999),
+                'status' => 'pending',
+                'subtotal' => $request->subtotal,
+                'tax' => $request->tax,
+                'shipping' => $request->shipping,
+                'total' => $request->total,
+            ]);
+
+            foreach ($request->items as $item) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item['productId'],
+                    'quantity' => $item['quantity'],
+                    'price' => $item['price'],
+                ]);
+            }
+
+            return response()->json(['message' => 'Order created for client', 'orderId' => $order->id], 201);
+        });
+    }
 }

@@ -1,8 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
-        <span class="inline-block bg-portal-accent text-black px-2.5 py-1 rounded-md text-[0.7rem] font-extrabold uppercase tracking-wider mb-2">{{ __('Mes Commandes') }}</span>
-        <h1 class="text-4xl font-extrabold tracking-tight mb-2">{{ __('Historique') }}</h1>
-        <p class="text-portal-muted text-lg">{{ __('Suivez l\'état de vos commandes de matériaux.') }}</p>
+        @if(auth()->user()->role === 'admin' || auth()->user()->role === 'agent')
+            <span class="inline-block bg-portal-accent text-black px-2.5 py-1 rounded-md text-[0.7rem] font-extrabold uppercase tracking-wider mb-2">{{ __('Gestion des Commandes') }}</span>
+            <h1 class="text-4xl font-extrabold tracking-tight mb-2">{{ __('Toutes les Commandes') }}</h1>
+            <p class="text-portal-muted text-lg">{{ __('Gérez et suivez toutes les commandes des clients.') }}</p>
+        @else
+            <span class="inline-block bg-portal-accent text-black px-2.5 py-1 rounded-md text-[0.7rem] font-extrabold uppercase tracking-wider mb-2">{{ __('Mes Commandes') }}</span>
+            <h1 class="text-4xl font-extrabold tracking-tight mb-2">{{ __('Historique') }}</h1>
+            <p class="text-portal-muted text-lg">{{ __("Suivez l'état de vos commandes de matériaux.") }}</p>
+        @endif
     </x-slot>
 
     <div class="bg-portal-sidebar border border-portal-border rounded-xl flex flex-col min-h-[600px]">
@@ -50,21 +56,35 @@
                                 <td class="px-8 py-5 text-sm font-medium text-portal-muted">{{ $order->created_at->format('M j, Y') }}<br><span class="text-xs opacity-60">{{ $order->created_at->format('H:i') }}</span></td>
                                 <td class="px-8 py-5 text-center font-bold">{{ $order->items_count }}</td>
                                 <td class="px-8 py-5 text-center">
-                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider
-                                        {{ $order->status === 'pending' ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20' : '' }}
-                                        {{ $order->status === 'confirmed' ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20' : '' }}
-                                        {{ $order->status === 'in_delivery' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' : '' }}
-                                        {{ $order->status === 'delivered' ? 'bg-green-500/10 text-green-500 border border-green-500/20' : '' }}
-                                        {{ $order->status === 'cancelled' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : '' }}
-                                    ">
-                                        {{ [
-                                            'pending' => 'En attente',
-                                            'confirmed' => 'Confirmée',
-                                            'in_delivery' => 'En livraison',
-                                            'delivered' => 'Livrée',
-                                            'cancelled' => 'Annulée'
-                                        ][$order->status] ?? $order->status }}
-                                    </span>
+                                    @if(auth()->user()->role === 'admin' || auth()->user()->role === 'agent')
+                                        <form action="{{ route('admin.orders.updateStatus', $order->id) }}" method="POST" class="inline-block">
+                                            @csrf
+                                            @method('PATCH')
+                                            <select name="status" onchange="this.form.submit()" class="bg-white/5 border border-portal-border rounded-lg px-3 py-1 text-xs font-bold uppercase cursor-pointer focus:border-portal-accent">
+                                                <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>En attente</option>
+                                                <option value="confirmed" {{ $order->status === 'confirmed' ? 'selected' : '' }}>Confirmée</option>
+                                                <option value="in_delivery" {{ $order->status === 'in_delivery' ? 'selected' : '' }}>En livraison</option>
+                                                <option value="delivered" {{ $order->status === 'delivered' ? 'selected' : '' }}>Livrée</option>
+                                                <option value="cancelled" {{ $order->status === 'cancelled' ? 'selected' : '' }}>Annulée</option>
+                                            </select>
+                                        </form>
+                                    @else
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider
+                                            {{ $order->status === 'pending' ? 'bg-yellow-500/10 text-yellow-500 border border-yellow-500/20' : '' }}
+                                            {{ $order->status === 'confirmed' ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20' : '' }}
+                                            {{ $order->status === 'in_delivery' ? 'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20' : '' }}
+                                            {{ $order->status === 'delivered' ? 'bg-green-500/10 text-green-500 border border-green-500/20' : '' }}
+                                            {{ $order->status === 'cancelled' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : '' }}
+                                        ">
+                                            {{ [
+                                                'pending' => 'En attente',
+                                                'confirmed' => 'Confirmée',
+                                                'in_delivery' => 'En livraison',
+                                                'delivered' => 'Livrée',
+                                                'cancelled' => 'Annulée'
+                                            ][$order->status] ?? $order->status }}
+                                        </span>
+                                    @endif
                                 </td>
                                 <td class="px-8 py-5 text-end font-mono font-bold text-lg">{{ number_format($order->total, 2) }} <span class="text-sm text-portal-muted">{{ __('DA') }}</span></td>
                                 <td class="px-8 py-5 text-end">

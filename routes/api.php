@@ -28,13 +28,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/orders', [OrderController::class, 'store']);
     Route::get('/orders', [OrderController::class, 'index']);
     
-    // Admin routes (Middleware 'admin' assumed)
-    Route::middleware('admin')->group(function () {
+    // Admin & Agent routes
+    Route::middleware(['can:view-admin'])->group(function () {
+        Route::get('/admin/orders', [OrderController::class, 'indexAdmin']);
+        Route::patch('/admin/orders/{id}/status', [OrderController::class, 'updateStatus']);
+        Route::post('/admin/orders/create-for-client', [OrderController::class, 'storeForClient']);
+    });
+    
+    // Admin-only routes
+    Route::middleware(['can:admin-only'])->group(function () {
         Route::post('/products', [ProductController::class, 'store']);
         Route::put('/products/{id}', [ProductController::class, 'update']);
         Route::delete('/products/{id}', [ProductController::class, 'destroy']);
-        Route::get('/admin/orders', [OrderController::class, 'indexAdmin']);
-        Route::patch('/admin/orders/{id}/status', [OrderController::class, 'updateStatus']);
         
         Route::get('/admin/users', [UserController::class, 'index']);
         Route::patch('/admin/users/{id}/role', [UserController::class, 'updateRole']);

@@ -43,6 +43,110 @@
 
     <div x-data="{ activeTab: '<?php echo e(request()->query('tab', 'overview')); ?>' }">
         <!-- Tab Navigation -->
+        <div class="flex gap-2 mb-6 overflow-x-auto pb-2">
+            <a href="?tab=overview" @click.prevent="activeTab = 'overview'" 
+               class="px-4 py-2 rounded-lg text-sm font-bold transition-colors flex items-center gap-2"
+               :class="activeTab === 'overview' ? 'bg-portal-accent text-black' : 'bg-white/5 text-portal-muted hover:text-white hover:bg-white/10'">
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-home'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?> <?php echo e(__('Vue d\'ensemble')); ?>
+
+            </a>
+            <a href="?tab=orders" @click.prevent="activeTab = 'orders'" 
+               class="px-4 py-2 rounded-lg text-sm font-bold transition-colors flex items-center gap-2"
+               :class="activeTab === 'orders' ? 'bg-portal-accent text-black' : 'bg-white/5 text-portal-muted hover:text-white hover:bg-white/10'">
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-shopping-cart'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?> <?php echo e(__('Commandes')); ?>
+
+            </a>
+            <a href="?tab=products" @click.prevent="activeTab = 'products'" 
+               class="px-4 py-2 rounded-lg text-sm font-bold transition-colors flex items-center gap-2"
+               :class="activeTab === 'products' ? 'bg-portal-accent text-black' : 'bg-white/5 text-portal-muted hover:text-white hover:bg-white/10'">
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-package'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?> <?php echo e(__('Produits')); ?>
+
+            </a>
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('admin')): ?>
+            <a href="?tab=users" @click.prevent="activeTab = 'users'" 
+               class="px-4 py-2 rounded-lg text-sm font-bold transition-colors flex items-center gap-2"
+               :class="activeTab === 'users' ? 'bg-portal-accent text-black' : 'bg-white/5 text-portal-muted hover:text-white hover:bg-white/10'">
+                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-users'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?> <?php echo e(__('Utilisateurs')); ?>
+
+            </a>
+            <?php endif; ?>
+        </div>
 
 
         <!-- Overview Tab -->
@@ -484,7 +588,6 @@
             </div>
         </div>
 
-        <!-- Other tabs placeholders (to be expanded) -->
         <!-- Products Tab -->
         <div x-show="activeTab === 'products'" 
              x-transition:enter="transition ease-out duration-200" 
@@ -1073,7 +1176,7 @@
             },
 
             get allSelected() {
-                return this.paginatedOrders.length > 0 && this.selectedOrders.length === this.paginatedOrders.length; // Only check visible page
+                return this.paginatedOrders.length > 0 && this.selectedOrders.length === this.paginatedOrders.length;
             },
             
             toggleAll() {
@@ -1216,8 +1319,8 @@
                             <option value="all" class="bg-[#141415] text-white"><?php echo e(__('Tous les statuts')); ?></option>
                             <option value="pending" class="bg-[#141415] text-white"><?php echo e(__('En attente')); ?></option>
                             <option value="confirmed" class="bg-[#141415] text-white"><?php echo e(__('Confirmer')); ?></option>
-                            <option value="in_delivery" class="bg-[#141415] text-white"><?php echo e(__('En Livraison')); ?></option>
-                            <option value="delivered" class="bg-[#141415] text-white"><?php echo e(__('Livrer')); ?></option>
+                            <option value="in_delivery" class="bg-[#141415] text-white"><?php echo e(__('En Livraison                            <option value')); ?></option>
+="delivered" class="bg-[#141415] text-white"><?php echo e(__('Livrer')); ?></option>
                         </select>
                         
                         <!-- Date Filter -->
@@ -1321,163 +1424,60 @@
 <?php endif; ?>
                                         </div>
                                     </td>
-                                    <td class="px-4 md:px-6 py-4 cursor-pointer" @click="window.location=`/orders/${order.id}`">
-                                        <div class="font-bold text-sm text-white" x-text="order.user.first_name + ' ' + order.user.last_name"></div>
-                                        <div class="text-xs text-portal-muted" x-text="order.user.company || '<?php echo e(__('Contractor')); ?>'"></div>
-                                    </td>
-
-                                    <td class="px-4 md:px-6 py-4 text-sm text-portal-accent font-bold cursor-pointer" @click="window.location=`/orders/${order.id}`">
-                                        <span x-text="order.requested_delivery_date ? new Date(order.requested_delivery_date).toLocaleDateString('fr-FR', {month: 'short', day: 'numeric'}) : '-'"></span>
-                                    </td>
-                                    <td class="px-4 md:px-6 py-4 text-sm text-portal-muted cursor-pointer" @click="window.location=`/orders/${order.id}`">
-                                        <span x-text="new Date(order.created_at).toLocaleDateString('fr-FR', {month: 'short', day: 'numeric', year: 'numeric'})"></span>
-                                    </td>
-                                    <td class="px-4 md:px-6 py-4 text-center" @click.stop>
-                                        <div class="flex gap-2 justify-center items-center">
-                                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('admin')): ?>
-                                                <template x-if="order.status === 'pending'">
-                                                    <form :action="`/admin/orders/${order.id}/status`" method="POST">
-                                                        <?php echo csrf_field(); ?>
-                                                        <?php echo method_field('PATCH'); ?>
-                                                        <input type="hidden" name="status" value="confirmed">
-                                                        <button type="submit" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-500 border border-blue-500/20 text-[0.65rem] font-bold uppercase tracking-wider hover:bg-blue-500 hover:text-white transition-all shadow-sm" title="Approve & Process">
-                                                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
-<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('lucide-play'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['class' => 'w-3 h-3']); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
-<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
-<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
-<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
-<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
-<?php endif; ?> <?php echo e(__('Confirmer')); ?>
-
-                                                        </button>
-                                                    </form>
-                                                </template>
-                                                <template x-if="order.status === 'confirmed'">
-                                                    <form :action="`/admin/orders/${order.id}/status`" method="POST">
-                                                        <?php echo csrf_field(); ?>
-                                                        <?php echo method_field('PATCH'); ?>
-                                                        <input type="hidden" name="status" value="in_delivery">
-                                                        <button type="submit" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[0.65rem] font-bold uppercase tracking-wider hover:bg-indigo-500 hover:text-white transition-all shadow-sm" title="Set In Delivery">
-                                                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
-<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('lucide-truck'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['class' => 'w-3 h-3']); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
-<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
-<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
-<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
-<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
-<?php endif; ?> <?php echo e(__('En Livraison')); ?>
-
-                                                        </button>
-                                                    </form>
-                                                </template>
-                                                <template x-if="order.status === 'in_delivery'">
-                                                    <form :action="`/admin/orders/${order.id}/status`" method="POST">
-                                                        <?php echo csrf_field(); ?>
-                                                        <?php echo method_field('PATCH'); ?>
-                                                        <input type="hidden" name="status" value="delivered">
-                                                        <button type="submit" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-green-500/10 text-green-500 border border-green-500/20 text-[0.65rem] font-bold uppercase tracking-wider hover:bg-green-500 hover:text-white transition-all shadow-sm" title="Mark as Delivered">
-                                                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
-<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('lucide-check-circle'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
-<?php endif; ?>
-<?php $component->withAttributes(['class' => 'w-3 h-3']); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
-<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
-<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
-<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
-<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
-<?php endif; ?> <?php echo e(__('Livrer')); ?>
-
-                                                        </button>
-                                                    </form>
-                                                </template>
-                                                <template x-if="order.status === 'delivered' || order.status === 'cancelled'">
-                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[0.65rem] font-bold uppercase tracking-wider"
-                                                        :class="{
-                                                            'bg-green-500/10 text-green-500': order.status === 'delivered',
-                                                            'bg-red-500/10 text-red-500': order.status === 'cancelled'
-                                                        }"
-                                                        x-text="{
-                                                            pending: 'En attente',
-                                                            confirmed: 'Confirmer',
-                                                            in_delivery: 'En livraison',
-                                                            delivered: 'Livrer',
-                                                            cancelled: 'Annulé'
-                                                        }[order.status] ?? order.status">
-                                                    </span>
-                                                </template>
-
-                                            <?php else: ?>
-                                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[0.65rem] font-bold uppercase tracking-wider"
-                                                    :class="{
-                                                        'bg-amber-500/10 text-amber-500': order.status === 'pending',
-                                                        'bg-blue-500/10 text-blue-500': order.status === 'confirmed',
-                                                        'bg-indigo-500/10 text-indigo-400': order.status === 'in_delivery',
-                                                        'bg-green-500/10 text-green-500': order.status === 'delivered',
-                                                        'bg-red-500/10 text-red-500': order.status === 'cancelled'
-                                                    }"
-                                                    x-text="{
-                                                        pending: 'En attente',
-                                                        confirmed: 'Confirmer',
-                                                        in_delivery: 'En livraison',
-                                                        delivered: 'Livrer',
-                                                        cancelled: 'Annulé'
-                                                    }[order.status] ?? order.status">
-                                                </span>
-                                            <?php endif; ?>
+                                    <td class="px-4 md:px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-xs font-bold text-portal-muted" x-text="order.user.first_name.charAt(0) + order.user.last_name.charAt(0)"></div>
+                                            <div>
+                                                <div class="font-bold text-white text-sm" x-text="order.user.first_name + ' ' + order.user.last_name"></div>
+                                                <div class="text-[10px] uppercase tracking-wider font-bold text-portal-muted" x-text="order.user.company || ''"></div>
+                                            </div>
                                         </div>
                                     </td>
-                                    <td class="px-4 md:px-6 py-4 text-end font-mono font-bold cursor-pointer" @click="window.location=`/orders/${order.id}`">
-                                        <span x-text="Number(order.total).toFixed(2) + ' <?php echo e(__('DA')); ?>'"></span>
+                                    <td class="px-4 md:px-6 py-4">
+                                        <div class="text-xs font-medium text-portal-muted" x-text="order.logistics_type || 'N/A'"></div>
+                                        <div class="text-xs text-portal-muted" x-text="order.requested_delivery_date ? new Date(order.requested_delivery_date).toLocaleDateString() : 'N/A'"></div>
                                     </td>
-                                    <td class="px-4 md:px-6 py-4 text-end" @click.stop>
-                                        <div class="flex items-center justify-end gap-1">
-                                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('admin')): ?>
-                                            <a :href="`/admin/orders/${order.id}/edit`" class="p-2.5 md:p-2 hover:bg-white/10 rounded-lg text-portal-muted hover:text-white transition-colors inline-flex items-center justify-center min-h-[44px] min-w-[44px] md:min-h-0 md:min-w-0" title="<?php echo e(__('Modifier')); ?>">
+                                    <td class="px-4 md:px-6 py-4 text-xs text-portal-muted">
+                                        <div x-text="new Date(order.created_at).toLocaleDateString()"></div>
+                                        <div class="font-mono opacity-60" x-text="new Date(order.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})"></div>
+                                    </td>
+                                    <td class="px-4 md:px-6 py-4 text-center">
+                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider
+                                            " :class="{
+                                            'bg-amber-500/10 text-amber-500 border border-amber-500/20': order.status === 'pending',
+                                            'bg-blue-500/10 text-blue-500 border border-blue-500/20': order.status === 'confirmed',
+                                            'bg-indigo-500/10 text-indigo-400 border border-indigo-500/20': order.status === 'in_delivery',
+                                            'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20': order.status === 'delivered',
+                                            'bg-rose-500/10 text-rose-500 border border-rose-500/20': order.status === 'cancelled'
+                                        }" x-text="{
+                                            'pending': '<?php echo e(__('En attente')); ?>',
+                                            'confirmed': '<?php echo e(__('Confirmer')); ?>',
+                                            'in_delivery': '<?php echo e(__('En Livraison')); ?>',
+                                            'delivered': '<?php echo e(__('Livrer')); ?>',
+                                            'cancelled': '<?php echo e(__('Annule')); ?>'
+                                        }[order.status] || order.status">
+                                        </span>
+                                    </td>
+                                    <td class="px-4 md:px-6 py-4 text-end">
+                                        <div class="font-mono font-bold text-white">
+                                            <span x-text="Number(order.total).toLocaleString()"></span> <span class="text-xs text-portal-muted">DA</span>
+                                        </div>
+                                        <div class="text-[10px] text-portal-muted font-medium uppercase tracking-wider mt-1" x-text="order.items.length + ' <?php echo e(__('Articles')); ?>'"></div>
+                                    </td>
+                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('admin')): ?>
+                                    <td class="px-4 md:px-6 py-4 text-end relative">
+                                        <div class="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-all" x-show="!selectedOrders.includes(order.id)">
+                                            <button @click.stop="selectedOrders.push(order.id)" class="p-2 hover:bg-white/10 rounded text-portal-muted hover:text-white transition-colors" title="<?php echo e(__('Sélectionner')); ?>">
                                                 <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('lucide-edit-2'); ?>
+<?php $component->withName('lucide-check'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['class' => 'w-5 h-5 md:w-4 md:h-4']); ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
@@ -1488,19 +1488,20 @@
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
-                                            </a>
-                                            <?php endif; ?>
-                                            <a :href="`/orders/${order.id}`" class="p-2.5 md:p-2 hover:bg-white/10 rounded-lg text-portal-muted hover:text-white transition-colors inline-flex items-center justify-center min-h-[44px] min-w-[44px] md:min-h-0 md:min-w-0" title="<?php echo e(__('Inspect Documentation')); ?>">
+                                            </button>
+                                        </div>
+                                        <div class="flex justify-end gap-1" x-show="selectedOrders.includes(order.id)">
+                                            <button @click.stop="selectedOrders = selectedOrders.filter(id => id !== order.id)" class="p-2 bg-portal-accent text-black rounded transition-colors" title="<?php echo e(__('Sélectionné')); ?>">
                                                 <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('lucide-eye'); ?>
+<?php $component->withName('lucide-check'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['class' => 'w-5 h-5 md:w-4 md:h-4']); ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
@@ -1511,11 +1512,20 @@
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
-                                            </a>
+                                            </button>
                                         </div>
                                     </td>
+                                    <?php endif; ?>
                                 </tr>
                             </template>
+                            
+                            <!-- Empty State -->
+                            <tr x-show="paginatedOrders.length === 0">
+                                <td colspan="8" class="px-6 py-12 text-center text-portal-muted italic">
+                                    <?php echo e(__('Aucune commande trouvée.')); ?>
+
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -1588,12 +1598,141 @@
              x-transition:enter="transition ease-out duration-200" 
              x-transition:enter-start="opacity-0 translate-y-2" 
              x-transition:enter-end="opacity-100 translate-y-0"
-             x-cloak>
+             x-cloak x-data="{
+            roleFilter: 'all',
+            searchQuery: '',
+            currentPage: 1,
+            itemsPerPage: 10,
+            
+            get filteredUsers() {
+                let users = <?php echo e(Js::from($users)); ?>;
+                
+                // Filter by role
+                if (this.roleFilter !== 'all') {
+                    users = users.filter(user => user.role === this.roleFilter);
+                }
+                
+                // Filter by search query
+                if (this.searchQuery.length > 0) {
+                    const query = this.searchQuery.toLowerCase();
+                    users = users.filter(user => 
+                        (user.first_name && user.first_name.toLowerCase().includes(query)) ||
+                        (user.last_name && user.last_name.toLowerCase().includes(query)) ||
+                        (user.email && user.email.toLowerCase().includes(query)) ||
+                        (user.company && user.company.toLowerCase().includes(query)) ||
+                        (user.phone && user.phone.includes(query))
+                    );
+                }
+                
+                return users;
+            },
+
+            get paginatedUsers() {
+                const start = (this.currentPage - 1) * this.itemsPerPage;
+                const end = start + this.itemsPerPage;
+                return this.filteredUsers.slice(start, end);
+            },
+
+            get totalPages() {
+                return Math.ceil(this.filteredUsers.length / this.itemsPerPage) || 1;
+            },
+
+            nextPage() {
+                if (this.currentPage < this.totalPages) this.currentPage++;
+            },
+
+            prevPage() {
+                if (this.currentPage > 1) this.currentPage--;
+            },
+            
+            goToPage(page) {
+                this.currentPage = page;
+            },
+            
+            init() {
+                this.$watch('roleFilter', () => this.currentPage = 1);
+                this.$watch('searchQuery', () => this.currentPage = 1);
+            }
+        }">
              <div class="bg-portal-sidebar border border-portal-border rounded-xl flex flex-col">
-                <div class="p-6 border-b border-portal-border flex items-center justify-between">
-                    <h2 class="font-display font-bold text-lg"><?php echo e(__('Stakeholder Directory')); ?></h2>
-                    <span class="text-xs font-bold text-portal-muted uppercase tracking-wider"><?php echo e($users->count()); ?> <?php echo e(__('Authenticated Accounts')); ?></span>
+                <div class="p-6 border-b border-portal-border">
+                    <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+                        <h2 class="font-display font-bold text-lg"><?php echo e(__('Stakeholder Directory')); ?></h2>
+                        <span class="text-xs font-bold text-portal-muted uppercase tracking-wider" x-text="filteredUsers.length + ' <?php echo e(__('Accounts')); ?>'"></span>
+                    </div>
+                    
+                    <!-- Filter Bar -->
+                    <div class="flex flex-wrap gap-3">
+                        <!-- Role Filter -->
+                        <select x-model="roleFilter" class="bg-white/5 border border-portal-border text-white text-sm font-bold rounded-lg px-4 py-2 focus:ring-portal-accent focus:border-portal-accent">
+                            <option value="all" class="bg-[#141415] text-white"><?php echo e(__('Tous les rôles')); ?></option>
+                            <option value="admin" class="bg-[#141415] text-white"><?php echo e(__('Administrateur')); ?></option>
+                            <option value="agent" class="bg-[#141415] text-white"><?php echo e(__('Agent')); ?></option>
+                            <option value="client" class="bg-[#141415] text-white"><?php echo e(__('Client')); ?></option>
+                        </select>
+                        
+                        <!-- Search Input -->
+                        <div class="flex-1 min-w-[200px]">
+                            <div class="relative">
+                                <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-search'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-portal-muted']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                                <input 
+                                    type="text" 
+                                    x-model="searchQuery" 
+                                    placeholder="<?php echo e(__('Rechercher par nom, email, entreprise...')); ?>"
+                                    class="w-full bg-white/5 border border-portal-border text-white placeholder-portal-muted text-sm rounded-lg pl-10 pr-4 py-2 focus:ring-portal-accent focus:border-portal-accent"
+                                >
+                            </div>
+                        </div>
+                        
+                        <!-- Clear Filters -->
+                        <button 
+                            @click="roleFilter = 'all'; searchQuery = ''"
+                            class="px-4 py-2 bg-white/5 border border-portal-border text-portal-muted hover:text-white hover:bg-white/10 rounded-lg text-sm font-bold transition-colors flex items-center gap-2"
+                        >
+                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-x'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?> <?php echo e(__('Réinitialiser')); ?>
+
+                        </button>
+                    </div>
                 </div>
+                
                 <div class="overflow-x-auto">
                     <table class="w-full text-start whitespace-nowrap">
                         <thead class="bg-white/2 text-xs font-bold text-portal-muted uppercase tracking-wider">
@@ -1601,37 +1740,40 @@
                                 <th class="px-6 py-4 text-start"><?php echo e(__('Identité')); ?></th>
                                 <th class="px-6 py-4 text-start"><?php echo e(__('Entreprise')); ?></th>
                                 <th class="px-6 py-4 text-start"><?php echo e(__('Email')); ?></th>
-                                <th class="px-6 py-4 text-start"><?php echo e(__('Rôle / Privilèges')); ?></th>
+                                <th class="px-6 py-4 text-start"><?php echo e(__('Téléphone')); ?></th>
+                                <th class="px-6 py-4 text-start"><?php echo e(__('Rôle')); ?></th>
                                 <th class="px-6 py-4 text-end"><?php echo e(__('Actions')); ?></th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-portal-border">
-                            <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <template x-for="user in paginatedUsers" :key="user.id">
                                 <tr class="hover:bg-white/5 transition-colors group">
                                     <td class="px-4 md:px-6 py-4">
                                         <div class="flex items-center gap-3">
                                             <div class="w-8 h-8 rounded-lg bg-portal-accent/20 border border-portal-accent/30 flex items-center justify-center font-bold text-portal-accent text-xs">
-                                                <?php echo e(substr($user->first_name, 0, 1)); ?>
-
+                                                <span x-text="user.first_name ? user.first_name.charAt(0) : '?'"></span>
                                             </div>
-                                            <div class="font-bold text-sm text-white"><?php echo e($user->first_name); ?> <?php echo e($user->last_name); ?></div>
+                                            <div class="font-bold text-sm text-white">
+                                                <span x-text="user.first_name + ' ' + user.last_name"></span>
+                                            </div>
                                         </div>
                                     </td>
-                                    <td class="px-4 md:px-6 py-4 text-sm text-portal-muted"><?php echo e($user->company ?? __('Private Contractor')); ?></td>
-                                    <td class="px-4 md:px-6 py-4 text-sm font-mono text-portal-muted"><?php echo e($user->email); ?></td>
+                                    <td class="px-4 md:px-6 py-4 text-sm text-portal-muted" x-text="user.company || '<?php echo e(__('Private Contractor')); ?>'"></td>
+                                    <td class="px-4 md:px-6 py-4 text-sm font-mono text-portal-muted" x-text="user.email"></td>
+                                    <td class="px-4 md:px-6 py-4 text-sm font-mono text-portal-muted" x-text="user.phone || 'N/A'"></td>
                                     <td class="px-4 md:px-6 py-4">
-                                         <form action="<?php echo e(route('admin.users.updateRole', $user)); ?>" method="POST" class="flex gap-2 items-center">
+                                         <form :action="'/admin/users/' + user.id + '/role'" method="POST" class="flex gap-2 items-center">
                                             <?php echo csrf_field(); ?>
                                             <?php echo method_field('PATCH'); ?>
-                                             <select name="role" class="bg-white/5 border border-portal-border text-xs font-bold uppercase rounded-lg px-3 py-2 cursor-pointer focus:ring-portal-accent focus:border-portal-accent min-h-[44px] md:min-h-0
-                                                <?php echo e($user->role === 'admin' ? 'text-portal-accent' : ($user->role === 'agent' ? 'text-amber-500' : 'text-blue-500')); ?>
-
-                                             ">
-                                                <option value="client" <?php echo e($user->role == 'client' ? 'selected' : ''); ?>><?php echo e(__('Client')); ?></option>
-                                                <option value="agent" <?php echo e($user->role == 'agent' ? 'selected' : ''); ?>><?php echo e(__('Agent')); ?></option>
-                                                <option value="admin" <?php echo e($user->role == 'admin' ? 'selected' : ''); ?>><?php echo e(__('Administrateur')); ?></option>
+                                             <input type="hidden" name="role" :value="user.role">
+                                             <select x-model="user.role" class="bg-white/5 border border-portal-border text-xs font-bold uppercase rounded-lg px-3 py-2 cursor-pointer focus:ring-portal-accent focus:border-portal-accent"
+                                                 :class="user.role === 'admin' ? 'text-portal-accent' : (user.role === 'agent' ? 'text-amber-500' : 'text-blue-500')"
+                                             >
+                                                 <option value="client"><?php echo e(__('Client')); ?></option>
+                                                 <option value="agent"><?php echo e(__('Agent')); ?></option>
+                                                 <option value="admin"><?php echo e(__('Administrateur')); ?></option>
                                              </select>
-                                            <button type="submit" class="p-2.5 md:p-1 hover:bg-white/10 rounded text-portal-accent transition-colors min-h-[44px] min-w-[44px] md:min-h-0 md:min-w-0 flex items-center justify-center">
+                                            <button type="submit" class="p-2.5 hover:bg-white/10 rounded text-portal-accent transition-colors">
                                                 <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -1641,7 +1783,7 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['class' => 'w-5 h-5 md:w-4 md:h-4']); ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
@@ -1653,13 +1795,13 @@
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
                                             </button>
-                                        </form>
+                                         </form>
                                     </td>
                                     <td class="px-4 md:px-6 py-4 text-end">
-                                        <form action="<?php echo e(route('admin.users.destroy', $user)); ?>" method="POST" onsubmit="return confirm('<?php echo e(__('Are you sure you want to revoke access for this user?')); ?>');" class="inline-block">
+                                        <form :action="'/admin/users/' + user.id" method="POST" onsubmit="return confirm('<?php echo e(__('Are you sure?')); ?>');" class="inline-block">
                                             <?php echo csrf_field(); ?>
                                             <?php echo method_field('DELETE'); ?>
-                                            <button type="submit" class="p-2.5 md:p-2 hover:bg-red-500/10 rounded-lg text-portal-muted hover:text-red-500 transition-colors min-h-[44px] min-w-[44px] md:min-h-0 md:min-w-0 inline-flex items-center justify-center" title="<?php echo e(__('Revoke Access')); ?>">
+                                            <button type="submit" class="p-2.5 hover:bg-red-500/10 rounded-lg text-portal-muted hover:text-red-500 transition-colors" title="<?php echo e(__('Supprimer')); ?>">
                                                 <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -1669,7 +1811,7 @@
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
 <?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
 <?php endif; ?>
-<?php $component->withAttributes(['class' => 'w-5 h-5 md:w-4 md:h-4']); ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5']); ?>
 <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
 <?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
@@ -1684,9 +1826,78 @@
                                         </form>
                                     </td>
                                 </tr>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </template>
+                            
+                            <!-- Empty State -->
+                            <tr x-show="paginatedUsers.length === 0">
+                                <td colspan="6" class="px-6 py-12 text-center text-portal-muted italic">
+                                    <?php echo e(__('Aucun utilisateur trouvé.')); ?>
+
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
+                </div>
+
+                <!-- Pagination Controls -->
+                <div class="px-6 py-4 border-t border-portal-border bg-white/5 flex items-center justify-between" x-show="totalPages > 1">
+                    <span class="text-xs text-portal-muted font-mono"><?php echo e(__('Page')); ?> <span x-text="currentPage"></span> / <span x-text="totalPages"></span></span>
+                    <div class="flex items-center gap-2">
+                        <button @click="prevPage()" :disabled="currentPage === 1" class="p-2 rounded-lg border border-portal-border hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed text-white transition-colors">
+                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-chevron-left'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 rtl:rotate-180']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                        </button>
+                        <div class="flex items-center gap-1">
+                            <template x-for="page in totalPages">
+                                <button @click="goToPage(page)" 
+                                    class="w-8 h-8 rounded-lg text-xs font-bold transition-colors"
+                                    :class="currentPage === page ? 'bg-portal-accent text-black' : 'hover:bg-white/10 text-portal-muted hover:text-white'"
+                                    x-text="page"
+                                    x-show="page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)"
+                                ></button>
+                            </template>
+                        </div>
+                        <button @click="nextPage()" :disabled="currentPage === totalPages" class="p-2 rounded-lg border border-portal-border hover:bg-white/10 disabled:opacity-50 disabled:cursor-not-allowed text-white transition-colors">
+                             <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-chevron-right'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 rtl:rotate-180']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1701,7 +1912,4 @@
 <?php $component = $__componentOriginal4619374cef299e94fd7263111d0abc69; ?>
 <?php unset($__componentOriginal4619374cef299e94fd7263111d0abc69); ?>
 <?php endif; ?>
-
-
-
 <?php /**PATH C:\Users\Bucket\Desktop\Commandes\placo-app\resources\views/admin/dashboard.blade.php ENDPATH**/ ?>
