@@ -37,6 +37,11 @@ Route::get('/myfix', [PageController::class, 'myfix'])->name('brand.myfix');
 Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/test-order', [TestController::class, 'orderTest'])->name('test.order');
 
+// Quick Search Route
+Route::middleware(['auth'])->group(function () {
+    Route::get('/search', [\App\Http\Controllers\PageController::class, 'search'])->name('search');
+});
+
 // Catalog Routes (Public)
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 // Route::get('/products/create', [ProductController::class, 'create'])->name('products.create'); // Moved to Admin
@@ -88,6 +93,9 @@ Route::middleware(['auth'])->group(function () {
         // Write routes for Admin and Agent
         Route::middleware(['can:view-admin'])->group(function() {
             Route::patch('/orders/{order}/status', [AdminDashboardController::class, 'updateOrderStatus'])->name('orders.updateStatus');
+            // Order Creation for Agents
+            Route::get('/orders/create', [\App\Http\Controllers\AdminOrderController::class, 'create'])->name('orders.create');
+            Route::post('/orders', [\App\Http\Controllers\AdminOrderController::class, 'store'])->name('orders.store');
         });
 
         // Admin-only routes
@@ -95,9 +103,6 @@ Route::middleware(['auth'])->group(function () {
             Route::patch('/users/{user}/role', [AdminDashboardController::class, 'updateUserRole'])->name('users.updateRole');
             Route::delete('/users/{user}', [AdminDashboardController::class, 'destroyUser'])->name('users.destroy');
             Route::patch('/orders/bulk-update', [AdminDashboardController::class, 'bulkUpdateOrderStatus'])->name('orders.bulkUpdate');
-            // Manual Order Creation
-            Route::get('/orders/create', [\App\Http\Controllers\AdminOrderController::class, 'create'])->name('orders.create');
-            Route::post('/orders', [\App\Http\Controllers\AdminOrderController::class, 'store'])->name('orders.store');
             Route::get('/orders/{order}/edit', [\App\Http\Controllers\AdminOrderController::class, 'edit'])->name('orders.edit');
             Route::put('/orders/{order}', [\App\Http\Controllers\AdminOrderController::class, 'update'])->name('orders.update');
 

@@ -34,6 +34,7 @@ class AdminDashboardController extends Controller
             'revenue' => Order::sum('total'),
             'revenue_change' => number_format($revenueChange, 1),
             'active_orders' => Order::whereIn('status', ['pending', 'confirmed', 'in_delivery'])->count(),
+            'pending_orders' => Order::where('status', 'pending')->count(),
             'total_users' => User::count(),
             'low_stock' => Product::where('status', 'archived')->count(),
         ];

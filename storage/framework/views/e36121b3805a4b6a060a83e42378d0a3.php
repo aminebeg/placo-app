@@ -173,7 +173,7 @@
                 <?php if(auth()->guard()->check()): ?>
                     <?php if(auth()->user()->role !== 'admin' && auth()->user()->role !== 'agent'): ?>
                         <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4"><?php echo e(__('Opérations')); ?></div>
-                        
+                         
                         <a href="<?php echo e(route('dashboard')); ?>" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all <?php echo e(request()->routeIs('dashboard') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white'); ?>">
                             <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
@@ -250,8 +250,67 @@
                         </a>
                     <?php endif; ?>
 
-                    <?php if(auth()->user()->role === 'admin' || auth()->user()->role === 'agent'): ?>
-                        <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4"><?php echo e(auth()->user()->role === 'agent' ? __('Opérations Agent') : __('Administration')); ?></div>
+                    <?php if(auth()->user()->role === 'agent'): ?>
+                        <!-- Agent Sidebar - Simplified -->
+                        <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4"><?php echo e(__('Opérations Agent')); ?></div>
+                        
+                        <a href="<?php echo e(route('admin.dashboard', ['tab' => 'orders'])); ?>" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all <?php echo e(request()->fullUrlIs(route('admin.dashboard', ['tab' => 'orders'])) ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white'); ?>">
+                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-bell'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5 me-3']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                            <?php echo e(__('Nouvelles Commandes')); ?>
+
+                            <?php if(isset($stats['pending_orders']) && $stats['pending_orders'] > 0): ?>
+                            <span class="ms-auto bg-red-500 text-white text-[0.6rem] font-bold px-2 py-0.5 rounded-full"><?php echo e($stats['pending_orders']); ?></span>
+                            <?php endif; ?>
+                        </a>
+
+                        <a href="<?php echo e(route('profile.edit')); ?>" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all <?php echo e(request()->routeIs('profile.edit') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white'); ?>">
+                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-user-circle-2'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-5 h-5 me-3']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                            <?php echo e(__('Mon Profil')); ?>
+
+                        </a>
+                    <?php endif; ?>
+
+                    <?php if(auth()->user()->role === 'admin'): ?>
+                        <!-- Admin Sidebar - Full Access -->
+                        <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4"><?php echo e(__('Administration')); ?></div>
                         
                         <a href="<?php echo e(route('admin.dashboard', ['tab' => 'overview'])); ?>" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all <?php echo e(request()->fullUrlIs(route('admin.dashboard', ['tab' => 'overview'])) || (request()->routeIs('admin.dashboard') && !request()->has('tab')) ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white'); ?>">
                             <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
@@ -328,7 +387,6 @@
 
                         </a>
 
-                        <?php if(auth()->user()->role === 'admin'): ?>
                         <a href="<?php echo e(route('admin.dashboard', ['tab' => 'users'])); ?>" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all <?php echo e(request()->fullUrlIs(route('admin.dashboard', ['tab' => 'users'])) ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white'); ?>">
                             <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
@@ -378,7 +436,6 @@
                             <?php echo e(__('Paramètres')); ?>
 
                         </a>
-                        <?php endif; ?>
                     <?php endif; ?>
                 <?php endif; ?>
             </nav>
@@ -485,10 +542,45 @@
                 class="h-20 border-b border-portal-border px-4 lg:px-10 flex items-center justify-between bg-[#0f0f10]/80 backdrop-blur-xl sticky top-0 z-40"
                 x-data="{ 
                     commandeCount: <?php echo e(count(session('commande', []))); ?>,
+                    searchQuery: '',
+                    searchResults: [],
+                    searchLoading: false,
                     showNotify(msg, type) {
                         this.$dispatch('show-toast', { message: msg, type: type });
+                    },
+                    performSearch() {
+                        if (this.searchQuery.length < 2) {
+                            this.searchResults = [];
+                            return;
+                        }
+                        this.searchLoading = true;
+                        fetch('/search?q=' + encodeURIComponent(this.searchQuery))
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.json();
+                            })
+                            .then(data => {
+                                this.searchResults = data;
+                            })
+                            .catch(error => {
+                                console.error('Search error:', error);
+                            })
+                            .finally(() => {
+                                this.searchLoading = false;
+                            });
+                    },
+                    clearSearch() {
+                        this.searchQuery = '';
+                        this.searchResults = [];
+                    },
+                    goTo(url) {
+                        window.location.href = url;
+                        this.clearSearch();
                     }
                 }"
+                @click.away="searchResults = []"
                 @commande-updated.window="commandeCount = $event.detail.count; showNotify($event.detail.message, 'success')"
             >
                 <div class="flex items-center gap-4">
@@ -515,7 +607,7 @@
 <?php endif; ?>
                     </button>
                     
-                    <div class="hidden sm:flex items-center gap-3 bg-white/5 border border-portal-border px-4 py-2 rounded-xl w-48 xl:w-80">
+                    <div class="hidden sm:flex items-center gap-3 bg-white/5 border border-portal-border px-4 py-2 rounded-xl w-48 xl:w-80 relative">
                         <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
 <?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -536,7 +628,130 @@
 <?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
 <?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
 <?php endif; ?>
-                        <input type="text" placeholder="<?php echo e(__('Recherche rapide...')); ?>" class="bg-transparent border-none text-sm text-white focus:ring-0 w-full placeholder-portal-muted">
+                        <input 
+                            type="text" 
+                            x-model="searchQuery" 
+                            @input="performSearch()"
+                            @keydown.escape="clearSearch()"
+                            placeholder="<?php echo e(__('Recherche rapide...')); ?>" 
+                            class="bg-transparent border-none text-sm text-white focus:ring-0 w-full placeholder-portal-muted"
+                        >
+                        <button x-show="searchQuery" @click="clearSearch()" class="text-portal-muted hover:text-white">
+                            <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-x'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                        </button>
+                        
+                        <!-- Search Results Dropdown -->
+                        <div x-show="searchResults.length > 0" class="absolute top-full left-0 right-0 mt-2 bg-portal-sidebar border border-portal-border rounded-xl shadow-xl overflow-hidden z-50" x-cloak>
+                            <template x-for="result in searchResults" :key="result.id">
+                                <div @click="goTo(result.url)" class="px-4 py-3 hover:bg-white/5 cursor-pointer flex items-center gap-3 border-b border-portal-border last:border-0">
+                                    <div :class="result.type === 'order' ? 'bg-blue-500/10 text-blue-500' : (result.type === 'product' ? 'bg-green-500/10 text-green-500' : 'bg-purple-500/10 text-purple-500')" class="p-2 rounded-lg">
+                                        <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-file-text'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['x-show' => 'result.type === \'order\'','class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                                        <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-package'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['x-show' => 'result.type === \'product\'','class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                                        <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-user'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['x-show' => 'result.type === \'user\'','class' => 'w-4 h-4']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div x-text="result.title" class="text-sm font-bold text-white"></div>
+                                        <div x-text="result.subtitle" class="text-xs text-portal-muted"></div>
+                                    </div>
+                                    <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>
+<?php $component = BladeUI\Icons\Components\Svg::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('lucide-arrow-right'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\BladeUI\Icons\Components\Svg::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['class' => 'w-4 h-4 text-portal-muted']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $attributes = $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c)): ?>
+<?php $component = $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c; ?>
+<?php unset($__componentOriginal643fe1b47aec0b76658e1a0200b34b2c); ?>
+<?php endif; ?>
+                                </div>
+                            </template>
+                        </div>
                     </div>
                 </div>
 

@@ -42,7 +42,6 @@
      <?php $__env->endSlot(); ?>
 
     <div x-data="{ activeTab: '<?php echo e(request()->query('tab', 'overview')); ?>' }">
-        <!-- Tab Navigation -->
 
 
         <!-- Overview Tab -->
@@ -1021,8 +1020,8 @@
                     orders = orders.filter(order => order.status === this.statusFilter);
                 }
                 
-                // Filter by now = new Date date
-                const();
+                // Filter by date
+                const now = new Date();
                 if (this.dateFilter === 'today') {
                     orders = orders.filter(order => {
                         const orderDate = new Date(order.created_at);
@@ -1157,7 +1156,7 @@
                         <h2 class="font-display font-bold text-lg"><?php echo e(__('Master Transaction Ledger')); ?></h2>
                         <div class="flex items-center gap-3">
                             <span class="text-xs font-bold text-portal-muted uppercase tracking-wider" x-text="filteredOrders.length + ' <?php echo e(__('Records')); ?>'"></span>
-                            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('admin')): ?>
+                            <?php if(auth()->user()->role === 'admin' || auth()->user()->role === 'agent'): ?>
                             <a href="<?php echo e(route('admin.orders.create')); ?>" class="flex items-center gap-2 px-4 py-2 border border-portal-accent text-portal-accent rounded-lg text-sm font-bold hover:bg-portal-accent hover:text-black transition-colors">
                                 <?php if (isset($component)) { $__componentOriginal643fe1b47aec0b76658e1a0200b34b2c = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal643fe1b47aec0b76658e1a0200b34b2c = $attributes; } ?>

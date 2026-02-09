@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\AuthController;
 
 /*
@@ -20,9 +21,12 @@ Route::get('/products', [ProductController::class, 'index']);
 Route::get('/products/{id}', [ProductController::class, 'show']);
 Route::get('/categories', [ProductController::class, 'categories']);
 
-// Protected routes
-Route::middleware('auth:sanctum')->group(function () {
+// Protected routes (web session or Sanctum)
+Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+    
+    // Search - works with web session
+    Route::get('/search', [SearchController::class, 'search']);
     
     // Client orders
     Route::post('/orders', [OrderController::class, 'store']);

@@ -1,4 +1,0 @@
-<svg class="w-4 h-4 text-blue-400 group-hover:text-blue-300 transition-all rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-  <path d="M5 12h14"/>
-  <path d="m12 5 7 7-7 7"/>
-</svg><?php /**PATH C:\Users\Bucket\Desktop\Commandes\placo-app\storage\framework\views/5027b489af2fb327049245444e2bfd02.blade.php ENDPATH**/ ?>

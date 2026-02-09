@@ -95,6 +95,30 @@
                     @if(auth()->user()->role === 'admin' || auth()->user()->role === 'agent')
                         <div class="px-6 py-2 text-[0.65rem] font-extrabold uppercase tracking-widest text-portal-muted mt-4">{{ auth()->user()->role === 'agent' ? __('Opérations Agent') : __('Administration') }}</div>
                         
+                        @if(auth()->user()->role === 'agent')
+                        <a href="{{ route('admin.dashboard', ['tab' => 'new_orders']) }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->fullUrlIs(route('admin.dashboard', ['tab' => 'new_orders'])) ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
+                            <x-lucide-bell class="w-5 h-5 me-3" />
+                            {{ __('Nouvelles Commandes') }}
+                            @if(isset($stats['pending_orders']) && $stats['pending_orders'] > 0)
+                            <span class="ms-auto bg-red-500 text-white text-[0.6rem] font-bold px-2 py-0.5 rounded-full">{{ $stats['pending_orders'] }}</span>
+                            @endif
+                        </a>
+
+                        <a href="{{ route('admin.dashboard', ['tab' => 'orders']) }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->fullUrlIs(route('admin.dashboard', ['tab' => 'orders'])) ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
+                            <x-lucide-trending-up class="w-5 h-5 me-3" />
+                            {{ __('Commandes') }}
+                        </a>
+
+                        <a href="{{ route('admin.orders.create') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('admin.orders.create') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
+                            <x-lucide-plus-circle class="w-5 h-5 me-3" />
+                            {{ __('Créer Commande') }}
+                        </a>
+
+                        <a href="{{ route('profile.edit') }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->routeIs('profile.edit') ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
+                            <x-lucide-user-circle class="w-5 h-5 me-3" />
+                            {{ __('Mon Profil') }}
+                        </a>
+                        @else
                         <a href="{{ route('admin.dashboard', ['tab' => 'overview']) }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->fullUrlIs(route('admin.dashboard', ['tab' => 'overview'])) || (request()->routeIs('admin.dashboard') && !request()->has('tab')) ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
                             <x-lucide-bar-chart-3 class="w-5 h-5 me-3" />
                             {{ __('Vue d\'ensemble') }}
@@ -109,6 +133,7 @@
                             <x-lucide-trending-up class="w-5 h-5 me-3" />
                             {{ __('Transactions') }}
                         </a>
+                        @endif
 
                         @if(auth()->user()->role === 'admin')
                         <a href="{{ route('admin.dashboard', ['tab' => 'users']) }}" @click="sidebarOpen = false" class="flex items-center gap-3 px-4 py-3.5 rounded-xl font-semibold text-sm transition-all {{ request()->fullUrlIs(route('admin.dashboard', ['tab' => 'users'])) ? 'bg-portal-accent/10 text-portal-accent' : 'text-portal-muted hover:bg-white/5 hover:text-white' }}">
